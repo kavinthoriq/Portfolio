@@ -1,0 +1,4053 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Kavin Thoriq — Portfolio Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════
+   ROOT VARIABLES
+═══════════════════════════════════════ */
+    :root {
+      --cyan: #00f5ff;
+      --blue: #0099ff;
+      --gold: #ffd700;
+      --green: #00ff88;
+      --purple: #b400ff;
+      --bg: #020812;
+      --bg2: #030d1a;
+      --panel: rgba(0, 15, 40, 0.80);
+      --border: rgba(0, 245, 255, 0.18);
+    }
+
+    /* ═══════════════════════════════════════
+   BASE
+═══════════════════════════════════════ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--bg);
+      color: #d0e8ff;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--cyan);
+      border-radius: 2px
+    }
+
+    /* ═══════════════════════════════════════
+   BACKGROUND LAYERS
+═══════════════════════════════════════ */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none
+    }
+
+    .hud-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 245, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 245, 255, 0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .nebula {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 50% at 20% 40%, rgba(0, 153, 255, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 70% at 80% 20%, rgba(0, 245, 255, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 90%, rgba(180, 0, 255, 0.04) 0%, transparent 50%);
+    }
+
+    /* ═══════════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════════ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px
+    }
+
+    .section {
+      padding: 90px 20px;
+      position: relative;
+      z-index: 1
+    }
+
+    @media(min-width:768px) {
+      .section {
+        padding: 110px 32px
+      }
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px
+    }
+
+    @media(min-width:900px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    /* ═══════════════════════════════════════
+   GLASSMORPHISM PANEL
+═══════════════════════════════════════ */
+    .glass {
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.04) 0%, transparent 50%);
+    }
+
+    /* ═══════════════════════════════════════
+   CHAMFERED (SCI-FI) CLIP
+═══════════════════════════════════════ */
+    .cut {
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))
+    }
+
+    .cut-sm {
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))
+    }
+
+    .cut-xs {
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))
+    }
+
+    /* HUD corner brackets */
+    .hud-box {
+      position: relative
+    }
+
+    .hud-box::before,
+    .hud-box::after,
+    .hud-box .c-bl,
+    .hud-box .c-br {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+    }
+
+    .hud-box::before {
+      top: 0;
+      left: 0;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan)
+    }
+
+    .hud-box::after {
+      top: 0;
+      right: 0;
+      border-top: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan)
+    }
+
+    .hud-box .c-bl {
+      bottom: 0;
+      left: 0;
+      border-bottom: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan)
+    }
+
+    .hud-box .c-br {
+      bottom: 0;
+      right: 0;
+      border-bottom: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan)
+    }
+
+    .hud-gold::before,
+    .hud-gold::after,
+    .hud-gold .c-bl,
+    .hud-gold .c-br {
+      border-color: var(--gold) !important
+    }
+
+    /* ═══════════════════════════════════════
+   TOP HUD STATUS BAR (Realtime Clock & Date)
+═══════════════════════════════════════ */
+    #top-status-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 28px;
+      z-index: 102;
+      background: rgba(2, 8, 18, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 245, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .hud-top-left {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .14em;
+      color: rgba(0, 245, 255, 0.65);
+    }
+
+    .hud-top-right {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .14em;
+      color: var(--cyan);
+      text-shadow: 0 0 8px rgba(0, 245, 255, 0.55);
+    }
+
+    @media(max-width:600px) {
+      #top-status-bar {
+        padding: 0 14px;
+      }
+
+      .hud-top-left,
+      .hud-top-right {
+        font-size: .52rem;
+        letter-spacing: .08em;
+      }
+    }
+
+    /* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+    #navbar {
+      position: fixed;
+      top: 28px;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all .4s ease;
+    }
+
+    #navbar.scrolled {
+      background: rgba(2, 8, 18, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 245, 255, 0.12);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer
+    }
+
+    .nav-logo-box {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--cyan);
+      background: rgba(0, 245, 255, 0.08);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    .nav-logo-box span {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--cyan)
+    }
+
+    .nav-logo-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .6rem;
+      letter-spacing: .12em;
+      color: rgba(0, 245, 255, .7)
+    }
+
+    .nav-logo-text b {
+      color: var(--gold)
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      align-items: center
+    }
+
+    @media(max-width:700px) {
+      .nav-links {
+        display: none
+      }
+    }
+
+    .nav-links a {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .6rem;
+      letter-spacing: .1em;
+      color: rgba(0, 245, 255, .55);
+      padding: 7px 11px;
+      border: 1px solid transparent;
+      transition: all .3s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--cyan);
+      border-color: rgba(0, 245, 255, .25);
+      background: rgba(0, 245, 255, .06);
+      text-shadow: 0 0 8px rgba(0, 245, 255, .7);
+    }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px
+    }
+
+    @media(max-width:700px) {
+      .hamburger {
+        display: flex
+      }
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+      transition: all .3s
+    }
+
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      top: 86px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      background: rgba(2, 8, 18, .97);
+      border-bottom: 1px solid rgba(0, 245, 255, .15);
+      flex-direction: column;
+      padding: 12px 20px;
+      gap: 4px;
+    }
+
+    #mobile-menu.open {
+      display: flex
+    }
+
+    #mobile-menu a {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .7rem;
+      letter-spacing: .15em;
+      color: rgba(0, 245, 255, .6);
+      padding: 10px 12px;
+      border-left: 2px solid transparent;
+      cursor: pointer;
+      transition: all .3s;
+    }
+
+    #mobile-menu a.active,
+    #mobile-menu a:hover {
+      color: var(--cyan);
+      border-left-color: var(--cyan);
+      background: rgba(0, 245, 255, .05);
+    }
+
+    /* ═══════════════════════════════════════
+   SECTION HEADER
+═══════════════════════════════════════ */
+    .sec-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .25em;
+      color: var(--cyan);
+      opacity: .7;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .sec-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.4rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-align: center;
+      color: var(--cyan);
+      text-shadow: 0 0 20px rgba(0, 245, 255, .35);
+      margin-bottom: 12px;
+    }
+
+    .sec-title.gold {
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(255, 215, 0, .35)
+    }
+
+    .sec-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 52px
+    }
+
+    .sec-divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(0, 245, 255, .4))
+    }
+
+    .sec-divider-line.rev {
+      background: linear-gradient(to left, transparent, rgba(0, 245, 255, .4))
+    }
+
+    .sec-divider-gem {
+      width: 8px;
+      height: 8px;
+      background: var(--cyan);
+      transform: rotate(45deg);
+      box-shadow: 0 0 8px var(--cyan)
+    }
+
+    /* ═══════════════════════════════════════
+   HERO SECTION
+═══════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 20px 80px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* rings */
+    .ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .ring-1 {
+      width: 380px;
+      height: 380px;
+      border: 1px solid rgba(0, 245, 255, .07);
+      animation: spin-cw 12s linear infinite
+    }
+
+    .ring-2 {
+      width: 560px;
+      height: 560px;
+      border: 1px dashed rgba(0, 153, 255, .05);
+      animation: spin-ccw 18s linear infinite
+    }
+
+    .ring-3 {
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(0, 245, 255, .06);
+      animation: spin-cw 8s linear infinite
+    }
+
+    @keyframes spin-cw {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg)
+      }
+
+      to {
+        transform: translate(-50%, -50%) rotate(360deg)
+      }
+    }
+
+    @keyframes spin-ccw {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg)
+      }
+
+      to {
+        transform: translate(-50%, -50%) rotate(-360deg)
+      }
+    }
+
+    /* vertical scan lines */
+    .vline {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(0, 245, 255, .055), transparent);
+      pointer-events: none
+    }
+
+    /* status badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 15, 40, .8);
+      border: 1px solid rgba(0, 245, 255, .22);
+      padding: 7px 16px;
+      margin-bottom: 28px;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse-dot 2s ease-in-out infinite
+    }
+
+    .status-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .15em;
+      color: var(--green)
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-6px)
+      }
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 8px var(--green)
+      }
+
+      50% {
+        opacity: .5;
+        box-shadow: 0 0 16px var(--green)
+      }
+    }
+
+    /* hero name glitch */
+    .glitch-wrap {
+      position: relative;
+      display: inline-block
+    }
+
+    .hero-name {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.2rem, 9vw, 5.5rem);
+      color: #fff;
+      letter-spacing: .15em;
+      text-shadow: 0 0 30px rgba(0, 245, 255, .4), 0 0 60px rgba(0, 153, 255, .2);
+      animation: glitch-main 5s infinite;
+      display: inline-block;
+    }
+
+    .glitch-wrap::before,
+    .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.2rem, 9vw, 5.5rem);
+      letter-spacing: .15em;
+    }
+
+    .glitch-wrap::before {
+      animation: glitch-r 5s infinite;
+      color: #ff0055
+    }
+
+    .glitch-wrap::after {
+      animation: glitch-b 5s infinite;
+      color: var(--cyan)
+    }
+
+    @keyframes glitch-main {
+
+      0%,
+      88%,
+      100% {
+        transform: translate(0)
+      }
+
+      89% {
+        transform: translate(-3px, 1px)
+      }
+
+      91% {
+        transform: translate(3px, -1px)
+      }
+
+      93% {
+        transform: translate(-2px, 2px)
+      }
+
+      95% {
+        transform: translate(2px, -2px)
+      }
+    }
+
+    @keyframes glitch-r {
+
+      0%,
+      88%,
+      100% {
+        opacity: 0
+      }
+
+      89% {
+        opacity: .7;
+        transform: translate(4px, 0);
+        clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%)
+      }
+
+      91% {
+        transform: translate(-4px, 0);
+        clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%)
+      }
+
+      93% {
+        opacity: 0
+      }
+    }
+
+    @keyframes glitch-b {
+
+      0%,
+      87%,
+      100% {
+        opacity: 0
+      }
+
+      88% {
+        opacity: .6;
+        transform: translate(-4px, 0);
+        clip-path: polygon(0 45%, 100% 45%, 100% 65%, 0 65%)
+      }
+
+      90% {
+        transform: translate(4px, 0)
+      }
+
+      92% {
+        opacity: 0
+      }
+    }
+
+    /* role text */
+    .hero-role {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(.75rem, .75rem+.5vw, 1rem);
+      color: var(--gold);
+      letter-spacing: .2em;
+      margin: 10px 0 22px;
+    }
+
+    /* tagline box */
+    .tagline-box {
+      display: inline-block;
+      background: rgba(0, 15, 40, .85);
+      border: 1px solid rgba(0, 245, 255, .2);
+      padding: 16px 24px;
+      margin-bottom: 36px;
+      max-width: 620px;
+      text-align: left;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* scanline on tagline box */
+    .tagline-box::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(transparent, rgba(0, 245, 255, .12), transparent);
+      animation: scanline 2.5s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% {
+        top: -10%
+      }
+
+      100% {
+        top: 110%
+      }
+    }
+
+    .tagline-comment {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      color: rgba(0, 245, 255, .35);
+      margin-bottom: 6px
+    }
+
+    .tagline-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(.8rem, .8rem+.3vw, .95rem);
+      color: rgba(200, 240, 255, .88);
+      line-height: 1.65
+    }
+
+    .cursor {
+      animation: blink 1s step-end infinite;
+      color: var(--cyan)
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    /* CTA buttons */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center
+    }
+
+    .btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .65rem;
+      letter-spacing: .15em;
+      padding: 11px 26px;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all .25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+
+    .btn-cyan {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 245, 255, .05)
+    }
+
+    .btn-cyan:hover {
+      background: rgba(0, 245, 255, .14);
+      box-shadow: 0 0 20px rgba(0, 245, 255, .35);
+      color: #fff;
+      transform: translateY(-2px)
+    }
+
+    .btn-gold {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(255, 215, 0, .05)
+    }
+
+    .btn-gold:hover {
+      background: rgba(255, 215, 0, .14);
+      box-shadow: 0 0 20px rgba(255, 215, 0, .35);
+      color: #fff;
+      transform: translateY(-2px)
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(.98)
+    }
+
+    /* scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .scroll-hint span {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .2em;
+      color: rgba(0, 245, 255, .35)
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(0, 245, 255, .6), transparent);
+      animation: pulse-line 2s ease-in-out infinite
+    }
+
+    @keyframes pulse-line {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    /* ═══════════════════════════════════════
+   ABOUT SECTION
+═══════════════════════════════════════ */
+    .info-card {
+      background: rgba(0, 245, 255, .04);
+      border: 1px solid rgba(0, 245, 255, .12);
+      padding: 11px 13px;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      transition: all .25s;
+      cursor: default;
+    }
+
+    .info-card:hover {
+      background: rgba(0, 245, 255, .09);
+      border-color: rgba(0, 245, 255, .28);
+      transform: translateY(-2px)
+    }
+
+    .info-card-key {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .18em;
+      color: rgba(0, 245, 255, .4);
+      margin-bottom: 4px
+    }
+
+    .info-card-val {
+      font-size: .8rem;
+      color: rgba(200, 240, 255, .88)
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px
+    }
+
+    @media(max-width:500px) {
+      .info-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* radial stats */
+    .radial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      justify-items: center
+    }
+
+    .radial-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      transition: all .25s;
+      cursor: default
+    }
+
+    .radial-item:hover {
+      transform: translateY(-3px)
+    }
+
+    .radial-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .55rem;
+      text-align: center;
+      color: rgba(0, 245, 255, .55);
+      letter-spacing: .06em
+    }
+
+    /* stat counter cards */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      text-align: center;
+      padding: 18px 8px;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      transition: all .25s;
+      cursor: default;
+      position: relative;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(0, 245, 255, .4);
+      box-shadow: 0 0 20px rgba(0, 245, 255, .12);
+      transform: translateY(-3px)
+    }
+
+    .stat-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--cyan);
+      display: block
+    }
+
+    .stat-lbl {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      color: rgba(0, 245, 255, .5);
+      margin-top: 4px
+    }
+
+    /* luo feng quote */
+    .quote-card {
+      background: rgba(255, 215, 0, .04);
+      border: 1px solid rgba(255, 215, 0, .18);
+      padding: 18px 20px;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    }
+
+    .quote-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .8rem;
+      color: rgba(255, 215, 0, .8);
+      line-height: 1.7
+    }
+
+    .quote-src {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      color: rgba(255, 215, 0, .35);
+      text-align: right;
+      margin-top: 8px
+    }
+
+    /* ═══════════════════════════════════════
+   SKILLS SECTION
+═══════════════════════════════════════ */
+    .skill-bar-wrap {
+      margin-bottom: 16px
+    }
+
+    .skill-bar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px
+    }
+
+    .skill-bar-name {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .75rem;
+      color: rgba(200, 240, 255, .75)
+    }
+
+    .skill-bar-pct {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .75rem;
+      color: var(--cyan)
+    }
+
+    .skill-bar-gold .skill-bar-name {
+      color: rgba(255, 215, 0, .75)
+    }
+
+    .skill-bar-gold .skill-bar-pct {
+      color: var(--gold)
+    }
+
+    .skill-track {
+      height: 6px;
+      background: rgba(0, 245, 255, .08);
+      border: 1px solid rgba(0, 245, 255, .12);
+      border-radius: 3px;
+      overflow: hidden
+    }
+
+    .skill-track-gold {
+      background: rgba(255, 215, 0, .08);
+      border-color: rgba(255, 215, 0, .12)
+    }
+
+    .skill-fill {
+      height: 100%;
+      border-radius: 3px;
+      width: 0;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      box-shadow: 0 0 8px rgba(0, 245, 255, .5);
+      transition: width 1.2s cubic-bezier(.16, 1, .3, 1);
+      position: relative;
+    }
+
+    .skill-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #fff;
+      box-shadow: 0 0 6px #fff
+    }
+
+    .skill-fill-gold {
+      background: linear-gradient(90deg, rgba(255, 165, 0, .8), var(--gold));
+      box-shadow: 0 0 8px rgba(255, 215, 0, .4)
+    }
+
+    .tool-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center
+    }
+
+    .tool-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .7rem;
+      color: rgba(0, 245, 255, .8);
+      background: rgba(0, 245, 255, .05);
+      border: 1px solid rgba(0, 245, 255, .15);
+      padding: 7px 12px;
+      transition: all .25s;
+      cursor: default;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    .tool-badge:hover {
+      background: rgba(0, 245, 255, .12);
+      border-color: rgba(0, 245, 255, .35);
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px rgba(0, 245, 255, .2)
+    }
+
+    /* ═══════════════════════════════════════
+   EDUCATION / MISSION LOGS
+═══════════════════════════════════════ */
+    .timeline {
+      position: relative;
+      padding-left: 48px
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, rgba(0, 245, 255, .35) 15%, rgba(255, 215, 0, .25) 85%, transparent);
+    }
+
+    .mission-item {
+      position: relative;
+      margin-bottom: 24px
+    }
+
+    .mission-dot {
+      position: absolute;
+      left: -42px;
+      top: 22px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .mission-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 20px 22px;
+      position: relative;
+      transition: all .3s;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+
+    .mission-card:hover {
+      border-color: rgba(0, 245, 255, .32);
+      box-shadow: 0 8px 30px rgba(0, 245, 255, .12);
+      transform: translateX(4px);
+    }
+
+    .mission-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px
+    }
+
+    .mission-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px
+    }
+
+    .mission-id {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .15em;
+      padding: 3px 8px;
+      color: rgba(0, 245, 255, .5);
+      background: rgba(0, 0, 0, .4);
+      border: 1px solid rgba(0, 245, 255, .15);
+    }
+
+    .mission-status {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .1em;
+      padding: 3px 8px;
+    }
+
+    .mission-type {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .55rem;
+      color: rgba(0, 245, 255, .35);
+      letter-spacing: .1em
+    }
+
+    .mission-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(.85rem, .85rem+.4vw, 1rem);
+      font-weight: 700;
+      color: #fff
+    }
+
+    .mission-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .7rem;
+      color: rgba(0, 245, 255, .6);
+      margin-top: 2px
+    }
+
+    .mission-period {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      color: rgba(0, 245, 255, .35);
+      white-space: nowrap
+    }
+
+    .mission-desc {
+      font-size: .82rem;
+      color: rgba(200, 230, 255, .72);
+      margin-bottom: 12px;
+      line-height: 1.65
+    }
+
+    .mission-divider {
+      height: 1px;
+      background: rgba(0, 245, 255, .1);
+      margin: 12px 0
+    }
+
+    .mission-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px
+    }
+
+    .mission-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      color: rgba(0, 245, 255, .7);
+      background: rgba(0, 245, 255, .06);
+      border: 1px solid rgba(0, 245, 255, .18);
+      padding: 4px 9px;
+      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+    }
+
+    /* ═══════════════════════════════════════
+   PROJECTS SECTION
+═══════════════════════════════════════ */
+    /* Filter bar */
+    .proj-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+
+    .proj-filter-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .58rem;
+      letter-spacing: .14em;
+      color: rgba(0, 245, 255, .55);
+      background: rgba(0, 245, 255, .04);
+      border: 1px solid rgba(0, 245, 255, .2);
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: all .25s ease;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      position: relative;
+    }
+
+    .proj-filter-btn:hover {
+      color: var(--cyan);
+      border-color: rgba(0, 245, 255, .4);
+      background: rgba(0, 245, 255, .1);
+      text-shadow: 0 0 8px rgba(0, 245, 255, .7);
+    }
+
+    .proj-filter-btn.active {
+      color: #fff;
+      background: rgba(0, 245, 255, .14);
+      border-color: var(--cyan);
+      text-shadow: 0 0 10px rgba(0, 245, 255, .9);
+      box-shadow: 0 0 18px rgba(0, 245, 255, .2);
+    }
+
+    .proj-filter-btn:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    /* Project grid */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    @media(min-width:600px) {
+      .proj-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(min-width:960px) {
+      .proj-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Project card */
+    .proj-card {
+      display: flex;
+      flex-direction: column;
+      transition: transform .3s ease, box-shadow .3s ease, opacity .35s ease;
+      overflow: hidden;
+    }
+
+    .proj-card[hidden] {
+      display: none
+    }
+
+    .proj-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 28px rgba(0, 245, 255, .22), 0 12px 36px rgba(0, 0, 0, .5);
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      .proj-card,
+      .proj-card:hover {
+        transform: none;
+        transition: opacity .35s ease;
+      }
+    }
+
+    /* Thumbnail */
+    .proj-thumb {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      /* 16:9 */
+      overflow: hidden;
+      background: rgba(0, 10, 25, .7);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .proj-thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .4s ease;
+    }
+
+    .proj-card:hover .proj-thumb img {
+      transform: scale(1.06);
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      .proj-card:hover .proj-thumb img {
+        transform: none;
+      }
+    }
+
+    .proj-thumb-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      color: rgba(0, 245, 255, .25);
+      letter-spacing: .1em;
+      text-align: center;
+      padding: 10px;
+    }
+
+    /* Card body */
+    .proj-body {
+      padding: 18px 18px 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Header row */
+    .proj-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .proj-id {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .52rem;
+      letter-spacing: .14em;
+      color: rgba(0, 245, 255, .45);
+      background: rgba(0, 0, 0, .4);
+      border: 1px solid rgba(0, 245, 255, .15);
+      padding: 3px 8px;
+    }
+
+    .proj-status {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .52rem;
+      letter-spacing: .08em;
+      padding: 3px 8px;
+    }
+
+    .proj-status.completed {
+      color: var(--cyan);
+      background: rgba(0, 245, 255, .07);
+      border: 1px solid rgba(0, 245, 255, .25);
+    }
+
+    .proj-status.in-progress {
+      color: var(--gold);
+      background: rgba(255, 215, 0, .08);
+      border: 1px solid rgba(255, 215, 0, .3);
+    }
+
+    .proj-year {
+      margin-left: auto;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .52rem;
+      color: rgba(0, 245, 255, .3);
+    }
+
+    /* Title & desc */
+    .proj-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(.8rem, .8rem+.3vw, .92rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+    }
+
+    .proj-desc {
+      font-size: .8rem;
+      color: rgba(200, 230, 255, .68);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    /* Tags */
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Buttons */
+    .proj-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0, 245, 255, .09);
+    }
+
+    .proj-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .55rem;
+      letter-spacing: .1em;
+      padding: 7px 14px;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all .22s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+      text-decoration: none;
+    }
+
+    .proj-btn:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .proj-btn-demo {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 245, 255, .05);
+    }
+
+    .proj-btn-demo:hover {
+      background: rgba(0, 245, 255, .16);
+      box-shadow: 0 0 14px rgba(0, 245, 255, .3);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .proj-btn-repo {
+      border-color: rgba(0, 245, 255, .3);
+      color: rgba(0, 245, 255, .65);
+      background: rgba(0, 245, 255, .02);
+    }
+
+    .proj-btn-repo:hover {
+      border-color: rgba(0, 245, 255, .5);
+      background: rgba(0, 245, 255, .09);
+      color: var(--cyan);
+      transform: translateY(-1px);
+    }
+
+    /* Empty state */
+    .proj-empty {
+      text-align: center;
+      padding: 48px 20px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .75rem;
+      color: rgba(0, 245, 255, .3);
+      letter-spacing: .12em;
+      display: none;
+    }
+
+    .proj-empty.visible {
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════
+   CONTACT SECTION
+═══════════════════════════════════════ */
+    .contact-status-bar {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 13px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    }
+
+    .contact-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px
+    }
+
+    .contact-card {
+      background: var(--panel);
+      border: 1px solid rgba(0, 245, 255, .18);
+      padding: 24px 18px;
+      text-align: center;
+      transition: all .28s;
+      cursor: pointer;
+      display: block;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+      position: relative;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 36px rgba(0, 245, 255, .18)
+    }
+
+    .contact-card:active {
+      transform: translateY(1px) scale(.98)
+    }
+
+    .contact-icon-box {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid;
+      margin: 0 auto 14px;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+
+    .contact-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .2em;
+      margin-bottom: 6px
+    }
+
+    .contact-value {
+      font-size: .78rem;
+      color: rgba(200, 240, 255, .82);
+      word-break: break-all;
+      line-height: 1.5
+    }
+
+    .contact-cta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .15em;
+      margin-top: 12px;
+      padding: 5px 12px;
+      clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+      display: inline-block;
+    }
+
+    .cta-box {
+      background: rgba(255, 215, 0, .04);
+      border: 1px solid rgba(255, 215, 0, .22);
+      padding: 40px 28px;
+      text-align: center;
+      clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+      position: relative;
+    }
+
+    .cta-icon {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--gold);
+      background: rgba(255, 215, 0, .08);
+      margin: 0 auto 18px;
+      font-size: 1.9rem;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      animation: float 3.5s ease-in-out infinite;
+    }
+
+    .cta-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 700;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(255, 215, 0, .4);
+      margin-bottom: 10px
+    }
+
+    .cta-desc {
+      font-size: .84rem;
+      color: rgba(200, 230, 255, .65);
+      max-width: 420px;
+      margin: 0 auto 24px;
+      line-height: 1.7
+    }
+
+    /* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+    footer {
+      border-top: 1px solid rgba(0, 245, 255, .1);
+      padding: 24px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-left,
+    .footer-right {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .12em;
+      color: rgba(0, 245, 255, .3)
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .footer-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse-dot 2s infinite
+    }
+
+    /* ═══════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease
+    }
+
+    .reveal.from-left {
+      transform: translateX(-30px)
+    }
+
+    .reveal.from-right {
+      transform: translateX(30px)
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translate(0, 0)
+    }
+
+    /* ═══════════════════════════════════════
+   PANEL PRESS
+═══════════════════════════════════════ */
+    .press {
+      transition: all .2s ease;
+      cursor: default
+    }
+
+    .press:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0, 245, 255, .18), 0 0 0 1px rgba(0, 245, 255, .22)
+    }
+
+    .press:active {
+      transform: translateY(1px) scale(.99)
+    }
+
+    /* ═══════════════════════════════════════
+   LUO FENG CHARACTER
+═══════════════════════════════════════ */
+    .luo-feng-wrap {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .luo-feng-img {
+      width: clamp(280px, 38vw, 240px);
+      height: auto;
+      display: block;
+      position: relative;
+      z-index: 2;
+      image-rendering: high-quality;
+      filter: drop-shadow(0 0 25px rgba(0, 245, 255, 0.6)) drop-shadow(0 0 65px rgba(0, 153, 255, 0.4)) contrast(1.08) saturate(1.15);
+      animation: char-float 4s ease-in-out infinite;
+    }
+
+    @keyframes char-float {
+
+      0%,
+      100% {
+        transform: translateY(0px)
+      }
+
+      50% {
+        transform: translateY(-14px)
+      }
+    }
+
+    /* glow aura behind character */
+    .luo-feng-aura {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.12) 0%, rgba(0, 153, 255, 0.06) 40%, transparent 70%);
+      animation: aura-pulse 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes aura-pulse {
+
+      0%,
+      100% {
+        transform: translateX(-50%) scale(1);
+        opacity: .7
+      }
+
+      50% {
+        transform: translateX(-50%) scale(1.12);
+        opacity: 1
+      }
+    }
+
+    /* ground glow line */
+    .luo-feng-ground {
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.6), transparent 70%);
+      animation: aura-pulse 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    /* scan overlay on character */
+    .luo-feng-scan {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .luo-feng-scan::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(transparent, rgba(0, 245, 255, .2), transparent);
+      animation: char-scan 2.8s linear infinite;
+    }
+
+    @keyframes char-scan {
+      from {
+        top: -5%
+      }
+
+      to {
+        top: 105%
+      }
+    }
+
+    /* outer ring around character */
+    .luo-feng-ring {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      z-index: 1;
+      border: 1px solid rgba(0, 245, 255, 0.12);
+      animation: spin-cw 14s linear infinite;
+    }
+
+    .luo-feng-ring::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      right: 6px;
+      bottom: 6px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 215, 0, 0.08);
+      animation: spin-ccw 10s linear infinite;
+    }
+
+    /* HUD data tags floating around character */
+    .char-tag {
+      position: absolute;
+      z-index: 4;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .12em;
+      background: rgba(0, 15, 40, .88);
+      border: 1px solid rgba(0, 245, 255, .28);
+      padding: 5px 9px;
+      white-space: nowrap;
+      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+      animation: tag-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes tag-pulse {
+
+      0%,
+      100% {
+        opacity: .7;
+        transform: translateY(0)
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateY(-3px)
+      }
+    }
+
+    .char-tag-line {
+      position: absolute;
+      background: rgba(0, 245, 255, .3);
+      z-index: 3;
+    }
+
+    /* ═══════════════════════════════════════
+   HERO LAYOUT — 2 COLUMN
+═══════════════════════════════════════ */
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(20px, 4vw, 60px);
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero-content {
+      flex: 1;
+      min-width: 280px;
+      text-align: left;
+    }
+
+    @media(max-width:768px) {
+      .hero-content {
+        text-align: center
+      }
+
+      .hero-inner {
+        flex-direction: column-reverse;
+        gap: 20px
+      }
+
+      .luo-feng-img {
+        width: clamp(160px, 55vw, 240px)
+      }
+
+      .luo-feng-ring {
+        width: 220px;
+        height: 220px
+      }
+
+      .char-tag {
+        display: none
+      }
+    }
+
+    /* ═══════════════════════════════════════
+   RESPONSIVE TWEAKS
+═══════════════════════════════════════ */
+    @media(max-width:600px) {
+      .stat-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .radial-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr
+      }
+
+      .ring-1 {
+        width: 260px;
+        height: 260px
+      }
+
+      .ring-2 {
+        width: 380px;
+        height: 380px
+      }
+
+      .ring-3 {
+        width: 180px;
+        height: 180px
+      }
+    }
+
+    /* Additional responsive tweaks */
+    @media (max-width: 480px) {
+      .section {
+        padding: 70px 16px;
+      }
+
+      .container {
+        padding: 0 14px;
+      }
+
+      .hero-name {
+        font-size: clamp(1.8rem, 10vw, 2.8rem);
+      }
+
+      .tagline-box {
+        padding: 12px 16px;
+      }
+
+      .btn {
+        padding: 9px 18px;
+        font-size: 0.58rem;
+      }
+
+      .contact-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-box {
+        padding: 28px 16px;
+      }
+
+      .timeline {
+        padding-left: 32px;
+      }
+
+      .mission-dot {
+        left: -28px;
+      }
+
+      footer {
+        padding: 18px 16px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+      }
+
+      .luo-feng-aura {
+        width: 240px;
+        height: 240px;
+      }
+
+      .luo-feng-ground {
+        width: 180px;
+      }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+      .contact-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-inner {
+        flex-direction: column-reverse;
+      }
+
+      .luo-feng-img {
+        width: clamp(180px, 50vw, 260px);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ═══════════════════════════════════════
+   INDEX BOTTOM TICKER BAR
+═══════════════════════════════════════ */
+    .index-ticker-bar {
+      width: 100%;
+      height: 30px;
+      background: rgba(0, 6, 16, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(0, 245, 255, 0.18);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .index-ticker-track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+      animation: index-smooth-ticker 35s linear infinite;
+    }
+
+    .index-ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    .index-ticker-text {
+      white-space: nowrap;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: rgba(0, 245, 255, 0.55);
+      padding-right: 50px;
+      display: inline-block;
+    }
+
+    .index-ticker-text b {
+      color: #00ff88;
+    }
+
+    .itk-cyan {
+      color: var(--cyan);
+    }
+
+    .itk-gold {
+      color: var(--gold);
+    }
+
+    .itk-green {
+      color: var(--green);
+    }
+
+    @keyframes index-smooth-ticker {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .index-ticker-text {
+        font-size: 0.52rem;
+      }
+
+      .index-ticker-bar {
+        height: 26px;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+   CUSTOM CURSOR: SINGULARITY
+   Hanya aktif di perangkat mouse (hover:hover & pointer:fine).
+   Cursor asli disembunyikan melalui class `has-custom-cursor` di <html>.
+   Untuk mematikan cursor kustom: hapus class `has-custom-cursor` dari <html>.
+═══════════════════════════════════════════════════════════════ */
+    @media (hover:hover) and (pointer:fine) {
+
+      /* Sembunyikan cursor asli ketika kustom aktif */
+      html.has-custom-cursor * {
+        cursor: none !important;
+      }
+
+      /* Kembalikan cursor teks di input/textarea agar bisa tetap dipilih */
+      html.has-custom-cursor input,
+      html.has-custom-cursor textarea,
+      html.has-custom-cursor [contenteditable="true"] {
+        cursor: text !important;
+      }
+
+      /* ── Wrapper seluruh cursor ── */
+      #sg-cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 10000;
+        will-change: transform;
+        /* dipindahkan via JS transform: translate3d() */
+      }
+
+      /* ── Inti lubang hitam ── */
+      #sg-core {
+        position: absolute;
+        /* pusat di origin – digeser setengah ukuran via CSS transform */
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #000;
+        box-shadow:
+          0 0 0 1.5px rgba(0, 245, 255, 0.9),
+          0 0 6px 2px rgba(0, 245, 255, 0.45),
+          0 0 12px 4px rgba(0, 153, 255, 0.25);
+        transform: translate(-50%, -50%) scale(1);
+        transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.2s ease;
+        will-change: transform;
+      }
+
+      /* ── Cincin akresi ── */
+      #sg-ring {
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1.5px solid transparent;
+        background:
+          linear-gradient(#020812, #020812) padding-box,
+          conic-gradient(from 0deg,
+            var(--cyan) 0%,
+            var(--blue) 40%,
+            transparent 60%,
+            var(--cyan) 100%) border-box;
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        will-change: transform;
+        /* Rotasi dan skala kontinu dikontrol via JS / CSS animation */
+        box-shadow: 0 0 8px rgba(0, 245, 255, 0.3);
+        transition: box-shadow 0.25s ease;
+      }
+
+      /* Animasi rotasi dasar (dipakai bila JS tidak berjalan) */
+      @keyframes sg-spin {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        }
+
+        to {
+          transform: translate(-50%, -50%) rotate(360deg) scale(1);
+        }
+      }
+
+      #sg-ring {
+        animation: sg-spin 3s linear infinite;
+      }
+
+      /* ── Bulan orbit ── */
+      #sg-moon-orbit {
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        transform: translate(-50%, -50%);
+        /* Rotasi dikontrol JS; ukuran sama dengan ring supaya mudah dihitung */
+        will-change: transform;
+        pointer-events: none;
+      }
+
+      #sg-moon {
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 8px;
+        height: 8px;
+        filter: drop-shadow(0 0 3px var(--gold));
+      }
+
+      /* ── Gelombang kejut klik ── */
+      .sg-shockwave {
+        position: fixed;
+        border-radius: 50%;
+        border: 1.5px solid var(--cyan);
+        box-shadow: 0 0 6px rgba(0, 245, 255, 0.5);
+        pointer-events: none;
+        z-index: 10001;
+        animation: sg-shock 0.5s ease-out forwards;
+        will-change: transform, opacity;
+      }
+
+      @keyframes sg-shock {
+        from {
+          transform: translate(-50%, -50%) scale(0.2);
+          opacity: 0.9;
+        }
+
+        to {
+          transform: translate(-50%, -50%) scale(3.5);
+          opacity: 0;
+        }
+      }
+
+      /* ── Partikel bintang ── */
+      .sg-particle {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10001;
+        will-change: transform, opacity;
+      }
+
+      /* ── prefers-reduced-motion: inti & cincin statis, tanpa partikel ── */
+      @media (prefers-reduced-motion: reduce) {
+        #sg-ring {
+          animation: none !important;
+        }
+
+        #sg-moon-orbit {
+          animation: none !important;
+        }
+
+        #sg-core {
+          transition: none !important;
+        }
+      }
+
+    }
+
+    /* end @media hover */
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════ CUSTOM CURSOR: SINGULARITY ═══════════════════════════════════ -->
+  <!-- Elemen cursor – dibuat di sini agar z-index 10000 bekerja di atas semua elemen lain -->
+  <div id="sg-cursor" aria-hidden="true" style="opacity:0">
+    <!-- Cincin akresi – rotasi dikontrol JS -->
+    <div id="sg-ring"></div>
+    <!-- Orbit bulan (opsional, dikontrol ORBIT_MOON) -->
+    <div id="sg-moon-orbit">
+      <svg id="sg-moon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12.5 8a5 5 0 01-6.9 4.64A5 5 0 108.5 3.05 5 5 0 0112.5 8z" fill="var(--gold)" opacity="0.9" />
+      </svg>
+    </div>
+    <!-- Inti lubang hitam – selalu di depan -->
+    <div id="sg-core"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════ INTRO GATE ═══════════════════════════════════ -->
+  <!-- Redirect to intro.html if this is a fresh visit (not returning from intro) -->
+  <script>
+    (function () {
+      if (!sessionStorage.getItem('intro_done')) {
+        sessionStorage.setItem('intro_done', '1');
+        window.location.replace('intro.html');
+      }
+    })();
+  </script>
+
+  <!-- ═══════════════════════════════════ ENTRY SOUND SYSTEM ═══════════════════════════════════ -->
+  <!-- Plays epic Swallowed Star entry sound saat pertama kali masuk dari intro.html -->
+  <script>
+    (function () {
+      'use strict';
+
+      // Cek apakah user baru saja dari intro.html
+      const justEntered = sessionStorage.getItem('just_entered');
+      if (!justEntered) return;
+
+      // Hapus flag agar hanya play sekali
+      sessionStorage.removeItem('just_entered');
+
+      /* ══════════════════════════════════════════
+         EPIC ENTRY SOUND — SWALLOWED STAR / LUO FENG
+         "Awakening of the Cosmic Warrior"
+         Web Audio API — Tanpa file eksternal
+      ══════════════════════════════════════════ */
+
+      let entrySoundPlayed = false;
+
+      function playEpicEntry() {
+        if (entrySoundPlayed) return;
+        entrySoundPlayed = true;
+
+        let ctx;
+        try {
+          ctx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) { return; }
+
+        // Cek apakah index sfx sedang muted
+        // (ikut setting idxMuted jika sudah ada)
+        const masterOut = ctx.createGain();
+        masterOut.gain.value = 0.52;
+        masterOut.connect(ctx.destination);
+
+        const now = ctx.currentTime;
+
+        /* ─── Layer 1: DEEP COSMIC BOOM (sub bass impact) ─── */
+        const boom = ctx.createOscillator();
+        const boomGain = ctx.createGain();
+        const boomFilter = ctx.createBiquadFilter();
+        boomFilter.type = 'lowpass';
+        boomFilter.frequency.value = 180;
+        boom.type = 'sine';
+        boom.frequency.setValueAtTime(55, now);
+        boom.frequency.exponentialRampToValueAtTime(28, now + 1.2);
+        boomGain.gain.setValueAtTime(0, now);
+        boomGain.gain.linearRampToValueAtTime(0.7, now + 0.04);
+        boomGain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+        boom.connect(boomFilter);
+        boomFilter.connect(boomGain);
+        boomGain.connect(masterOut);
+        boom.start(now);
+        boom.stop(now + 1.5);
+
+        /* ─── Layer 2: POWER WHOOSH (noise sweep up) ─── */
+        const bufLen = ctx.sampleRate * 1.8;
+        const noiseBuf = ctx.createBuffer(2, bufLen, ctx.sampleRate);
+        for (let c = 0; c < 2; c++) {
+          const ch = noiseBuf.getChannelData(c);
+          for (let i = 0; i < bufLen; i++) ch[i] = Math.random() * 2 - 1;
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = noiseBuf;
+        const noiseFilter = ctx.createBiquadFilter();
+        noiseFilter.type = 'bandpass';
+        noiseFilter.frequency.setValueAtTime(100, now);
+        noiseFilter.frequency.exponentialRampToValueAtTime(4500, now + 0.9);
+        noiseFilter.Q.value = 0.8;
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(0, now);
+        noiseGain.gain.linearRampToValueAtTime(0.38, now + 0.08);
+        noiseGain.gain.setValueAtTime(0.38, now + 0.45);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(masterOut);
+        noise.start(now);
+
+        /* ─── Layer 3: COSMIC CHORD ASCENT (Luo Feng power-up) ─── */
+        const chordFreqs = [
+          { f: 82, delay: 0.05, dur: 2.2, vol: 0.28 },
+          { f: 123, delay: 0.12, dur: 2.0, vol: 0.22 },
+          { f: 164, delay: 0.22, dur: 1.8, vol: 0.18 },
+          { f: 246, delay: 0.35, dur: 1.5, vol: 0.14 },
+          { f: 328, delay: 0.5, dur: 1.2, vol: 0.10 },
+          { f: 492, delay: 0.65, dur: 0.9, vol: 0.07 },
+        ];
+        chordFreqs.forEach(({ f, delay, dur, vol }) => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, now + delay);
+          osc.frequency.exponentialRampToValueAtTime(f * 1.02, now + delay + dur);
+          g.gain.setValueAtTime(0, now + delay);
+          g.gain.linearRampToValueAtTime(vol, now + delay + 0.06);
+          g.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+          osc.connect(g);
+          g.connect(masterOut);
+          osc.start(now + delay);
+          osc.stop(now + delay + dur + 0.1);
+        });
+
+        /* ─── Layer 4: HIGH FREQ ENERGY SHIMMER (spiritual aura) ─── */
+        const shimmerFreqs = [1200, 1800, 2400, 3200];
+        shimmerFreqs.forEach((f, i) => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, now + 0.3 + i * 0.08);
+          osc.frequency.linearRampToValueAtTime(f * 1.15, now + 1.5);
+          g.gain.setValueAtTime(0, now + 0.3 + i * 0.08);
+          g.gain.linearRampToValueAtTime(0.09 - i * 0.015, now + 0.5 + i * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+          osc.connect(g);
+          g.connect(masterOut);
+          osc.start(now + 0.3 + i * 0.08);
+          osc.stop(now + 1.9);
+        });
+
+        /* ─── Layer 5: SYSTEM ONLINE PING (terminal confirm) ─── */
+        [880, 1108, 1320].forEach((f, i) => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.value = f;
+          g.gain.setValueAtTime(0, now + 0.55 + i * 0.1);
+          g.gain.linearRampToValueAtTime(0.06, now + 0.57 + i * 0.1);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 0.70 + i * 0.1);
+          osc.connect(g);
+          g.connect(masterOut);
+          osc.start(now + 0.55 + i * 0.1);
+          osc.stop(now + 0.75 + i * 0.1);
+        });
+
+        /* ─── Fade master out gracefully ─── */
+        masterOut.gain.setValueAtTime(0.52, now + 1.8);
+        masterOut.gain.linearRampToValueAtTime(0, now + 2.6);
+      }
+
+      /* ── Coba play langsung (works jika browser izinkan auto-play setelah navigasi user-gesture) ── */
+      try {
+        const testCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (testCtx.state === 'running') {
+          testCtx.close();
+          // Browser izinkan — play langsung saat DOMContentLoaded
+          document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(playEpicEntry, 120); // Delay kecil agar halaman sempat render
+          });
+        } else {
+          testCtx.close();
+          throw new Error('suspended');
+        }
+      } catch (_) {
+        /* Fallback: play saat interaksi PERTAMA user di index.html */
+        const _events = ['click', 'keydown', 'touchstart', 'mousemove', 'scroll'];
+        function onFirstInteraction() {
+          playEpicEntry();
+          _events.forEach(ev => document.removeEventListener(ev, onFirstInteraction));
+        }
+        _events.forEach(ev => document.addEventListener(ev, onFirstInteraction, { once: true, passive: true }));
+      }
+
+    })();
+  </script>
+
+  <!-- ═══════════════════════════════════ BACKGROUND ═══════════════════════════════════ -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="hud-grid"></div>
+  <div class="nebula"></div>
+
+  <!-- ── TOP HUD STATUS BAR (Realtime Clock & Date) ── -->
+  <div id="top-status-bar">
+    <span class="hud-top-left">HR.ALLIANCE // DOJO-OF-LIMITS-SYS v7.4.2</span>
+    <span id="hud-clock" class="hud-top-right">--:--:-- // -- --- ----</span>
+  </div>
+
+  <!-- ═══════════════════════════════════ NAVBAR ═══════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-logo" onclick="scrollToSection('hero')">
+      <div class="nav-logo-box"><span>KT</span></div>
+      <span class="nav-logo-text">KAVIN<b>.</b>SYS</span>
+    </div>
+    <div class="nav-links">
+      <a href="#hero" onclick="scrollToSection('hero', event)" class="active">TERMINAL</a>
+      <a href="#about" onclick="scrollToSection('about', event)">BIO-SCAN</a>
+      <a href="#education" onclick="scrollToSection('education', event)">MISSION LOG</a>
+      <a href="#skills" onclick="scrollToSection('skills', event)">ATRIBUT</a>
+      <a href="#projects" onclick="scrollToSection('projects', event)">PROJECTS</a>
+      <a href="#contact" onclick="scrollToSection('contact', event)">TRANSMIT</a>
+    </div>
+    <button class="hamburger" id="ham-btn" aria-label="Menu">
+      <span id="ham1"></span><span id="ham2"></span><span id="ham3"></span>
+    </button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#hero" onclick="scrollToSection('hero', event);closeMob()" class="active">TERMINAL</a>
+    <a href="#about" onclick="scrollToSection('about', event);closeMob()">BIO-SCAN</a>
+    <a href="#education" onclick="scrollToSection('education', event);closeMob()">MISSION LOG</a>
+    <a href="#skills" onclick="scrollToSection('skills', event);closeMob()">ATRIBUT</a>
+    <a href="#projects" onclick="scrollToSection('projects', event);closeMob()">PROJECTS</a>
+    <a href="#contact" onclick="scrollToSection('contact', event);closeMob()">TRANSMIT</a>
+  </div>
+
+  <!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
+  <section id="hero">
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+    <div class="vline" style="left:12%"></div>
+    <div class="vline" style="left:28%"></div>
+    <div class="vline" style="left:72%"></div>
+    <div class="vline" style="left:88%"></div>
+
+
+    <div class="hero-inner">
+      <!-- ── LEFT: Text Content ── -->
+      <div class="hero-content">
+        <div class="status-badge" style="display:inline-flex;margin-bottom:22px">
+          <div class="status-dot"></div>
+          <span class="status-text">SYSTEM_ONLINE &nbsp;•&nbsp; OPERATOR: ACTIVE &nbsp;•&nbsp; THREAT_LV: 0</span>
+        </div>
+
+        <div class="glitch-wrap" data-text="KAVIN THORIQ" style="display:block;margin-bottom:8px">
+          <h1 class="hero-name">KAVIN THORIQ</h1>
+        </div>
+
+        <p class="hero-role">◈ PELAJAR PPLG — SMK TI DWIGUNA ◈</p>
+
+        <div class="tagline-box hud-box" style="text-align:left">
+          <span class="c-bl"></span><span class="c-br"></span>
+          <p class="tagline-comment">// MISSION STATEMENT:</p>
+          <p class="tagline-text" id="typewriter"><span class="cursor">▊</span></p>
+        </div>
+
+        <div class="btn-row" style="justify-content:flex-start">
+          <button class="btn btn-cyan" onclick="scrollToSection('about')">▶ &nbsp;SCAN PROFIL</button>
+          <a class="btn btn-gold" href="mailto:kavinthoriq46@gmail.com">⊕ &nbsp;KIRIM TRANSMISI</a>
+        </div>
+      </div>
+
+      <!-- ── RIGHT: Luo Feng Character ── -->
+      <div class="luo-feng-wrap">
+        <!-- Rotating ring -->
+        <div class="luo-feng-ring"></div>
+        <!-- Aura glow -->
+        <div class="luo-feng-aura"></div>
+        <!-- Ground shadow -->
+        <div class="luo-feng-ground"></div>
+
+        <!-- Character image with scan -->
+        <div style="position:relative;z-index:2">
+          <img src="luo_feng.webp" alt="Luo Feng — Swallowed Star" class="luo-feng-img"
+            onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='img/luo_feng.webp';}" />
+          <div class="luo-feng-scan"></div>
+        </div>
+
+        <!-- HUD floating tags -->
+        <div class="char-tag" style="top:12%;right:-10px;color:var(--cyan);animation-delay:0s">
+          ◈ LUO FENG
+        </div>
+        <div class="char-tag" style="top:28%;left:-20px;color:var(--gold);animation-delay:.6s">
+          ⚡ COSMIC CLASS
+        </div>
+        <div class="char-tag" style="top:48%;right:-15px;color:var(--green);animation-delay:1.2s">
+          ● ACTIVE
+        </div>
+        <div class="char-tag" style="bottom:28%;left:-10px;color:var(--cyan);animation-delay:1.8s">
+          ⊕ 吞噬星空
+        </div>
+        <div class="char-tag" style="bottom:12%;right:-5px;color:var(--gold);animation-delay:.9s">
+          SOARING SKY ⚔
+        </div>
+
+        <!-- Bottom name plate -->
+        <div
+          style="position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);z-index:5;text-align:center;white-space:nowrap">
+          <div
+            style="font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.2em;color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,.6);background:rgba(0,10,25,.9);border:1px solid rgba(255,215,0,.3);padding:4px 16px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))">
+            罗 枫 &nbsp;|&nbsp; LUO FENG
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="scroll-hint">
+      <span>SCROLL DOWN</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ ABOUT ═══════════════════════════════════ -->
+  <section id="about" class="section">
+    <div class="container">
+      <p class="sec-label">◈ SUBSISTEM — BIO-SCANNER v2.4 ◈</p>
+      <h2 class="sec-title">DATA PROFIL</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line"></div>
+        <div class="sec-divider-gem"></div>
+        <div class="sec-divider-line rev"></div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Left -->
+        <div class="reveal from-left">
+          <div class="glass cut hud-box press" style="padding:28px 28px 24px">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <p class="sec-label" style="text-align:left;margin-bottom:14px">// DESKRIPSI OPERATOR</p>
+            <p style="font-size:.88rem;color:rgba(200,230,255,.83);line-height:1.75;margin-bottom:20px">
+              Siswa SMK PPLG yang menguasai dasar pemrograman web/mobile, SQL, dan UI/UX design.
+              Adaptif, komunikatif, dan terbiasa bekerja dalam tim untuk menyelesaikan proyek software secara efektif.
+            </p>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+              <div style="flex:1;height:1px;background:rgba(0,245,255,.18)"></div>
+              <div style="width:7px;height:7px;background:var(--cyan);transform:rotate(45deg)"></div>
+              <div style="flex:1;height:1px;background:rgba(0,245,255,.18)"></div>
+            </div>
+            <div class="info-grid">
+              <div class="info-card">
+                <p class="info-card-key">◈ NAMA LENGKAP</p>
+                <p class="info-card-val">Kavin Thoriq</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">◉ LAHIR</p>
+                <p class="info-card-val">Bogor, 13 Oktober 2009</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">◐ DOMISILI</p>
+                <p class="info-card-val">Bogor, Jawa Barat</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">⊕ STATUS</p>
+                <p class="info-card-val">Pelajar Aktif — PPLG</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">⊗ EMAIL</p>
+                <p class="info-card-val" style="font-size:.72rem">kavinthoriq46@gmail.com</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">◈ GITHUB</p>
+                <p class="info-card-val" style="font-size:.72rem">github.com/kavinthoriq</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <!-- Stat cards -->
+          <div class="stat-grid reveal">
+            <div class="stat-card press hud-box"><span class="c-bl"></span><span class="c-br"></span>
+              <span class="stat-num" data-count="6" data-suffix="+">0+</span>
+              <p class="stat-lbl">PROYEK</p>
+            </div>
+            <div class="stat-card press hud-box"><span class="c-bl"></span><span class="c-br"></span>
+              <span class="stat-num" data-count="12" data-suffix="+">0+</span>
+              <p class="stat-lbl">SKILL</p>
+            </div>
+            <div class="stat-card press hud-box"><span class="c-bl"></span><span class="c-br"></span>
+              <span class="stat-num" data-count="2009" data-suffix="">0</span>
+              <p class="stat-lbl">TAHUN LAHIR</p>
+            </div>
+          </div>
+
+          <!-- Radial stats -->
+          <div class="reveal glass cut hud-box press" style="padding:22px 18px">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <p class="sec-label" style="margin-bottom:18px">// ANALISIS KEMAMPUAN</p>
+            <div class="radial-grid">
+              <div class="radial-item"><canvas class="radial-canvas" data-val="82" data-color="#00f5ff" width="90"
+                  height="90"></canvas><span class="radial-label">WEB DEV</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="68" data-color="#0099ff" width="90"
+                  height="90"></canvas><span class="radial-label">GAME DEV</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="75" data-color="#ffd700" width="90"
+                  height="90"></canvas><span class="radial-label">UI/UX</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="72" data-color="#00ff88" width="90"
+                  height="90"></canvas><span class="radial-label">DATABASE</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="85" data-color="#00f5ff" width="90"
+                  height="90"></canvas><span class="radial-label">PROBLEM SOLVING</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="90" data-color="#ffd700" width="90"
+                  height="90"></canvas><span class="radial-label">TEAMWORK</span></div>
+            </div>
+          </div>
+
+          <!-- Quote -->
+          <div class="quote-card reveal hud-gold hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <p class="quote-text">"Dalam alam semesta ini, yang lemah tidak memiliki hak untuk hidup dengan nyaman.
+              Hanya yang kuat yang bisa melindungi apa yang mereka cintai."</p>
+            <p class="quote-src">— Luo Feng, Swallowed Star</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ EDUCATION ═══════════════════════════════════ -->
+  <section id="education" class="section">
+    <div class="container">
+      <p class="sec-label">◈ DATABASE — MISSION LOGS ◈</p>
+      <h2 class="sec-title gold">LOG MISI & PENDIDIKAN</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line" style="background:linear-gradient(to right,transparent,rgba(255,215,0,.4))"></div>
+        <div class="sec-divider-gem" style="background:var(--gold);box-shadow:0 0 8px var(--gold)"></div>
+        <div class="sec-divider-line rev" style="background:linear-gradient(to left,transparent,rgba(255,215,0,.4))">
+        </div>
+      </div>
+
+      <div class="timeline">
+        <!-- M-001 -->
+        <div class="mission-item reveal">
+          <div class="mission-dot" style="background:var(--green);color:var(--green)"></div>
+          <div class="mission-card hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <div class="mission-top">
+              <div>
+                <div class="mission-badges">
+                  <span class="mission-id">M-001</span>
+                  <span class="mission-status"
+                    style="color:var(--green);background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3)">●
+                    ACTIVE</span>
+                  <span class="mission-type">[PENDIDIKAN]</span>
+                </div>
+                <h3 class="mission-title">🎓 SMK TI DWIGUNA KOTA DEPOK</h3>
+                <p class="mission-sub">Pengembangan Perangkat Lunak dan Gim (PPLG)</p>
+              </div>
+              <span class="mission-period">2024 — SEKARANG</span>
+            </div>
+            <div class="mission-divider"></div>
+            <p class="mission-desc">Program keahlian berfokus pada pengembangan aplikasi web, mobile, game 2D/3D, serta
+              manajemen database. Kurikulum berbasis industri dengan project-based learning intensif.</p>
+            <div class="mission-tags">
+              <span class="mission-tag">Web Dev</span>
+              <span class="mission-tag">Mobile</span>
+              <span class="mission-tag">Game Dev</span>
+              <span class="mission-tag">SQL</span>
+              <span class="mission-tag">UI/UX</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M-002 -->
+        <div class="mission-item reveal" style="transition-delay:.1s">
+          <div class="mission-dot" style="background:var(--cyan);color:var(--cyan)"></div>
+          <div class="mission-card hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <div class="mission-top">
+              <div>
+                <div class="mission-badges">
+                  <span class="mission-id">M-002</span>
+                  <span class="mission-status"
+                    style="color:var(--cyan);background:rgba(0,245,255,.07);border:1px solid rgba(0,245,255,.25)">●
+                    COMPLETED</span>
+                  <span class="mission-type">[PROYEK UTAMA]</span>
+                </div>
+                <h3 class="mission-title">⚙️ Website & Database System</h3>
+                <p class="mission-sub">Full-Stack Web Application</p>
+              </div>
+              <span class="mission-period">2024 — 2025</span>
+            </div>
+            <div class="mission-divider"></div>
+            <p class="mission-desc">Membangun aplikasi web dinamis dengan integrasi database SQL. Mencakup desain skema
+              relasional, optimasi query, autentikasi pengguna, dan antarmuka responsif berbasis HTML/CSS/JS.</p>
+            <div class="mission-tags">
+              <span class="mission-tag">HTML/CSS</span>
+              <span class="mission-tag">JavaScript</span>
+              <span class="mission-tag">PHP</span>
+              <span class="mission-tag">MySQL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M-003 -->
+        <div class="mission-item reveal" style="transition-delay:.2s">
+          <div class="mission-dot" style="background:var(--cyan);color:var(--cyan)"></div>
+          <div class="mission-card hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <div class="mission-top">
+              <div>
+                <div class="mission-badges">
+                  <span class="mission-id">M-003</span>
+                  <span class="mission-status"
+                    style="color:var(--cyan);background:rgba(0,245,255,.07);border:1px solid rgba(0,245,255,.25)">●
+                    COMPLETED</span>
+                  <span class="mission-type">[PROYEK UTAMA]</span>
+                </div>
+                <h3 class="mission-title">🎨 UI/UX Prototype Design</h3>
+                <p class="mission-sub">Human-Centered Interface Design</p>
+              </div>
+              <span class="mission-period">2024 — 2025</span>
+            </div>
+            <div class="mission-divider"></div>
+            <p class="mission-desc">Merancang prototipe antarmuka pengguna yang intuitif menggunakan pendekatan design
+              thinking, wireframing, hingga high-fidelity mockup interaktif yang siap di-handoff ke developer.</p>
+            <div class="mission-tags">
+              <span class="mission-tag">Figma</span>
+              <span class="mission-tag">Prototyping</span>
+              <span class="mission-tag">User Research</span>
+              <span class="mission-tag">Design System</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M-004 -->
+        <div class="mission-item reveal" style="transition-delay:.3s">
+          <div class="mission-dot" style="background:var(--gold);color:var(--gold)"></div>
+          <div class="mission-card hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <div class="mission-top">
+              <div>
+                <div class="mission-badges">
+                  <span class="mission-id">M-004</span>
+                  <span class="mission-status"
+                    style="color:var(--gold);background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3)">● IN
+                    PROGRESS</span>
+                  <span class="mission-type">[PROYEK UTAMA]</span>
+                </div>
+                <h3 class="mission-title">🎮 Game Development 2D</h3>
+                <p class="mission-sub">Indie Game Project</p>
+              </div>
+              <span class="mission-period">2025 — SEKARANG</span>
+            </div>
+            <div class="mission-divider"></div>
+            <p class="mission-desc">Mengembangkan game 2D menggunakan game engine modern. Merancang mekanik gameplay
+              yang engaging, level design bertahap, aset visual 2D orisinal, dan sistem skor/leaderboard.</p>
+            <div class="mission-tags">
+              <span class="mission-tag">Game Engine</span>
+              <span class="mission-tag">Game Design</span>
+              <span class="mission-tag">Physics</span>
+              <span class="mission-tag">2D Art</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ SKILLS ═══════════════════════════════════ -->
+  <section id="skills" class="section">
+    <div class="container">
+      <p class="sec-label">◈ MODUL — ATRIBUT KARAKTER ◈</p>
+      <h2 class="sec-title">SKILL & STATISTIK</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line"></div>
+        <div class="sec-divider-gem"></div>
+        <div class="sec-divider-line rev"></div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:24px">
+        <!-- Hard Skills -->
+        <div class="reveal from-left glass cut hud-box press" style="padding:26px 28px">
+          <span class="c-bl"></span><span class="c-br"></span>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px">
+            <div
+              style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--cyan);background:rgba(0,245,255,.08);clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));font-size:.8rem;color:var(--cyan)">
+              ⚙</div>
+            <div>
+              <p class="sec-label" style="text-align:left">HARD SKILLS</p>
+              <p style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:rgba(0,245,255,.38)">Kemampuan
+                Teknis Terukur</p>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Pemrograman Web &amp; Mobile</span><span
+                class="skill-bar-pct">82%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="82"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">UI/UX Design</span><span
+                class="skill-bar-pct">75%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="75"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Game Development 2D</span><span
+                class="skill-bar-pct">68%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="68"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Pengelolaan Database (SQL)</span><span
+                class="skill-bar-pct">72%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="72"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Git &amp; GitHub</span><span
+                class="skill-bar-pct">78%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="78"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Microsoft Office</span><span
+                class="skill-bar-pct">88%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="88"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soft Skills -->
+        <div class="reveal from-right glass cut press"
+          style="padding:26px 28px;border-color:rgba(255,215,0,.18);position:relative">
+          <div
+            style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2px solid var(--gold);border-right:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)">
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px">
+            <div
+              style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);background:rgba(255,215,0,.08);clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));font-size:.8rem;color:var(--gold)">
+              ◈</div>
+            <div>
+              <p class="sec-label" style="text-align:left;color:var(--gold)">SOFT SKILLS</p>
+              <p style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:rgba(255,215,0,.38)">Kemampuan
+                Interpersonal</p>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Problem Solving</span><span
+                class="skill-bar-pct">87%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="87"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Kerja Sama Tim</span><span
+                class="skill-bar-pct">92%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="92"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Berpikir Logis &amp; Analitis</span><span
+                class="skill-bar-pct">85%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="85"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Kemampuan Beradaptasi</span><span
+                class="skill-bar-pct">88%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="88"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Ketelitian</span><span
+                class="skill-bar-pct">83%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="83"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Komunikasi</span><span
+                class="skill-bar-pct">80%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="80"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arsenal badges -->
+      <div class="reveal glass cut hud-box" style="padding:22px 20px">
+        <span class="c-bl"></span><span class="c-br"></span>
+        <p class="sec-label" style="margin-bottom:18px">// ARSENAL TEKNOLOGI</p>
+        <div class="tool-badges">
+          <div class="tool-badge">🌐 HTML5</div>
+          <div class="tool-badge">🎨 CSS3</div>
+          <div class="tool-badge">⚡ JavaScript</div>
+          <div class="tool-badge">🔧 PHP</div>
+          <div class="tool-badge">🗃️ MySQL</div>
+          <div class="tool-badge">✏️ Figma</div>
+          <div class="tool-badge">🌿 Git</div>
+          <div class="tool-badge">🐙 GitHub</div>
+          <div class="tool-badge">💻 VS Code</div>
+          <div class="tool-badge">🎮 Game Engine</div>
+          <div class="tool-badge">📊 MS Office</div>
+          <div class="tool-badge">🐧 Linux Basics</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ PROJECTS ═══════════════════════════════════ -->
+  <section id="projects" class="section">
+    <div class="container">
+      <p class="sec-label">◈ DATABASE — PROJECT ARCHIVE ◈</p>
+      <h2 class="sec-title">// PROJECT ARCHIVE</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line"></div>
+        <div class="sec-divider-gem"></div>
+        <div class="sec-divider-line rev"></div>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="proj-filter-bar reveal" role="group" aria-label="Filter proyek berdasarkan kategori">
+        <button class="proj-filter-btn active" data-filter="ALL" aria-pressed="true">◈ ALL</button>
+        <button class="proj-filter-btn" data-filter="Web" aria-pressed="false">⚡ WEB</button>
+        <button class="proj-filter-btn" data-filter="Game" aria-pressed="false">🎮 GAME</button>
+        <button class="proj-filter-btn" data-filter="Design" aria-pressed="false">✏️ DESIGN</button>
+      </div>
+
+      <!-- Project Grid (rendered by JS) -->
+      <div class="proj-grid" id="proj-grid" role="list" aria-label="Daftar proyek"></div>
+      <p class="proj-empty" id="proj-empty">[ NO PROJECTS MATCH SELECTED FILTER ]</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ CONTACT ═══════════════════════════════════ -->
+  <section id="contact" class="section">
+    <div class="container">
+      <p class="sec-label">◈ CHANNEL — TRANSMISSION HUB ◈</p>
+      <h2 class="sec-title">KIRIM TRANSMISI</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line"></div>
+        <div class="sec-divider-gem"></div>
+        <div class="sec-divider-line rev"></div>
+      </div>
+
+      <!-- Status bar -->
+      <div class="contact-status-bar reveal">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="status-dot"></div>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--green)">CHANNEL AKTIF — SIAP
+            MENERIMA TRANSMISI</span>
+        </div>
+        <span
+          style="margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:rgba(0,245,255,.35)">ENKRIPSI:
+          AES-256 &nbsp;•&nbsp; LATENSI: 0ms</span>
+      </div>
+
+      <!-- Contact cards -->
+      <div class="contact-cards">
+        <!-- GitHub -->
+        <a href="https://github.com/kavinthoriq" target="_blank" class="contact-card reveal"
+          style="border-color:rgba(0,245,255,.22)">
+          <div
+            style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)">
+          </div>
+          <div
+            style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2px solid var(--cyan);border-right:2px solid var(--cyan)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2px solid var(--cyan);border-left:2px solid var(--cyan)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)">
+          </div>
+          <div class="contact-icon-box"
+            style="border-color:rgba(0,245,255,.4);background:rgba(0,245,255,.08);color:var(--cyan)">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+          </div>
+          <p class="contact-label" style="color:rgba(0,245,255,.5)">◈ GITHUB</p>
+          <p class="contact-value">github.com/kavinthoriq</p>
+          <span class="contact-cta"
+            style="background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.25);color:var(--cyan)">KUNJUNGI
+            →</span>
+        </a>
+
+        <!-- Email -->
+        <a href="mailto:kavinthoriq46@gmail.com" class="contact-card reveal"
+          style="transition-delay:.1s;border-color:rgba(255,215,0,.2)">
+          <div
+            style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2px solid var(--gold);border-right:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)">
+          </div>
+          <div class="contact-icon-box"
+            style="border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.08);color:var(--gold)">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+            </svg>
+          </div>
+          <p class="contact-label" style="color:rgba(255,215,0,.5)">◈ EMAIL</p>
+          <p class="contact-value">kavinthoriq46@gmail.com</p>
+          <span class="contact-cta"
+            style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);color:var(--gold)">KIRIM EMAIL
+            →</span>
+        </a>
+
+        <!-- Location -->
+        <a href="https://maps.google.com/?q=Bogor,Jawa+Barat" target="_blank" class="contact-card reveal"
+          style="transition-delay:.2s;border-color:rgba(0,255,136,.18)">
+          <div
+            style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2px solid var(--green);border-left:2px solid var(--green)">
+          </div>
+          <div
+            style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2px solid var(--green);border-right:2px solid var(--green)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2px solid var(--green);border-left:2px solid var(--green)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2px solid var(--green);border-right:2px solid var(--green)">
+          </div>
+          <div class="contact-icon-box"
+            style="border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.08);color:var(--green)">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+          </div>
+          <p class="contact-label" style="color:rgba(0,255,136,.5)">◈ LOKASI</p>
+          <p class="contact-value">Bogor, Jawa Barat</p>
+          <span class="contact-cta"
+            style="background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);color:var(--green)">LIHAT MAP
+            →</span>
+        </a>
+      </div>
+
+      <!-- CTA Box -->
+      <div class="cta-box reveal hud-gold hud-box">
+        <span class="c-bl"></span><span class="c-br"></span>
+        <div class="cta-icon">🌟</div>
+        <h3 class="cta-title">SIAP UNTUK BERKOLABORASI?</h3>
+        <p class="cta-desc">Saya selalu terbuka untuk peluang baru, proyek kolaborasi, maupun diskusi seputar teknologi.
+          Jangan ragu untuk menghubungi!</p>
+        <a href="mailto:kavinthoriq46@gmail.com" class="btn btn-gold">⊕ &nbsp;INISIASI KONTAK</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ FOOTER ═══════════════════════════════════ -->
+  <footer>
+    <span class="footer-left">© 2025 KAVIN THORIQ — ALL SYSTEMS OPERATIONAL</span>
+    <div class="footer-right">
+      <div class="footer-dot"></div>
+      SWALLOWED STAR PORTFOLIO v2.0 • PURE HTML/CSS/JS
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════ BOTTOM TICKER BAR ═══════════════════════════════════ -->
+  <div class="index-ticker-bar">
+    <div class="index-ticker-track">
+      <!-- Salinan 1 -->
+      <div class="index-ticker-text">
+        ◈ <b>HR.ALLIANCE NODE</b> — ALL SYSTEMS OPERATIONAL ◈ &nbsp;///&nbsp;
+        OPERATOR: <b>KAVIN THORIQ</b> &nbsp;///&nbsp;
+        SKILL: <span class="itk-cyan">WEB DEV 82%</span> | <span class="itk-gold">UI/UX 75%</span> | <span
+          class="itk-green">GAME DEV 68%</span> &nbsp;///&nbsp;
+        CLEARANCE: <span class="itk-gold">COSMIC CLASS</span> &nbsp;///&nbsp;
+        GITHUB: <b>github.com/kavinthoriq</b> &nbsp;///&nbsp;
+        QUOTE: <span class="itk-gold">"Hanya yang kuat bisa melindungi apa yang mereka cintai" — Luo Feng</span>
+        &nbsp;///&nbsp;
+        STATUS: <b>SYSTEM ONLINE</b> &nbsp;///&nbsp;
+        CONTACT: <b>kavinthoriq46@gmail.com</b> &nbsp;///&nbsp;
+        SWALLOWED STAR: <span class="itk-cyan">吞噬星空</span> &nbsp;///&nbsp;
+      </div>
+      <!-- Salinan 2 (seamless loop) -->
+      <div class="index-ticker-text">
+        ◈ <b>HR.ALLIANCE NODE</b> — ALL SYSTEMS OPERATIONAL ◈ &nbsp;///&nbsp;
+        OPERATOR: <b>KAVIN THORIQ</b> &nbsp;///&nbsp;
+        SKILL: <span class="itk-cyan">WEB DEV 82%</span> | <span class="itk-gold">UI/UX 75%</span> | <span
+          class="itk-green">GAME DEV 68%</span> &nbsp;///&nbsp;
+        CLEARANCE: <span class="itk-gold">COSMIC CLASS</span> &nbsp;///&nbsp;
+        GITHUB: <b>github.com/kavinthoriq</b> &nbsp;///&nbsp;
+        QUOTE: <span class="itk-gold">"Hanya yang kuat bisa melindungi apa yang mereka cintai" — Luo Feng</span>
+        &nbsp;///&nbsp;
+        STATUS: <b>SYSTEM ONLINE</b> &nbsp;///&nbsp;
+        CONTACT: <b>kavinthoriq46@gmail.com</b> &nbsp;///&nbsp;
+        SWALLOWED STAR: <span class="itk-cyan">吞噬星空</span> &nbsp;///&nbsp;
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ SCRIPTS ═══════════════════════════════════ -->
+  <script>
+    /* ── Star Canvas ── */
+    (function () {
+      const c = document.getElementById('bg-canvas');
+      const ctx = c.getContext('2d');
+      let W, H, stars = [];
+      function resize() { W = c.width = window.innerWidth; H = c.height = window.innerHeight; init() }
+      function init() {
+        stars = [];
+        for (let i = 0; i < 180; i++) {
+          stars.push({
+            x: Math.random() * W, y: Math.random() * H,
+            r: Math.random() * 1.2 + .2,
+            a: Math.random(), da: Math.random() * .006 + .002,
+            hue: Math.random() < .15 ? 180 : 0
+          });
+        }
+      }
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        stars.forEach(s => {
+          s.a += s.da; if (s.a > 1 || s.a < 0) s.da = -s.da;
+          ctx.save();
+          ctx.globalAlpha = s.a * .85;
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = s.hue === 180 ? 'rgba(0,245,255,1)' : 'rgba(255,255,255,1)';
+          ctx.shadowBlur = s.hue === 180 ? 8 : 3;
+          ctx.shadowColor = s.hue === 180 ? '#00f5ff' : '#fff';
+          ctx.fill(); ctx.restore();
+        });
+        requestAnimationFrame(draw);
+      }
+      window.addEventListener('resize', resize);
+      resize(); draw();
+    })();
+
+    /* ── Navbar scroll + active ── */
+    const navbar = document.getElementById('navbar');
+    const allSections = ['hero', 'about', 'education', 'skills', 'projects', 'contact'];
+    const navLinks = document.querySelectorAll('.nav-links a, #mobile-menu a');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+      let cur = 'hero';
+      allSections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 130) cur = id;
+      });
+      navLinks.forEach((a, i) => {
+        const sid = allSections[i % allSections.length];
+        a.classList.toggle('active', sid === cur);
+      });
+    }, { passive: true });
+
+    /* ── Scroll helper ── */
+    function scrollToSection(id, e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (id === 'hero') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const nav = document.getElementById('navbar');
+        const navHeight = nav ? nav.offsetHeight : 70;
+        const targetY = el.getBoundingClientRect().top + window.pageYOffset - (navHeight - 20);
+        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+      }
+      navLinks.forEach((a, i) => {
+        const sid = allSections[i % allSections.length];
+        a.classList.toggle('active', sid === id);
+      });
+    }
+    window.scrollToSection = scrollToSection;
+
+    /* ── Hamburger ── */
+    let mobOpen = false;
+    const mob = document.getElementById('mobile-menu');
+    document.getElementById('ham-btn').addEventListener('click', () => {
+      mobOpen = !mobOpen; mob.classList.toggle('open', mobOpen);
+    });
+    function closeMob() { mobOpen = false; mob.classList.remove('open') }
+
+    /* ── Typewriter ── */
+    (function () {
+      const el = document.getElementById('typewriter');
+      const texts = [
+        'Siap berevolusi dan menembus batas...',
+        '...dalam dunia Web & Game Development.',
+        'Adaptif. Terampil. Tangguh.',
+        'Level Up: Setiap Hari.',
+      ];
+      let ti = 0, ci = 0, deleting = false;
+      function tick() {
+        const txt = texts[ti];
+        if (!deleting && ci <= txt.length) {
+          el.innerHTML = txt.slice(0, ci) + '<span class="cursor">▊</span>';
+          ci++;
+          setTimeout(tick, ci === txt.length + 1 ? 1800 : 60);
+        } else if (deleting && ci >= 0) {
+          el.innerHTML = txt.slice(0, ci) + '<span class="cursor">▊</span>';
+          ci--;
+          if (ci < 0) { deleting = false; ti = (ti + 1) % texts.length; ci = 0; setTimeout(tick, 300); }
+          else setTimeout(tick, 30);
+        } else {
+          deleting = true; setTimeout(tick, 1800);
+        }
+      }
+      tick();
+    })();
+
+    /* ── Scroll Reveal (IntersectionObserver) ── */
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          /* trigger skill bars */
+          e.target.querySelectorAll('.skill-fill').forEach(bar => {
+            bar.style.width = bar.dataset.pct + '%';
+          });
+          /* trigger counters */
+          e.target.querySelectorAll('[data-count]').forEach(el => {
+            animCount(el, parseInt(el.dataset.count), el.dataset.suffix || '');
+          });
+          /* trigger radial */
+          e.target.querySelectorAll('.radial-canvas').forEach(cv => {
+            drawRadial(cv, parseInt(cv.dataset.val), cv.dataset.color, true);
+          });
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    /* Also observe radial canvases directly */
+    const radialObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          drawRadial(e.target, parseInt(e.target.dataset.val), e.target.dataset.color, true);
+          radialObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.radial-canvas').forEach(cv => radialObs.observe(cv));
+
+    /* ── Animated counter ── */
+    function animCount(el, target, suffix) {
+      let start = 0, dur = 1500, step = target / (dur / 16);
+      const tick = () => {
+        start += step;
+        if (start >= target) { el.textContent = target + suffix; return; }
+        el.textContent = Math.floor(start) + suffix;
+        requestAnimationFrame(tick);
+      }; tick();
+    }
+
+    /* ── Radial canvas chart ── */
+    function drawRadial(cv, val, color, animate) {
+      const ctx = cv.getContext('2d');
+      const cx = cv.width / 2, cy = cv.height / 2, r = 33, lw = 5;
+      const start = -Math.PI / 2, full = Math.PI * 2;
+      let prog = 0, target = val / 100;
+      function frame() {
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        /* track */
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, full);
+        ctx.strokeStyle = 'rgba(0,245,255,0.1)'; ctx.lineWidth = lw; ctx.stroke();
+        /* fill */
+        ctx.beginPath(); ctx.arc(cx, cy, r, start, start + full * prog);
+        ctx.strokeStyle = color; ctx.lineWidth = lw;
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = 10; ctx.shadowColor = color;
+        ctx.stroke(); ctx.shadowBlur = 0;
+        /* text */
+        ctx.fillStyle = color;
+        ctx.font = 'bold 13px Orbitron,sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(Math.round(prog * 100), cx, cy);
+        if (animate && prog < target) { prog = Math.min(prog + target / 60, target); requestAnimationFrame(frame); }
+      }
+      frame();
+    }
+    /* Static render for already-visible on load */
+    document.querySelectorAll('.radial-canvas').forEach(cv => {
+      drawRadial(cv, 0, cv.dataset.color, false);
+    });
+
+    /* ── Panel press effect on static elements ── */
+    document.querySelectorAll('.press').forEach(el => {
+      el.addEventListener('mousedown', () => el.style.transform = 'translateY(1px) scale(0.99)');
+      el.addEventListener('mouseup', () => el.style.transform = '');
+      el.addEventListener('mouseleave', () => el.style.transform = '');
+    });
+
+    /* ── Realtime Clock & Date (Header HUD) ── */
+    (function initHudClock() {
+      const clockEl = document.getElementById('hud-clock');
+      const MONTHS_ID = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
+
+      function updateClock() {
+        if (!clockEl) return;
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        const mo = MONTHS_ID[now.getMonth()];
+        const y = now.getFullYear();
+
+        clockEl.textContent = `${h}:${m}:${s} // ${d} ${mo} ${y}`;
+      }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+    })();
+
+    /* ════════════════════════════════════════════
+       PROJECTS — Data & Renderer
+    ════════════════════════════════════════════ */
+
+    /**
+     * Array proyek. Tambah proyek baru cukup dengan menambah satu objek di sini.
+     * Field img: ganti path placeholder dengan gambar nyata setelah siap.
+     * Jika demo kosong (''), tombol "LIVE DEMO" tidak akan ditampilkan.
+     */
+    const projects = [
+      {
+        id: 'P-001',
+        title: 'Go To School: Mathemagic Adventure',
+        desc: 'Game edukasi bergenre RPG petualangan bertema matematika, dibuat dengan RPG Maker MZ. Ikuti perjalanan Vynz berangkat ke sekolah, melewati berbagai ujian karakter, belajar tentang sifat operasi hitung, lalu menjelajah Dunia Bilangan yang penuh tantangan angka.',
+        tags: ['Game', 'RPG Maker MZ', 'JavaScript'],
+        // TODO: Ganti path berikut dengan screenshot nyata game kamu
+        img: 'img/projects/Screenshot 2026-10-14 121306.png',
+        demo: 'https://kavinthoriq.github.io/go-to-school-mathemagic-adventure/',
+        repo: 'https://github.com/kavinthoriq/go-to-school-mathemagic-adventure',
+        status: 'COMPLETED',
+        year: '2024'
+      },
+      {
+        id: 'P-002',
+        title: 'PlengerToSmart',
+        desc: 'Website edukasi berbasis PHP yang membuat belajar terasa santai tapi tetap nyerap. Fitur utamanya: materi video, kuis berwaktu dengan penilaian otomatis dan papan peringkat, artikel inspiratif, serta ruang diskusi komunitas ala forum.',
+        tags: ['Web', 'PHP', 'MySQL'],
+        // TODO: Ganti path berikut dengan screenshot nyata website kamu
+        img: 'img/projects/Screenshot 2026-10-14 122049.png',
+        demo: 'https://edukasi-vynz.page.gd/',
+        repo: 'https://github.com/kavinthoriq/edukasi',
+        status: 'IN PROGRESS',
+        year: '2025'
+      },
+      {
+        id: 'P-003',
+        title: 'Geometry Dash (Fan Game)',
+        desc: 'Game platformer bertema ritme ala Geometry Dash yang bisa dimainkan langsung di browser. Lompat, hindari rintangan, dan bertahan sampai akhir level!',
+        tags: ['Game', 'Scratch'],
+        // TODO: Ganti path berikut dengan screenshot nyata game kamu
+        img: 'img/projects/Screenshot 2026-10-14 122349.png',
+        demo: 'https://kavinthoriq.github.io/geometry-dash/',
+        repo: 'https://github.com/kavinthoriq/geometry-dash',
+        status: 'COMPLETED',
+        year: '2024'
+      },
+      {
+        id: 'P-004',
+        title: 'Vynz News',
+        desc: 'Website portal berita teknologi berbasis HTML, CSS, dan JavaScript murni (tanpa framework). Vynz News menyajikan artikel seputar teknologi, kecerdasan buatan, startup, pengembangan web, edukasi digital, dan keamanan siber, lengkap dengan mode gelap dan tampilan responsif.',
+        tags: ['Web', 'HTML', 'CSS', 'JavaScript'],
+        // TODO: Ganti path berikut dengan screenshot nyata website kamu
+        img: 'img/projects/Screenshot 2026-10-14 122628.png',
+        demo: 'https://kavinthoriq.github.io/vynz-news/',
+        repo: 'https://github.com/kavinthoriq/vynz-news',
+        status: 'COMPLETED',
+        year: '2025'
+      },
+      {
+        id: 'P-005',
+        title: 'StudyNote',
+        desc: 'Desain antarmuka (UI) aplikasi catatan sekolah dan pengingat tugas untuk siswa SMA/SMK. Aplikasi ini membantu siswa mengumpulkan tugas dari semua mata pelajaran, menyimpan ringkasan materi, dan mengatur pengingat supaya tidak ada tugas yang terlewat — semuanya dalam satu tempat.',
+        tags: ['Design', 'Figma'],
+        // TODO: Ganti path berikut dengan screenshot/preview desain kamu dari Figma
+        img: 'img/projects/Screenshot 2026-10-14 123129.png',
+        demo: '',
+        repo: 'https://github.com/kavinthoriq/note-app',
+        status: 'COMPLETED',
+        year: '2025'
+      },
+      {
+        id: 'P-006',
+        title: 'SMK TI Dwiguna — Website Design',
+        desc: 'Desain antarmuka (UI) website resmi SMK TI Dwiguna Depok, dengan slogan "Forging Future Mechanics". Desain dibuat di Figma dan mencakup tiga halaman utama: Beranda, Galeri, dan Kontak.',
+        tags: ['Design', 'Figma'],
+        // TODO: Ganti path berikut dengan screenshot/preview desain kamu dari Figma
+        img: 'img/projects/Screenshot 2026-10-14 123421.png',
+        demo: '',
+        repo: 'https://github.com/kavinthoriq/smk.sch.id',
+        status: 'COMPLETED',
+        year: '2025'
+      }
+    ];
+
+    /* ── Update stat "PROYEK" di section about secara otomatis ── */
+    (function syncProjectCount() {
+      const statEl = document.querySelector('.stat-card .stat-num[data-count]');
+      if (!statEl) return;
+      // Cari stat card yang labelnya PROYEK
+      document.querySelectorAll('.stat-card').forEach(card => {
+        const lbl = card.querySelector('.stat-lbl');
+        if (lbl && lbl.textContent.trim() === 'PROYEK') {
+          const num = card.querySelector('.stat-num');
+          if (num) {
+            num.dataset.count = projects.length;
+            num.textContent = projects.length + '+';
+          }
+        }
+      });
+    })();
+
+    /* ── Render kartu proyek ── */
+    function renderProjectCard(proj, delay) {
+      const isCompleted = proj.status === 'COMPLETED';
+      const statusClass = isCompleted ? 'completed' : 'in-progress';
+      const statusLabel = isCompleted ? '● COMPLETED' : '⟳ IN PROGRESS';
+
+      const tagsHTML = proj.tags
+        .map(t => `<span class="mission-tag">${t}</span>`)
+        .join('');
+
+      const demoBtn = proj.demo
+        ? `<a class="proj-btn proj-btn-demo" href="${proj.demo}" target="_blank" rel="noopener noreferrer" aria-label="Buka live demo ${proj.title}">▶ LIVE DEMO</a>`
+        : '';
+
+      const card = document.createElement('article');
+      card.className = 'proj-card glass cut hud-box reveal';
+      card.style.transitionDelay = `${delay}s`;
+      card.setAttribute('role', 'listitem');
+      card.setAttribute('data-tags', proj.tags.join(','));
+
+      card.innerHTML = `
+    <span class="c-bl"></span><span class="c-br"></span>
+    <div class="proj-thumb">
+      <img
+        src="${proj.img}"
+        alt="Screenshot proyek ${proj.title}"
+        loading="lazy"
+        onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='${proj.img.split('/').pop()}';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}"
+      />
+      <div class="proj-thumb-placeholder" style="display:none;">
+        [ NO IMAGE — REPLACE ${proj.img} ]
+      </div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-meta">
+        <span class="proj-id">${proj.id}</span>
+        <span class="proj-status ${statusClass}">${statusLabel}</span>
+        <span class="proj-year">${proj.year}</span>
+      </div>
+      <h3 class="proj-title">${proj.title}</h3>
+      <p class="proj-desc">${proj.desc}</p>
+      <div class="proj-tags">${tagsHTML}</div>
+      <div class="proj-actions">
+        ${demoBtn}
+        <a class="proj-btn proj-btn-repo" href="${proj.repo}" target="_blank" rel="noopener noreferrer" aria-label="Lihat source code ${proj.title}">⊕ SOURCE CODE</a>
+      </div>
+    </div>`;
+
+      return card;
+    }
+
+    /* ── Filter logic ── */
+    (function initProjectsFilter() {
+      const grid = document.getElementById('proj-grid');
+      const emptyMsg = document.getElementById('proj-empty');
+      const filterBtns = document.querySelectorAll('.proj-filter-btn');
+      let activeFilter = 'ALL';
+
+      // Initial render
+      projects.forEach((proj, i) => {
+        const card = renderProjectCard(proj, (i % 3) * 0.08);
+        grid.appendChild(card);
+        // Observe for scroll-reveal
+        revealObs.observe(card);
+      });
+
+      function applyFilter(filter) {
+        activeFilter = filter;
+        let visible = 0;
+        grid.querySelectorAll('.proj-card').forEach((card, i) => {
+          const tags = card.dataset.tags || '';
+          const show = filter === 'ALL' || tags.split(',').some(t => t.trim() === filter);
+          if (show) {
+            card.removeAttribute('hidden');
+            card.style.transitionDelay = `${(visible % 3) * 0.06}s`;
+            visible++;
+          } else {
+            card.setAttribute('hidden', '');
+          }
+        });
+        emptyMsg.classList.toggle('visible', visible === 0);
+      }
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.dataset.filter;
+          filterBtns.forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-pressed', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+          applyFilter(filter);
+        });
+      });
+    })();
+  </script>
+
+  <!-- AUDIO SYSTEM INDEX -->
+  <div id="sfx-mute-btn"
+    style="position:fixed;bottom:52px;right:16px;z-index:9999;cursor:pointer;background:rgba(2,8,18,0.92);border:1px solid rgba(0,245,255,0.3);padding:6px 11px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,245,255,0.75);letter-spacing:0.12em;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));user-select:none"
+    title="Toggle Sound">🔊 SFX</div>
+
+  <script>
+    'use strict';
+    /* ═══════════════════════════════════
+       SWALLOWED STAR — INDEX AUDIO ENGINE
+    ═══════════════════════════════════ */
+    let idxAudioCtx = null;
+    let idxMasterGain = null;
+    let idxMuted = false;
+    let idxAudioReady = false;
+
+    function idxInitAudio() {
+      if (idxAudioReady) return;
+      try {
+        idxAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        idxMasterGain = idxAudioCtx.createGain();
+        idxMasterGain.gain.value = 0.45;
+        idxMasterGain.connect(idxAudioCtx.destination);
+        idxAudioReady = true;
+      } catch (e) { }
+    }
+
+    /* ─── SOFT CYBER BEEP (hover) ─── */
+    function playHoverBeep(freq) {
+      if (!idxAudioReady || idxMuted) return;
+      freq = freq || 800;
+      const now = idxAudioCtx.currentTime;
+      const osc = idxAudioCtx.createOscillator();
+      const gain = idxAudioCtx.createGain();
+      osc.connect(gain); gain.connect(idxMasterGain);
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+      osc.start(now); osc.stop(now + 0.08);
+    }
+
+    /* ─── CYBER CLICK ─── */
+    function playCyberClick() {
+      if (!idxAudioReady || idxMuted) return;
+      const now = idxAudioCtx.currentTime;
+      [600, 900, 1200].forEach((freq, i) => {
+        const osc = idxAudioCtx.createOscillator();
+        const gain = idxAudioCtx.createGain();
+        osc.connect(gain); gain.connect(idxMasterGain);
+        osc.type = 'triangle'; osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.18, now + i * 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.025 + 0.12);
+        osc.start(now + i * 0.025); osc.stop(now + i * 0.025 + 0.13);
+      });
+    }
+
+    /* ─── NAV CLICK ─── */
+    function playNavClick() {
+      if (!idxAudioReady || idxMuted) return;
+      const now = idxAudioCtx.currentTime;
+      const osc = idxAudioCtx.createOscillator();
+      const gain = idxAudioCtx.createGain();
+      osc.connect(gain); gain.connect(idxMasterGain);
+      osc.type = 'sine'; osc.frequency.value = 600;
+      osc.frequency.exponentialRampToValueAtTime(1000, now + 0.08);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      osc.start(now); osc.stop(now + 0.11);
+    }
+
+    /* ─── HAMBURGER TOGGLE ─── */
+    function playToggleBeep() {
+      if (!idxAudioReady || idxMuted) return;
+      const now = idxAudioCtx.currentTime;
+      const osc = idxAudioCtx.createOscillator();
+      const gain = idxAudioCtx.createGain();
+      osc.connect(gain); gain.connect(idxMasterGain);
+      osc.type = 'square'; osc.frequency.value = 400;
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+      osc.start(now); osc.stop(now + 0.09);
+    }
+
+    /* ─── MUTE TOGGLE ─── */
+    const sfxMuteBtn = document.getElementById('sfx-mute-btn');
+    sfxMuteBtn.addEventListener('click', () => {
+      idxInitAudio();
+      idxMuted = !idxMuted;
+      if (idxMasterGain) idxMasterGain.gain.value = idxMuted ? 0 : 0.45;
+      sfxMuteBtn.textContent = idxMuted ? '🔇 SFX' : '🔊 SFX';
+      sfxMuteBtn.style.color = idxMuted ? 'rgba(0,245,255,0.3)' : 'rgba(0,245,255,0.75)';
+    });
+
+    /* ─── USER INTERACTION UNLOCK ─── */
+    function idxUnlockAudio() {
+      idxInitAudio();
+      document.removeEventListener('click', idxUnlockAudio);
+      document.removeEventListener('keydown', idxUnlockAudio);
+      document.removeEventListener('touchstart', idxUnlockAudio);
+    }
+    document.addEventListener('click', idxUnlockAudio);
+    document.addEventListener('keydown', idxUnlockAudio);
+    document.addEventListener('touchstart', idxUnlockAudio);
+
+    /* ─── ATTACH HOVER/CLICK SOUNDS ─── */
+    document.addEventListener('DOMContentLoaded', () => { });
+
+    // Buttons (btn class)
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => playHoverBeep(750));
+      btn.addEventListener('touchstart', () => playHoverBeep(750), { passive: true });
+      btn.addEventListener('click', playCyberClick);
+    });
+
+    // Contact cards
+    document.querySelectorAll('.contact-card').forEach(card => {
+      card.addEventListener('mouseenter', () => playHoverBeep(600));
+      card.addEventListener('click', playCyberClick);
+    });
+
+    // Nav links
+    document.querySelectorAll('.nav-links a, #mobile-menu a').forEach(link => {
+      link.addEventListener('mouseenter', () => playHoverBeep(500));
+      link.addEventListener('click', playNavClick);
+    });
+
+    // Tool badges
+    document.querySelectorAll('.tool-badge').forEach(badge => {
+      badge.addEventListener('mouseenter', () => playHoverBeep(900));
+    });
+
+    // Nav logo
+    const navLogo = document.querySelector('.nav-logo');
+    if (navLogo) navLogo.addEventListener('click', playNavClick);
+
+    // Hamburger
+    const hamBtn = document.getElementById('ham-btn');
+    if (hamBtn) hamBtn.addEventListener('click', playToggleBeep);
+
+    // Project filter buttons
+    document.querySelectorAll('.proj-filter-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => playHoverBeep(700));
+      btn.addEventListener('click', playCyberClick);
+    });
+
+    // Project action buttons (rendered dynamically — use event delegation)
+    document.getElementById('proj-grid') && document.getElementById('proj-grid').addEventListener('mouseenter', e => {
+      if (e.target.classList.contains('proj-btn') || e.target.closest('.proj-btn')) playHoverBeep(820);
+    }, true);
+    document.getElementById('proj-grid') && document.getElementById('proj-grid').addEventListener('click', e => {
+      if (e.target.classList.contains('proj-btn') || e.target.closest('.proj-btn')) playCyberClick();
+    }, true);
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+     CUSTOM CURSOR: SINGULARITY — JavaScript Engine
+     Hanya aktif di perangkat dengan mouse (hover:hover & pointer:fine).
+     Untuk mengubah ukuran  → ubah CORE_SIZE dan RING_SIZE di bawah.
+     Untuk mengubah warna   → edit variabel CSS --cyan / --gold di :root.
+     Untuk mengubah kecepatan putar → ubah ROT_SPEED (deg/frame) & HOVER_ROT_SPEED.
+     Untuk mematikan semua → hapus class `has-custom-cursor` dari <html>,
+                              atau setel ENABLED = false.
+═══════════════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ─────────────── KONFIGURASI ─────────────── */
+      const ENABLED = true;   // false = nonaktifkan cursor kustom sepenuhnya
+      const ORBIT_MOON = true;   // true  = aktifkan bulan orbit emas
+      const CORE_SIZE = 10;     // px — diameter inti
+      const RING_SIZE = 34;     // px — diameter cincin
+      const LERP_FACTOR = 0.15;   // 0.0–1.0 — kelambatan cincin (lebih kecil = lebih lambat)
+      const ROT_SPEED = 2.2;    // derajat/frame — kecepatan putar normal
+      const HOVER_ROT_SPEED = 5.8;    // derajat/frame — kecepatan putar saat hover
+      const MOON_SPEED = 0.55;   // derajat/frame — kecepatan orbit bulan normal
+      const MOON_HOVER_SPD = 2.2;    // derajat/frame — kecepatan orbit bulan saat hover
+      const MAX_PARTICLES = 30;     // maksimum partikel sekaligus
+
+      /* ─────────────── CEK PERANGKAT ─────────────── */
+      if (!ENABLED) return;
+      if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+
+      /* ─────────────── CEK prefers-reduced-motion ─────────────── */
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ─────────────── ELEMEN DOM ─────────────── */
+      const wrap = document.getElementById('sg-cursor');
+      const core = document.getElementById('sg-core');
+      const ring = document.getElementById('sg-ring');
+      const moonOrbit = document.getElementById('sg-moon-orbit');
+      const moonSvg = document.getElementById('sg-moon');
+
+      if (!wrap || !core || !ring) return; // guard bila DOM belum siap
+
+      /* Sembunyikan moon bila ORBIT_MOON false */
+      if (!ORBIT_MOON && moonOrbit) moonOrbit.style.display = 'none';
+
+      /* ─────────────── STATE ─────────────── */
+      let mouseX = -200, mouseY = -200; // posisi mouse (mulai jauh dari viewport)
+      let ringX = -200, ringY = -200; // posisi ring (lerp)
+      let moonX = -200, moonY = -200; // posisi moon-orbit (lerp tambahan)
+      let ringRot = 0;  // sudut rotasi cincin saat ini (derajat)
+      let moonAngle = 0;  // sudut orbit bulan saat ini (derajat)
+      let isHover = false;
+      let ringScale = 1;
+      let moonScale = 1;
+      let rafId = null;
+      let particleCount = 0;
+      let visible = false; // apakah cursor sudah pertama kali muncul
+
+      /* ─────────────── MATIKAN ANIMASI CSS BAWAAN RING ─────────────── */
+      // Ring kita kendalikan lewat JS, nonaktifkan @keyframes sg-spin dari CSS
+      ring.style.animation = 'none';
+
+      /* ─────────────── SEMBUNYIKAN BULAN DI REDUCED MOTION ─────────────── */
+      if (reducedMotion && moonOrbit) moonOrbit.style.display = 'none';
+
+      /* ─────────────── ELEMEN INTERAKTIF ─────────────── */
+      const INTERACTIVE_SEL = [
+        'a', 'button', 'label',
+        '[role="button"]', '[role="link"]', '[role="tab"]',
+        '.nav-links a', '.hamburger', '.contact-card',
+        '#sfx-mute-btn', '.proj-filter-btn', '.proj-btn',
+        '.tool-badge', '.info-card', '.stat-card',
+        '.press', '.btn', 'select'
+      ].join(',');
+
+      /* ─────────────── UTILITAS LERP ─────────────── */
+      function lerp(a, b, t) { return a + (b - a) * t; }
+
+      /* ─────────────── LOOP ANIMASI UTAMA ─────────────── */
+      function tick() {
+        rafId = requestAnimationFrame(tick);
+
+        /* 1. Posisikan wrapper tepat di posisi mouse (tanpa jeda) */
+        wrap.style.transform = `translate3d(${mouseX}px,${mouseY}px,0)`;
+
+        if (!reducedMotion) {
+          /* 2. Lerp posisi ring & moon */
+          const lf = LERP_FACTOR;
+          ringX = lerp(ringX, mouseX, lf);
+          ringY = lerp(ringY, mouseY, lf);
+          moonX = lerp(moonX, mouseX, lf * 0.85);
+          moonY = lerp(moonY, mouseY, lf * 0.85);
+
+          /* 3. Rotasi cincin */
+          const speed = isHover ? HOVER_ROT_SPEED : ROT_SPEED;
+          ringRot = (ringRot + speed) % 360;
+
+          /* 4. Terapkan transform ring (posisi relatif terhadap wrapper) */
+          const rdx = ringX - mouseX;
+          const rdy = ringY - mouseY;
+          const sc = isHover ? 0.62 : 1;
+          ring.style.transform = `translate(calc(-50% + ${rdx}px), calc(-50% + ${rdy}px)) rotate(${ringRot}deg) scale(${sc})`;
+
+          /* 5. Orbit bulan */
+          if (ORBIT_MOON && moonOrbit) {
+            const ms = isHover ? MOON_HOVER_SPD : MOON_SPEED;
+            moonAngle = (moonAngle + ms) % 360;
+            const orbitR = RING_SIZE * 0.55; // radius orbit
+            const rad = (moonAngle * Math.PI) / 180;
+            const mx = Math.cos(rad) * orbitR;
+            const my = Math.sin(rad) * orbitR;
+            const mdx = moonX - mouseX;
+            const mdy = moonY - mouseY;
+            moonOrbit.style.transform =
+              `translate(calc(-50% + ${mdx}px), calc(-50% + ${mdy}px)) rotate(${moonAngle}deg)`;
+          }
+        } else {
+          /* reduced-motion: ring tidak berputar, langsung ikut mouse */
+          ring.style.transform = `translate(-50%, -50%)`;
+        }
+      }
+
+      /* ─────────────── TAMPILKAN CURSOR PERTAMA KALI ─────────────── */
+      function activateCursor() {
+        if (visible) return;
+        visible = true;
+        document.documentElement.classList.add('has-custom-cursor');
+        wrap.style.transition = 'opacity 0.3s ease';
+        wrap.style.opacity = '1';
+        tick(); // mulai loop
+      }
+
+      /* ─────────────── MOUSE MOVE ─────────────── */
+      document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (!visible) {
+          // Inisialisasi posisi ring agar tidak melompat dari -200
+          ringX = mouseX; ringY = mouseY;
+          moonX = mouseX; moonY = mouseY;
+          activateCursor();
+        }
+
+        /* Deteksi apakah mouse di atas elemen interaktif */
+        const target = e.target;
+        const interactive = !!(
+          target.closest(INTERACTIVE_SEL) &&
+          !target.closest('input, textarea, [contenteditable="true"]')
+        );
+        setHover(interactive);
+      }, { passive: true });
+
+      /* ─────────────── MOUSE ENTER / LEAVE WINDOW ─────────────── */
+      document.addEventListener('mouseleave', () => {
+        wrap.style.transition = 'opacity 0.35s ease';
+        wrap.style.opacity = '0';
+      });
+      document.addEventListener('mouseenter', () => {
+        if (!visible) return;
+        wrap.style.transition = 'opacity 0.2s ease';
+        wrap.style.opacity = '1';
+      });
+
+      /* ─────────────── HOVER STATE ─────────────── */
+      function setHover(on) {
+        if (isHover === on) return;
+        isHover = on;
+        if (on) {
+          /* Inti sedikit mengecil saat hover */
+          core.style.transform = 'translate(-50%, -50%) scale(0.75)';
+          core.style.boxShadow =
+            '0 0 0 1.5px rgba(255,215,0,0.9),' +
+            '0 0 8px 3px rgba(255,215,0,0.5),' +
+            '0 0 16px 5px rgba(255,165,0,0.25)';
+          /* Ring glow emas */
+          ring.style.boxShadow = '0 0 14px rgba(255,215,0,0.55)';
+          ring.style.background =
+            'linear-gradient(#020812, #020812) padding-box,' +
+            'conic-gradient(from 0deg, var(--gold) 0%, #ff8c00 40%, transparent 60%, var(--gold) 100%) border-box';
+        } else {
+          core.style.transform = 'translate(-50%, -50%) scale(1)';
+          core.style.boxShadow =
+            '0 0 0 1.5px rgba(0,245,255,0.9),' +
+            '0 0 6px 2px rgba(0,245,255,0.45),' +
+            '0 0 12px 4px rgba(0,153,255,0.25)';
+          ring.style.boxShadow = '0 0 8px rgba(0,245,255,0.3)';
+          ring.style.background =
+            'linear-gradient(#020812, #020812) padding-box,' +
+            'conic-gradient(from 0deg, var(--cyan) 0%, var(--blue) 40%, transparent 60%, var(--cyan) 100%) border-box';
+        }
+      }
+
+      /* ─────────────── KLIK: SHOCKWAVE + PARTIKEL ─────────────── */
+      document.addEventListener('mousedown', e => {
+        /* Inti menyusut */
+        core.style.transform = 'translate(-50%, -50%) scale(0.55)';
+
+        if (!reducedMotion) {
+          spawnShockwave(e.clientX, e.clientY);
+          spawnParticles(e.clientX, e.clientY);
+        }
+      });
+      document.addEventListener('mouseup', () => {
+        core.style.transform = isHover
+          ? 'translate(-50%, -50%) scale(0.75)'
+          : 'translate(-50%, -50%) scale(1)';
+      });
+
+      /* ─────────────── SHOCKWAVE ─────────────── */
+      function spawnShockwave(x, y) {
+        const sw = document.createElement('div');
+        sw.className = 'sg-shockwave';
+        const sz = RING_SIZE * 1.2;
+        sw.style.cssText =
+          `width:${sz}px;height:${sz}px;` +
+          `left:${x}px;top:${y}px;`;
+        document.body.appendChild(sw);
+        sw.addEventListener('animationend', () => sw.remove(), { once: true });
+      }
+
+      /* ─────────────── PARTIKEL ─────────────── */
+      function spawnParticles(x, y) {
+        const count = Math.min(7, MAX_PARTICLES - particleCount);
+        if (count <= 0) return;
+
+        for (let i = 0; i < count; i++) {
+          particleCount++;
+          const p = document.createElement('div');
+          p.className = 'sg-particle';
+          const sz = Math.random() * 3 + 1.5; // 1.5–4.5px
+          const angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
+          const dist = 22 + Math.random() * 22;
+          const tx = Math.cos(angle) * dist;
+          const ty = Math.sin(angle) * dist;
+          const dur = 420 + Math.random() * 220;
+
+          p.style.cssText =
+            `width:${sz}px;height:${sz}px;` +
+            `left:${x}px;top:${y}px;` +
+            `background:${Math.random() > 0.5 ? 'var(--cyan)' : '#fff'};` +
+            `box-shadow:0 0 ${sz * 2}px ${Math.random() > 0.5 ? 'var(--cyan)' : 'var(--gold)'};` +
+            `transform:translate(-50%,-50%) translate(0px,0px);` +
+            `opacity:1;` +
+            `transition:transform ${dur}ms ease-out, opacity ${dur}ms ease-out;`;
+
+          document.body.appendChild(p);
+
+          // Trigger layout kemudian mulai animasi
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              p.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px)`;
+              p.style.opacity = '0';
+            });
+          });
+
+          setTimeout(() => {
+            p.remove();
+            particleCount--;
+          }, dur + 20);
+        }
+      }
+
+      /* ─────────────── INPUT / TEXTAREA: sembunyikan cursor ─────────────── */
+      document.addEventListener('focusin', e => {
+        if (e.target.matches('input, textarea, [contenteditable="true"]')) {
+          wrap.style.opacity = '0';
+        }
+      });
+      document.addEventListener('focusout', e => {
+        if (e.target.matches('input, textarea, [contenteditable="true"]')) {
+          if (visible) wrap.style.opacity = '1';
+        }
+      });
+
+    })();
+  </script>
+</body>
+
+</html>

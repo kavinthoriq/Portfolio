@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cinematic Intro — Swallowed Star | Kavin Thoriq</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'deep-space': '#020812',
+            'terminal': '#00ff88',
+            'cyan-neon': '#00f5ff',
+            'gold': '#ffd700',
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+            courier: ['"Courier New"', 'Courier', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════════════
+   RESET & DASAR
+══════════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000000;
+    }
+
+    :root {
+      --green: #00ff88;
+      --cyan: #00f5ff;
+      --red: #ff2244;
+      --gold: #ffd700;
+      --bg1: #000000;
+      --bg2: #020812;
+    }
+
+    /* ══════════════════════════════════════════════
+   FULLSCREEN WALLPAPER KARAKTER LUO FENG
+══════════════════════════════════════════════ */
+    #fullscreen-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), transform 12s ease-out;
+      transform: scale(1.04);
+    }
+
+    #fullscreen-bg.revealed {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #fullscreen-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      filter: contrast(1.28) saturate(1.55) brightness(1.06) drop-shadow(0 0 40px rgba(0, 245, 255, 0.25)) drop-shadow(0 0 80px rgba(0, 100, 255, 0.15));
+      transition: filter 3s ease-in-out;
+    }
+
+    #fullscreen-bg.revealed img {
+      filter: contrast(1.32) saturate(1.65) brightness(1.1) drop-shadow(0 0 60px rgba(0, 245, 255, 0.35)) drop-shadow(0 0 120px rgba(0, 100, 255, 0.2));
+    }
+
+    /* Vignette Cinematic Gradient di Atas Foto */
+    #fullscreen-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 85% at 50% 45%, transparent 25%, rgba(0, 0, 0, 0.72) 75%, rgba(0, 0, 0, 0.95) 100%),
+        linear-gradient(to bottom, rgba(2, 8, 18, 0.7) 0%, transparent 25%, transparent 65%, rgba(0, 4, 10, 0.9) 100%);
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════════
+   CRT SCANLINES (Garis TV Tabung)
+══════════════════════════════════════════════ */
+    #intro-overlay::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.1) 2px,
+          rgba(0, 0, 0, 0.1) 4px);
+    }
+
+    /* ══════════════════════════════════════════════
+   TERMINAL CURSOR BLINK
+══════════════════════════════════════════════ */
+    .term-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 1.1em;
+      background: var(--green);
+      margin-left: 3px;
+      vertical-align: text-bottom;
+      animation: cursor-blink 0.7s step-end infinite;
+    }
+
+    @keyframes cursor-blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+   EFEK GLITCH TEKS (WELCOME, KAVIN THORIQ)
+══════════════════════════════════════════════ */
+    .glitch-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .glitch-text {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.6rem, 5.5vw, 3.4rem);
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      text-shadow:
+        0 0 22px rgba(0, 245, 255, 0.85),
+        0 0 55px rgba(0, 153, 255, 0.45);
+      animation: glitch-anim 0.45s steps(1) infinite;
+      display: inline-block;
+      position: relative;
+    }
+
+    .glitch-wrapper::before,
+    .glitch-wrapper::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.6rem, 5.5vw, 3.4rem);
+      letter-spacing: 0.12em;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .glitch-wrapper::before {
+      color: var(--red);
+      animation: glitch-r 0.45s steps(1) infinite;
+      text-shadow: 0 0 14px rgba(255, 34, 68, 0.85);
+    }
+
+    .glitch-wrapper::after {
+      color: var(--cyan);
+      animation: glitch-b 0.45s steps(1) infinite;
+      text-shadow: 0 0 14px rgba(0, 245, 255, 0.85);
+    }
+
+    @keyframes glitch-anim {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      20% {
+        transform: translate(-2px, 1px);
+      }
+
+      40% {
+        transform: translate(2px, -1px);
+      }
+
+      60% {
+        transform: translate(-1px, 2px);
+      }
+
+      80% {
+        transform: translate(1px, -2px);
+      }
+    }
+
+    @keyframes glitch-r {
+
+      0%,
+      100% {
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 0.9;
+        transform: translate(5px, 0);
+        clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%);
+      }
+
+      35% {
+        opacity: 0.8;
+        transform: translate(-5px, 0);
+        clip-path: polygon(0 55%, 100% 55%, 100% 75%, 0 75%);
+      }
+
+      55% {
+        opacity: 0.7;
+        transform: translate(4px, 1px);
+        clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
+      }
+
+      75% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes glitch-b {
+
+      0%,
+      100% {
+        opacity: 0;
+      }
+
+      25% {
+        opacity: 0.85;
+        transform: translate(-5px, 0);
+        clip-path: polygon(0 45%, 100% 45%, 100% 65%, 0 65%);
+      }
+
+      45% {
+        opacity: 0.75;
+        transform: translate(5px, 0);
+        clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+      }
+
+      65% {
+        opacity: 0.6;
+        transform: translate(-3px, 1px);
+        clip-path: polygon(0 65%, 100% 65%, 100% 85%, 0 85%);
+      }
+
+      85% {
+        opacity: 0;
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+   CHAMFERED EDGES BUTTON [ ENTER TERMINAL ]
+══════════════════════════════════════════════ */
+    .enter-btn {
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.78rem, 2vw, 0.98rem);
+      letter-spacing: 0.24em;
+      color: var(--cyan);
+      background: rgba(0, 15, 35, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid var(--cyan);
+      padding: 16px 52px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      text-transform: uppercase;
+      box-shadow: 0 0 25px rgba(0, 245, 255, 0.35);
+    }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .enter-btn::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -60%;
+      width: 40%;
+      height: 300%;
+      background: linear-gradient(105deg, transparent, rgba(0, 245, 255, 0.35), transparent);
+      transform: skewX(-20deg);
+    }
+
+    .enter-btn:hover::after {
+      animation: btn-sweep 0.55s ease forwards;
+    }
+
+    @keyframes btn-sweep {
+      from {
+        left: -60%;
+      }
+
+      to {
+        left: 130%;
+      }
+    }
+
+    .enter-btn:hover {
+      background: rgba(0, 245, 255, 0.22);
+      border-color: #ffffff;
+      box-shadow:
+        0 0 35px rgba(0, 245, 255, 0.8),
+        0 0 80px rgba(0, 245, 255, 0.4),
+        inset 0 0 24px rgba(0, 245, 255, 0.2);
+      color: #ffffff;
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .enter-btn:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    /* ══════════════════════════════════════════════
+   AURA GLOW & HOLOGRAM ELEMENT
+══════════════════════════════════════════════ */
+    .char-aura {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+          rgba(0, 245, 255, 0.2) 0%,
+          rgba(0, 153, 255, 0.08) 45%,
+          transparent 70%);
+      animation: aura-pulse 3.5s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes aura-pulse {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.12);
+        opacity: 1;
+      }
+    }
+
+    /* Hologram Orbit Rings */
+    .holo-ring {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      top: 48%;
+      left: 50%;
+    }
+
+    .ring-a {
+      width: 440px;
+      height: 440px;
+      border: 1px solid rgba(0, 245, 255, 0.16);
+      transform: translate(-50%, -50%);
+      animation: spin-cw 18s linear infinite;
+    }
+
+    .ring-b {
+      width: 320px;
+      height: 320px;
+      border: 1px dashed rgba(255, 215, 0, 0.12);
+      transform: translate(-50%, -50%);
+      animation: spin-ccw 12s linear infinite;
+    }
+
+    @keyframes spin-cw {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    @keyframes spin-ccw {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      to {
+        transform: translate(-50%, -50%) rotate(-360deg);
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+   TEKS BERJALAN ULTRA SMOOTH (GPU-ACCELERATED)
+   Bebas Patah-Patah / Freeze Menggunakan CSS murni
+══════════════════════════════════════════════ */
+    .ticker-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background: rgba(0, 6, 16, 0.88);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(0, 245, 255, 0.18);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      z-index: 40;
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+      animation: smooth-ticker 28s linear infinite;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    .ticker-text {
+      white-space: nowrap;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      color: rgba(0, 245, 255, 0.6);
+      padding-right: 50px;
+      display: inline-block;
+    }
+
+    .ticker-text b {
+      color: var(--green);
+    }
+
+    .ticker-text span.gold {
+      color: var(--gold);
+    }
+
+    @keyframes smooth-ticker {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+   TRANSISI FASE
+══════════════════════════════════════════════ */
+    .phase {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .phase.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #cta-container {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #cta-container.shown {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #welcome-wrap {
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    #welcome-wrap.shown {
+      opacity: 1;
+    }
+
+    .divider-line {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--cyan), transparent);
+      transition: width 0.9s ease 0.2s;
+    }
+
+    .divider-line.expand {
+      width: 320px;
+    }
+
+    /* ══════════════════════════════════════════════
+   EXIT ANIMATION (SLIDE-UP)
+══════════════════════════════════════════════ */
+    #intro-overlay.exit-slide {
+      animation: exit-slide-up 0.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+
+    @keyframes exit-slide-up {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+    }
+
+    /* Corner Brackets */
+    .corner-bracket {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    .corner-bracket.tl {
+      top: 38px;
+      left: 20px;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+    }
+
+    .corner-bracket.tr {
+      top: 38px;
+      right: 20px;
+      border-top: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+    }
+
+    .corner-bracket.bl {
+      bottom: 44px;
+      left: 20px;
+      border-bottom: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+    }
+
+    .corner-bracket.br {
+      bottom: 44px;
+      right: 20px;
+      border-bottom: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+    }
+
+    /* HUD Badges */
+    .hud-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.16em;
+      padding: 4px 12px;
+      background: rgba(0, 15, 35, 0.85);
+      border: 1px solid rgba(0, 245, 255, 0.3);
+      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+    }
+
+    /* Mobile responsif */
+    @media (max-width: 480px) {
+      .ticker-text {
+        font-size: 0.55rem;
+      }
+
+      .corner-bracket {
+        width: 18px;
+        height: 18px;
+      }
+
+      .corner-bracket.tl {
+        top: 30px;
+        left: 12px;
+      }
+
+      .corner-bracket.tr {
+        top: 30px;
+        right: 12px;
+      }
+
+      .corner-bracket.bl {
+        bottom: 38px;
+        left: 12px;
+      }
+
+      .corner-bracket.br {
+        bottom: 38px;
+        right: 12px;
+      }
+
+      .hud-badge {
+        font-size: 0.48rem;
+        padding: 3px 8px;
+      }
+
+      .enter-btn {
+        padding: 14px 32px;
+        font-size: 0.72rem;
+      }
+
+      .ring-a {
+        width: 260px;
+        height: 260px;
+      }
+
+      .ring-b {
+        width: 200px;
+        height: 200px;
+      }
+
+      .char-aura {
+        width: 300px;
+        height: 300px;
+      }
+
+      #top-status-bar {
+        padding: 4px 12px;
+      }
+
+      #top-status-bar span {
+        font-size: 0.52rem;
+        letter-spacing: 0.06em;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .glitch-text {
+        font-size: 1.2rem;
+      }
+
+      .enter-btn {
+        padding: 12px 24px;
+        font-size: 0.65rem;
+      }
+
+      .ring-a {
+        width: 200px;
+        height: 200px;
+      }
+
+      .ring-b {
+        width: 150px;
+        height: 150px;
+      }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+      .ring-a {
+        width: 360px;
+        height: 360px;
+      }
+
+      .ring-b {
+        width: 260px;
+        height: 260px;
+      }
+
+      .char-aura {
+        width: 400px;
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white overflow-hidden">
+
+  <!-- ══════════════════════════════════════════════
+       INTRO OVERLAY (Pre-loader Menutupi Layar)
+  ══════════════════════════════════════════════ -->
+  <div id="intro-overlay"
+    class="fixed inset-0 w-full h-screen flex flex-col items-center justify-center z-50 overflow-hidden"
+    style="background: radial-gradient(ellipse 85% 85% at 50% 50%, #020812 0%, #000000 100%);">
+
+    <!-- ── Fullscreen Wallpaper Foto Karakter ── -->
+    <div id="fullscreen-bg">
+      <img src="luo_feng_full.webp" alt="Luo Feng — Swallowed Star"
+        onerror="if(!this.dataset.fb){this.dataset.fb='1';this.src='luo_feng.webp';}else if(!this.dataset.fb2){this.dataset.fb2='1';this.src='img/luo_feng_full.webp';}else if(!this.dataset.fb3){this.dataset.fb3='1';this.src='img/luo_feng.webp';}" />
+    </div>
+
+    <!-- Starfield Partikel Canvas -->
+    <canvas id="star-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Corner Brackets HUD -->
+    <div class="corner-bracket tl"></div>
+    <div class="corner-bracket tr"></div>
+    <div class="corner-bracket bl"></div>
+    <div class="corner-bracket br"></div>
+
+    <!-- Hologram Orbit Rings (Reveal di Fase 3) -->
+    <div id="holo-rings" class="pointer-events-none z-10" style="opacity: 0; transition: opacity 1.2s ease;">
+      <div class="char-aura"></div>
+      <div class="holo-ring ring-a"></div>
+      <div class="holo-ring ring-b"></div>
+    </div>
+
+    <!-- ── Top Status Bar (HUD Header: Realtime Clock & Date) ── -->
+    <div id="top-status-bar" class="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-2.5 z-40"
+      style="border-bottom: 1px solid rgba(0, 245, 255, 0.12); background: rgba(0, 6, 16, 0.65); backdrop-filter: blur(6px);">
+      <span
+        style="font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: rgba(0, 245, 255, 0.7); letter-spacing: 0.14em;">
+        HR.ALLIANCE // DOJO-OF-LIMITS-SYS v7.4.2
+      </span>
+      <span id="hud-clock"
+        style="font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--cyan); letter-spacing: 0.14em; text-shadow: 0 0 8px rgba(0, 245, 255, 0.6);">
+        --:--:-- // -- --- ----
+      </span>
+    </div>
+
+    <!-- ─────────────────────────────────────────────
+         FASE 1: SYSTEM BOOT-UP (0 - 2 Detik)
+    ───────────────────────────────────────────────── -->
+    <div id="phase-boot"
+      class="phase active absolute inset-0 flex flex-col justify-start pt-16 px-8 pb-8 sm:pt-20 sm:px-14 sm:pb-14 z-20"
+      style="transition: opacity 0.5s ease;">
+      <!-- Terminal Teks Monospace / Courier -->
+      <div id="term-panel" class="w-full max-w-xl" style="
+          font-family: 'Courier New', Courier, monospace;
+          font-size: clamp(0.72rem, 1.4vw, 0.88rem);
+          color: var(--green);
+          line-height: 2.1;
+          letter-spacing: 0.05em;
+          text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+        ">
+        <!-- Teks diketik otomatis oleh JavaScript -->
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────
+         FASE 2: USER AUTHENTICATION & GLITCH (2 - 4 Detik)
+    ───────────────────────────────────────────────── -->
+    <div id="phase-auth" class="phase absolute inset-0 flex items-center justify-center z-30"
+      style="transition: opacity 0.4s ease;">
+      <div class="text-center px-4">
+        <div id="welcome-wrap">
+          <!-- Glitch Welcome Text -->
+          <div class="glitch-wrapper" data-text="WELCOME, KAVIN THORIQ">
+            <span class="glitch-text">WELCOME, KAVIN THORIQ</span>
+          </div>
+          <div class="flex justify-center mt-3">
+            <div id="welcome-divider" class="divider-line"></div>
+          </div>
+          <p
+            style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.25em;color:rgba(0,245,255,0.7);margin-top:12px">
+            OPERATOR IDENTIFIED — ACCESS AUTHORIZED
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────
+         FASE 3: VISUAL REVEAL & CALL TO ACTION (4 Detik dst.)
+    ───────────────────────────────────────────────── -->
+    <div id="phase-reveal" class="phase absolute inset-0 flex flex-col items-center justify-end pb-20 z-20">
+      <!-- CTA Container dengan data HUD & Tombol -->
+      <div id="cta-container" class="flex flex-col items-center gap-4 text-center">
+        <!-- Floating HUD Badges -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <div class="hud-badge text-[var(--gold)]">⚡ CLASS: COSMIC GRADE</div>
+          <div class="hud-badge text-[var(--cyan)]">◈ TARGET: LUO FENG</div>
+          <div class="hud-badge text-[var(--green)]">● STATUS: AWAKENED</div>
+        </div>
+
+        <!-- Tombol Besar Chamfered [ ENTER TERMINAL ] -->
+        <button class="enter-btn" id="enter-btn" onclick="exitIntro()">
+          [ &nbsp;ENTER TERMINAL&nbsp; ]
+        </button>
+
+        <p
+          style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.2em;color:rgba(0,245,255,0.4)">
+          PRESS ENTER &nbsp;•&nbsp; KLIK UNTUK MEMBUKA SISTEM UTAMA
+        </p>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────
+         BOTTOM TICKER: TEKS BERJALAN BEBAS FREEZE
+         100% GPU-Accelerated CSS @keyframes
+    ───────────────────────────────────────────────── -->
+    <div class="ticker-bar">
+      <div class="ticker-track">
+        <!-- Salinan 1 -->
+        <div class="ticker-text">
+          ◈ <b>HR ALLIANCE NODE</b> — DOJO OF LIMITS ACCESS GRANTED ◈ &nbsp;///&nbsp;
+          OPERATOR: <b>KAVIN THORIQ</b> &nbsp;///&nbsp;
+          CLEARANCE LEVEL: <span class="gold">COSMIC CLASS</span> &nbsp;///&nbsp;
+          STATUS: <b>ALL SYSTEMS NOMINAL</b> &nbsp;///&nbsp;
+          SECURITY OVERRIDE: <b>OK</b> &nbsp;///&nbsp;
+          TARGET: <b>LUO FENG [AWAKENED]</b> &nbsp;///&nbsp;
+          SATELLITE UPLINK: <b>ACTIVE</b> &nbsp;///&nbsp;
+          SYSTEM LATENCY: <b>0ms</b> &nbsp;///&nbsp;
+        </div>
+        <!-- Salinan 2 (seamless 360 loop tanpa jeda) -->
+        <div class="ticker-text">
+          ◈ <b>HR ALLIANCE NODE</b> — DOJO OF LIMITS ACCESS GRANTED ◈ &nbsp;///&nbsp;
+          OPERATOR: <b>KAVIN THORIQ</b> &nbsp;///&nbsp;
+          CLEARANCE LEVEL: <span class="gold">COSMIC CLASS</span> &nbsp;///&nbsp;
+          STATUS: <b>ALL SYSTEMS NOMINAL</b> &nbsp;///&nbsp;
+          SECURITY OVERRIDE: <b>OK</b> &nbsp;///&nbsp;
+          TARGET: <b>LUO FENG [AWAKENED]</b> &nbsp;///&nbsp;
+          SATELLITE UPLINK: <b>ACTIVE</b> &nbsp;///&nbsp;
+          SYSTEM LATENCY: <b>0ms</b> &nbsp;///&nbsp;
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /intro-overlay -->
+
+  <!-- ══════════════════════════════════════════════
+     VANILLA JAVASCRIPT
+══════════════════════════════════════════════ -->
+  <script>
+    'use strict';
+
+    /* ── 1. BACKGROUND STARS CANVAS ── */
+    (function initStars() {
+      const canvas = document.getElementById('star-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, stars = [];
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        stars = [];
+        const count = Math.floor((W * H) / 6000);
+        for (let i = 0; i < count; i++) {
+          stars.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 1.3 + 0.2,
+            a: Math.random(),
+            da: Math.random() * 0.006 + 0.002,
+            cyan: Math.random() < 0.18
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        stars.forEach(s => {
+          s.a += s.da;
+          if (s.a > 1 || s.a < 0) s.da = -s.da;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, Math.min(1, s.a)) * 0.85;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = s.cyan ? '#00f5ff' : '#ffffff';
+          ctx.shadowBlur = s.cyan ? 8 : 3;
+          ctx.shadowColor = s.cyan ? '#00f5ff' : '#ffffff';
+          ctx.fill();
+          ctx.restore();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      draw();
+    })();
+
+    /* ── 2. TYPEWRITER TERMINAL HELPER ── */
+    const termPanel = document.getElementById('term-panel');
+
+    function typewriter(text, color, onFinish) {
+      const line = document.createElement('div');
+      line.style.color = color || '#00ff88';
+      line.style.textShadow = `0 0 8px ${color || '#00ff88'}80`;
+      termPanel.appendChild(line);
+
+      const cursor = document.createElement('span');
+      cursor.className = 'term-cursor';
+      line.appendChild(cursor);
+
+      let i = 0;
+      const speed = 25; // ms per karakter
+      const timer = setInterval(() => {
+        if (i <= text.length) {
+          line.textContent = text.slice(0, i);
+          line.appendChild(cursor);
+          i++;
+        } else {
+          clearInterval(timer);
+          cursor.remove();
+          if (onFinish) onFinish();
+        }
+      }, speed);
+    }
+
+    /* ── 3. SKENARIO ANIMASI 4 FASE ── */
+    (function runIntroSequence() {
+      /* FASE 1: System Boot-up (0 - 2 detik) */
+      setTimeout(() => {
+        typewriter('> INITIALIZING SYSTEM...', '#00ff88', () => {
+          setTimeout(() => {
+            typewriter('> CONNECTING TO HR ALLIANCE SATELLITE...', '#00ff88', () => {
+              setTimeout(() => {
+                typewriter('> BYPASSING SECURITY... OK.', '#00ff88', () => {
+
+                  /* FASE 2: User Authentication (2 - 4 detik) */
+                  setTimeout(() => {
+                    typewriter('> AUTHENTICATING OPERATOR...', '#00f5ff', () => {
+                      // Munculkan glitch text di tengah layar
+                      setTimeout(() => {
+                        const phaseAuth = document.getElementById('phase-auth');
+                        const welcomeWrap = document.getElementById('welcome-wrap');
+                        const welcomeDivider = document.getElementById('welcome-divider');
+
+                        phaseAuth.classList.add('active');
+                        welcomeWrap.classList.add('shown');
+                        setTimeout(() => welcomeDivider.classList.add('expand'), 150);
+
+                        /* FASE 3: Visual Reveal & Call to Action (4 detik dst.) */
+                        setTimeout(() => {
+                          // Hilangkan fase boot dan auth
+                          document.getElementById('phase-boot').style.opacity = '0';
+                          document.getElementById('phase-auth').style.opacity = '0';
+
+                          setTimeout(() => {
+                            document.getElementById('phase-boot').classList.remove('active');
+                            document.getElementById('phase-auth').classList.remove('active');
+
+                            // Fullscreen Foto Karakter Reveal dengan Transisi Halus
+                            document.getElementById('fullscreen-bg').classList.add('revealed');
+
+                            // Aktifkan hologram ring & reveal CTA
+                            document.getElementById('holo-rings').style.opacity = '1';
+                            const phaseReveal = document.getElementById('phase-reveal');
+                            phaseReveal.classList.add('active');
+
+                            // Slide-up Enter Button & Badges
+                            setTimeout(() => {
+                              document.getElementById('cta-container').classList.add('shown');
+                            }, 250);
+                          }, 500);
+
+                        }, 2200); // Durasi tampil glitch welcome sebelum reveal
+                      }, 300);
+                    });
+                  }, 400);
+
+                });
+              }, 300);
+            });
+          }, 300);
+        });
+      }, 200);
+    })();
+
+    /* ── 4. FASE 4: EXIT ANIMATION KE INDEX.HTML ── */
+    window.exitIntro = function () {
+      const overlay = document.getElementById('intro-overlay');
+      overlay.classList.add('exit-slide');
+
+      // Tandai sesi agar tidak mengulang intro terus menerus saat browsing
+      sessionStorage.setItem('intro_done', '1');
+
+      // Flag khusus: user baru saja enter dari intro → index.html akan play entry sound
+      sessionStorage.setItem('just_entered', '1');
+
+      overlay.addEventListener('animationend', () => {
+        window.location.href = 'index.html';
+      }, { once: true });
+    };
+
+    /* Dukungan keyboard Enter / Space */
+    document.addEventListener('keydown', (e) => {
+      const cta = document.getElementById('cta-container');
+      if (cta && cta.classList.contains('shown')) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          exitIntro();
+        }
+      }
+      if (e.key === 'Escape') exitIntro();
+    });
+
+    /* ── 5. REALTIME CLOCK & DATE (HEADER) ── */
+    (function initHudClock() {
+      const clockEl = document.getElementById('hud-clock');
+      const MONTHS = ['OKT', 'NOV', 'DES', 'JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP'];
+      // Indeks standar bulan Javascript 0-11:
+      const MONTHS_ID = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
+
+      function updateClock() {
+        if (!clockEl) return;
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        const mo = MONTHS_ID[now.getMonth()];
+        const y = now.getFullYear();
+
+        clockEl.textContent = `${h}:${m}:${s} // ${d} ${mo} ${y}`;
+      }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+    })();
+  </script>
+
+  <!-- AUDIO SYSTEM -->
+  <div id="audio-mute-btn"
+    style="position:fixed;bottom:40px;right:16px;z-index:9999;cursor:pointer;background:rgba(0,15,35,0.85);border:1px solid rgba(0,245,255,0.35);padding:7px 12px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.8);letter-spacing:0.12em;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));user-select:none"
+    title="Toggle Sound">🔊 SFX</div>
+
+  <script>
+    'use strict';
+    /* ══════════════════════════════════════
+       SWALLOWED STAR — AUDIO ENGINE
+       Web Audio API (no external files)
+    ══════════════════════════════════════ */
+    let audioCtx = null;
+    let masterGain = null;
+    let isMuted = false;
+    let audioReady = false;
+
+    function initAudio() {
+      if (audioReady) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.5;
+        masterGain.connect(audioCtx.destination);
+        audioReady = true;
+      } catch (e) { console.warn('Audio not supported'); }
+    }
+
+    /* ─── REVERB HELPER ─── */
+    function createReverb(duration, decay) {
+      if (!audioCtx) return null;
+      const len = audioCtx.sampleRate * duration;
+      const impulse = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+      for (let c = 0; c < 2; c++) {
+        const ch = impulse.getChannelData(c);
+        for (let i = 0; i < len; i++) {
+          ch[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+        }
+      }
+      const convolver = audioCtx.createConvolver();
+      convolver.buffer = impulse;
+      return convolver;
+    }
+
+    /* ─── TERMINAL BLIP (fase 1 typewriter) ─── */
+    function playTerminalBlip() {
+      if (!audioReady || isMuted) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain); gain.connect(masterGain);
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.06);
+    }
+
+    /* ─── ENERGY PULSE (fase 2 authentication) ─── */
+    function playEnergyPulse() {
+      if (!audioReady || isMuted) return;
+      const now = audioCtx.currentTime;
+      // Base drone
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass'; filter.frequency.value = 300; filter.Q.value = 2;
+      osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(60, now);
+      osc.frequency.exponentialRampToValueAtTime(200, now + 0.3);
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.4, now + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+      osc.start(now); osc.stop(now + 0.85);
+      // High freq shimmer
+      const osc2 = audioCtx.createOscillator();
+      const gain2 = audioCtx.createGain();
+      osc2.connect(gain2); gain2.connect(masterGain);
+      osc2.type = 'sine'; osc2.frequency.value = 2400;
+      gain2.gain.setValueAtTime(0, now + 0.1);
+      gain2.gain.linearRampToValueAtTime(0.25, now + 0.2);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+      osc2.start(now + 0.1); osc2.stop(now + 0.75);
+    }
+
+    /* ─── COSMIC REVEAL (fase 3 gambar reveal) ─── */
+    function playCosmicReveal() {
+      if (!audioReady || isMuted) return;
+      const now = audioCtx.currentTime;
+      const reverb = createReverb(2, 3);
+      // Whoosh
+      const bufferSize = audioCtx.sampleRate * 0.8;
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      const noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      const noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = 'bandpass'; noiseFilter.frequency.value = 800; noiseFilter.Q.value = 0.5;
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0, now);
+      noiseGain.gain.linearRampToValueAtTime(0.45, now + 0.15);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+      noiseFilter.frequency.setValueAtTime(200, now);
+      noiseFilter.frequency.exponentialRampToValueAtTime(3000, now + 0.5);
+      noiseSource.connect(noiseFilter);
+      if (reverb) { noiseFilter.connect(reverb); reverb.connect(noiseGain); }
+      else noiseFilter.connect(noiseGain);
+      noiseGain.connect(masterGain);
+      noiseSource.start(now);
+      // Power chord
+      [80, 120, 160, 240].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.connect(g);
+        if (reverb) { g.connect(reverb); reverb.connect(masterGain); }
+        else g.connect(masterGain);
+        osc.type = 'sine'; osc.frequency.value = freq;
+        g.gain.setValueAtTime(0, now + i * 0.04);
+        g.gain.linearRampToValueAtTime(0.2 - i * 0.03, now + i * 0.04 + 0.1);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+        osc.start(now + i * 0.04); osc.stop(now + 1.6);
+      });
+    }
+
+    /* ─── CYBER HOVER BEEP ─── */
+    function playCyberHover() {
+      if (!audioReady || isMuted) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain); gain.connect(masterGain);
+      osc.type = 'sine'; osc.frequency.value = 1200;
+      osc.frequency.exponentialRampToValueAtTime(1600, now + 0.04);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      osc.start(now); osc.stop(now + 0.06);
+    }
+
+    /* ─── COSMIC BLAST (klik enter button) ─── */
+    function playCosmicBlast() {
+      if (!audioReady || isMuted) return;
+      const now = audioCtx.currentTime;
+      [440, 660, 880, 1320].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(masterGain);
+        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(freq, now + i * 0.03);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + i * 0.03 + 0.3);
+        gain.gain.setValueAtTime(0.25, now + i * 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.03 + 0.35);
+        osc.start(now + i * 0.03); osc.stop(now + i * 0.03 + 0.4);
+      });
+    }
+
+    /* ─── AMBIENT COSMIC HUM ─── */
+    let ambientOsc = null;
+    let ambientGain = null;
+    function startAmbientHum() {
+      if (!audioReady || isMuted || ambientOsc) return;
+      ambientOsc = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      ambientGain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass'; filter.frequency.value = 200;
+      ambientOsc.type = 'sine'; ambientOsc.frequency.value = 40;
+      osc2.type = 'sine'; osc2.frequency.value = 60;
+      ambientOsc.connect(filter); osc2.connect(filter);
+      filter.connect(ambientGain);
+      ambientGain.connect(masterGain);
+      ambientGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      ambientGain.gain.linearRampToValueAtTime(0.07, audioCtx.currentTime + 2);
+      ambientOsc.start(); osc2.start();
+    }
+
+    /* ─── MUTE TOGGLE ─── */
+    const muteBtn = document.getElementById('audio-mute-btn');
+    muteBtn.addEventListener('click', () => {
+      initAudio();
+      isMuted = !isMuted;
+      if (masterGain) masterGain.gain.value = isMuted ? 0 : 0.5;
+      muteBtn.textContent = isMuted ? '🔇 SFX' : '🔊 SFX';
+      muteBtn.style.color = isMuted ? 'rgba(0,245,255,0.35)' : 'rgba(0,245,255,0.8)';
+    });
+
+    /* ─── USER INTERACTION UNLOCK ─── */
+    function unlockAudio() {
+      initAudio();
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('keydown', unlockAudio);
+      document.removeEventListener('touchstart', unlockAudio);
+      setTimeout(startAmbientHum, 500);
+    }
+    document.addEventListener('click', unlockAudio);
+    document.addEventListener('keydown', unlockAudio);
+    document.addEventListener('touchstart', unlockAudio);
+
+    /* ─── HOOK INTRO PHASE SOUNDS ─── */
+    // Typewriter blip - dipanggil per karakter
+    const origTypewriter = window.typewriter || null;
+    // Patch typewriter untuk blip
+    const _origTypewriter = typewriter;
+    function typewriter(text, color, onFinish) {
+      const line = document.createElement('div');
+      line.style.color = color || '#00ff88';
+      line.style.textShadow = `0 0 8px ${color || '#00ff88'}80`;
+      termPanel.appendChild(line);
+      const cursor = document.createElement('span');
+      cursor.className = 'term-cursor';
+      line.appendChild(cursor);
+      let i = 0;
+      const speed = 25;
+      const timer = setInterval(() => {
+        if (i <= text.length) {
+          line.textContent = text.slice(0, i);
+          line.appendChild(cursor);
+          if (i % 3 === 0 && i > 0) playTerminalBlip();
+          i++;
+        } else {
+          clearInterval(timer);
+          cursor.remove();
+          if (onFinish) onFinish();
+        }
+      }, speed);
+    }
+
+    // Hook exit button
+    const enterBtnEl = document.getElementById('enter-btn');
+    if (enterBtnEl) {
+      enterBtnEl.addEventListener('mouseenter', playCyberHover);
+      enterBtnEl.addEventListener('touchstart', playCyberHover);
+      // Override exitIntro untuk play sound
+      const _origExit = window.exitIntro;
+      window.exitIntro = function () {
+        playCosmicBlast();
+        setTimeout(_origExit, 180);
+      };
+    }
+
+    // Hook phase transitions untuk sounds
+    // Intercept setTimeout calls dengan observer pattern
+    const _origRunIntro = window._introSequenceHooked;
+    if (!_origRunIntro) {
+      window._introSequenceHooked = true;
+      // Patch MutationObserver untuk detect phase changes
+      const phaseAuth = document.getElementById('phase-auth');
+      const phaseReveal = document.getElementById('phase-reveal');
+      const fullscreenBg = document.getElementById('fullscreen-bg');
+
+      const phaseObserver = new MutationObserver((mutations) => {
+        mutations.forEach(m => {
+          if (m.target === phaseAuth && phaseAuth.classList.contains('active')) {
+            setTimeout(playEnergyPulse, 100);
+          }
+          if (m.target === fullscreenBg && fullscreenBg.classList.contains('revealed')) {
+            setTimeout(playCosmicReveal, 200);
+          }
+        });
+      });
+      phaseObserver.observe(phaseAuth, { attributes: true, attributeFilter: ['class'] });
+      phaseObserver.observe(fullscreenBg, { attributes: true, attributeFilter: ['class'] });
+    }
+  </script>
+</body>
+
+</html>
