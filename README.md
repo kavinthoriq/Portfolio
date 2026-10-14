@@ -2,7 +2,7 @@
 
 Website portfolio pribadi bertema **sci-fi HUD terminal** dengan inspirasi dari anime **Swallowed Star (Tunshi Xingkong)** dan karakter **Luo Feng**. Dibangun dengan HTML, CSS, dan JavaScript murni tanpa framework.
 
-🔗 **Demo:** _(isi dengan link GitHub Pages kamu)_
+🔗 **Demo:** _(https://kavinthoriq.github.io/Portfolio)_
 
 <!-- Tambahkan screenshot di sini, misalnya:
 ![Intro](screenshots/intro.png)
