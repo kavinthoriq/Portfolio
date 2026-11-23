@@ -1,0 +1,124 @@
+/* ═══════════════════════════════════════════════════════════════
+   CURSOR.CSS — Custom Cursor: SINGULARITY
+   Hanya aktif di perangkat mouse (hover:hover & pointer:fine).
+   Cursor asli disembunyikan melalui class `has-custom-cursor` di <html>.
+   Untuk mematikan cursor kustom: hapus class `has-custom-cursor` dari <html>.
+═══════════════════════════════════════════════════════════════ */
+
+@media (hover: hover) and (pointer: fine) {
+
+  /* Sembunyikan cursor asli ketika kustom aktif */
+  html.has-custom-cursor * { cursor: none !important; }
+
+  /* Kembalikan cursor teks di input/textarea agar bisa tetap dipilih */
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea,
+  html.has-custom-cursor [contenteditable="true"] { cursor: text !important; }
+
+  /* ── Wrapper seluruh cursor ── */
+  #sg-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    will-change: transform;
+    /* dipindahkan via JS transform: translate3d() */
+  }
+
+  /* ── Inti lubang hitam ── */
+  #sg-core {
+    position: absolute;
+    /* pusat di origin – digeser setengah ukuran via CSS transform */
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #000;
+    box-shadow:
+      0 0 0 1.5px rgba(0, 245, 255, 0.9),
+      0 0 6px 2px rgba(0, 245, 255, 0.45),
+      0 0 12px 4px rgba(0, 153, 255, 0.25);
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    will-change: transform;
+  }
+
+  /* ── Cincin akresi ── */
+  #sg-ring {
+    position: absolute;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(#020812, #020812) padding-box,
+      conic-gradient(from 0deg,
+        var(--cyan) 0%,
+        var(--blue) 40%,
+        transparent 60%,
+        var(--cyan) 100%) border-box;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    will-change: transform;
+    /* Rotasi dan skala kontinu dikontrol via JS / CSS animation */
+    box-shadow: 0 0 8px rgba(0, 245, 255, 0.3);
+    transition: box-shadow 0.25s ease;
+  }
+
+  /* Animasi rotasi dasar (dipakai bila JS tidak berjalan) */
+  @keyframes sg-spin {
+    from { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+    to   { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+  }
+
+  #sg-ring { animation: sg-spin 3s linear infinite; }
+
+  /* ── Bulan orbit ── */
+  #sg-moon-orbit {
+    position: absolute;
+    width: 34px; height: 34px;
+    transform: translate(-50%, -50%);
+    /* Rotasi dikontrol JS; ukuran sama dengan ring supaya mudah dihitung */
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  #sg-moon {
+    position: absolute;
+    top: -5px; left: 50%;
+    transform: translateX(-50%);
+    width: 8px; height: 8px;
+    filter: drop-shadow(0 0 3px var(--gold));
+  }
+
+  /* ── Gelombang kejut klik ── */
+  .sg-shockwave {
+    position: fixed;
+    border-radius: 50%;
+    border: 1.5px solid var(--cyan);
+    box-shadow: 0 0 6px rgba(0, 245, 255, 0.5);
+    pointer-events: none;
+    z-index: 10001;
+    animation: sg-shock 0.5s ease-out forwards;
+    will-change: transform, opacity;
+  }
+
+  @keyframes sg-shock {
+    from { transform: translate(-50%, -50%) scale(0.2); opacity: 0.9; }
+    to   { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+  }
+
+  /* ── Partikel bintang ── */
+  .sg-particle {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10001;
+    will-change: transform, opacity;
+  }
+
+  /* ── prefers-reduced-motion: inti & cincin statis, tanpa partikel ── */
+  @media (prefers-reduced-motion: reduce) {
+    #sg-ring       { animation: none !important; }
+    #sg-moon-orbit { animation: none !important; }
+    #sg-core       { transition: none !important; }
+  }
+
+}
+/* end @media hover */

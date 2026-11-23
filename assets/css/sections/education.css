@@ -1,0 +1,136 @@
+/* ═══════════════════════════════════════
+   EDUCATION.CSS
+   Swallowed Star Portfolio
+═══════════════════════════════════════ */
+
+.timeline {
+  position: relative;
+  padding-left: 48px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 12px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 245, 255, .35) 15%, rgba(255, 215, 0, .25) 85%, transparent);
+}
+
+.mission-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.mission-dot {
+  position: absolute;
+  left: -42px; top: 22px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.mission-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 20px 22px;
+  position: relative;
+  transition: all .3s;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+}
+
+.mission-card:hover {
+  border-color: rgba(0, 245, 255, .32);
+  box-shadow: 0 8px 30px rgba(0, 245, 255, .12);
+  transform: translateX(4px);
+}
+
+.mission-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.mission-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.mission-id {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .55rem;
+  letter-spacing: .15em;
+  padding: 3px 8px;
+  color: rgba(0, 245, 255, .5);
+  background: rgba(0, 0, 0, .4);
+  border: 1px solid rgba(0, 245, 255, .15);
+}
+
+.mission-status {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .55rem;
+  letter-spacing: .1em;
+  padding: 3px 8px;
+}
+
+.mission-type {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .55rem;
+  color: rgba(0, 245, 255, .35);
+  letter-spacing: .1em;
+}
+
+.mission-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(.85rem, .85rem + .4vw, 1rem);
+  font-weight: 700;
+  color: #fff;
+}
+
+.mission-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .7rem;
+  color: rgba(0, 245, 255, .6);
+  margin-top: 2px;
+}
+
+.mission-period {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  color: rgba(0, 245, 255, .35);
+  white-space: nowrap;
+}
+
+.mission-desc {
+  font-size: .82rem;
+  color: rgba(200, 230, 255, .72);
+  margin-bottom: 12px;
+  line-height: 1.65;
+}
+
+.mission-divider {
+  height: 1px;
+  background: rgba(0, 245, 255, .1);
+  margin: 12px 0;
+}
+
+.mission-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.mission-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  color: rgba(0, 245, 255, .7);
+  background: rgba(0, 245, 255, .06);
+  border: 1px solid rgba(0, 245, 255, .18);
+  padding: 4px 9px;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+
+@media (max-width: 480px) {
+  .timeline     { padding-left: 32px; }
+  .mission-dot  { left: -28px; }
+}

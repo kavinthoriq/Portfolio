@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Kavin Thoriq — Portfolio Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <!-- ═══════════════ CSS ═══════════════ -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/cursor.css" />
+  <link rel="stylesheet" href="assets/css/sections/navbar.css" />
+  <link rel="stylesheet" href="assets/css/sections/hero.css" />
+  <link rel="stylesheet" href="assets/css/sections/about.css" />
+  <link rel="stylesheet" href="assets/css/sections/education.css" />
+  <link rel="stylesheet" href="assets/css/sections/skills.css" />
+  <link rel="stylesheet" href="assets/css/sections/certificates.css" />
+  <link rel="stylesheet" href="assets/css/sections/projects.css" />
+  <link rel="stylesheet" href="assets/css/sections/contact.css" />
+  <link rel="stylesheet" href="assets/css/sections/footer.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════ CUSTOM CURSOR: SINGULARITY ═══════════════════════════════════ -->
+  <!-- Elemen cursor – dibuat di sini agar z-index 10000 bekerja di atas semua elemen lain -->
+  <div id="sg-cursor" aria-hidden="true" style="opacity:0">
+    <!-- Cincin akresi – rotasi dikontrol JS -->
+    <div id="sg-ring"></div>
+    <!-- Orbit bulan (opsional, dikontrol ORBIT_MOON) -->
+    <div id="sg-moon-orbit">
+      <svg id="sg-moon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12.5 8a5 5 0 01-6.9 4.64A5 5 0 108.5 3.05 5 5 0 0112.5 8z" fill="var(--gold)" opacity="0.9" />
+      </svg>
+    </div>
+    <!-- Inti lubang hitam – selalu di depan -->
+    <div id="sg-core"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════ INTRO GATE ═══════════════════════════════════ -->
+  <!-- Redirect to intro.html if this is a fresh visit (not returning from intro).
+       Must be INLINE (non-defer) so it fires before any HTML renders. -->
+  <script>
+    (function () {
+      if (!sessionStorage.getItem('intro_done')) {
+        sessionStorage.setItem('intro_done', '1');
+        window.location.replace('intro.html');
+      }
+    })();
+  </script>
+
+  <!-- ═══════════════════════════════════ BACKGROUND ═══════════════════════════════════ -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="hud-grid"></div>
+  <div class="nebula"></div>
+
+  <!-- ── TOP HUD STATUS BAR (Realtime Clock & Date) ── -->
+  <div id="top-status-bar">
+    <span class="hud-top-left">HR.ALLIANCE // DOJO-OF-LIMITS-SYS v7.4.2</span>
+    <span id="hud-clock" class="hud-top-right">--:--:-- // -- --- ----</span>
+  </div>
+
+  <!-- ═══════════════════════════════════ NAVBAR ═══════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-logo" onclick="scrollToSection('hero')">
+      <div class="nav-logo-box"><span>KT</span></div>
+      <span class="nav-logo-text">KAVIN<b>.</b>SYS</span>
+    </div>
+    <div class="nav-links">
+      <a href="#hero" onclick="scrollToSection('hero', event)" class="active">TERMINAL</a>
+      <a href="#about" onclick="scrollToSection('about', event)">BIO-SCAN</a>
+      <a href="#education" onclick="scrollToSection('education', event)">MISSION LOG</a>
+      <a href="#skills" onclick="scrollToSection('skills', event)">ATRIBUT</a>
+      <a href="#certificates" onclick="scrollToSection('certificates', event)">SERTIFIKASI</a>
+      <a href="#projects" onclick="scrollToSection('projects', event)">PROJECTS</a>
+      <a href="#contact" onclick="scrollToSection('contact', event)">TRANSMIT</a>
+    </div>
+    <button class="hamburger" id="ham-btn" aria-label="Menu">
+      <span id="ham1"></span><span id="ham2"></span><span id="ham3"></span>
+    </button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#hero" onclick="scrollToSection('hero', event);closeMob()" class="active">TERMINAL</a>
+    <a href="#about" onclick="scrollToSection('about', event);closeMob()">BIO-SCAN</a>
+    <a href="#education" onclick="scrollToSection('education', event);closeMob()">MISSION LOG</a>
+    <a href="#skills" onclick="scrollToSection('skills', event);closeMob()">ATRIBUT</a>
+    <a href="#certificates" onclick="scrollToSection('certificates', event);closeMob()">SERTIFIKASI</a>
+    <a href="#projects" onclick="scrollToSection('projects', event);closeMob()">PROJECTS</a>
+    <a href="#contact" onclick="scrollToSection('contact', event);closeMob()">TRANSMIT</a>
+  </div>
+
+  <!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
+  <section id="hero">
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+    <div class="vline" style="left:12%"></div>
+    <div class="vline" style="left:28%"></div>
+    <div class="vline" style="left:72%"></div>
+    <div class="vline" style="left:88%"></div>
+
+    <div class="hero-inner">
+      <!-- ── LEFT: Text Content ── -->
+      <div class="hero-content">
+        <div class="status-badge" style="display:inline-flex;margin-bottom:22px">
+          <div class="status-dot"></div>
+          <span class="status-text">SYSTEM_ONLINE &nbsp;•&nbsp; OPERATOR: ACTIVE &nbsp;•&nbsp; THREAT_LV: 0</span>
+        </div>
+
+        <div class="glitch-wrap" data-text="KAVIN THORIQ" style="display:block;margin-bottom:8px">
+          <h1 class="hero-name">KAVIN THORIQ</h1>
+        </div>
+
+        <p class="hero-role">◈ PELAJAR PPLG — SMK TI DWIGUNA ◈</p>
+
+        <div class="tagline-box hud-box" style="text-align:left">
+          <span class="c-bl"></span><span class="c-br"></span>
+          <p class="tagline-comment">// MISSION STATEMENT:</p>
+          <p class="tagline-text" id="typewriter"><span class="cursor">▊</span></p>
+        </div>
+
+        <div class="btn-row" style="justify-content:flex-start">
+          <button class="btn btn-cyan" onclick="scrollToSection('about')">▶ &nbsp;SCAN PROFIL</button>
+          <a class="btn btn-gold" href="mailto:kavinthoriq46@gmail.com">⊕ &nbsp;KIRIM TRANSMISI</a>
+        </div>
+      </div>
+
+      <!-- ── RIGHT: Luo Feng Character ── -->
+      <div class="luo-feng-wrap">
+        <!-- Rotating ring -->
+        <div class="luo-feng-ring"></div>
+        <!-- Aura glow -->
+        <div class="luo-feng-aura"></div>
+        <!-- Ground shadow -->
+        <div class="luo-feng-ground"></div>
+
+        <!-- Character image with scan -->
+        <div style="position:relative;z-index:2">
+          <img src="assets/img/characters/luo-feng.webp" alt="Luo Feng — Swallowed Star" class="luo-feng-img" />
+          <div class="luo-feng-scan"></div>
+        </div>
+
+        <!-- HUD floating tags -->
+        <div class="char-tag" style="top:12%;right:-10px;color:var(--cyan);animation-delay:0s">
+          ◈ LUO FENG
+        </div>
+        <div class="char-tag" style="top:28%;left:-20px;color:var(--gold);animation-delay:.6s">
+          ⚡ COSMIC CLASS
+        </div>
+        <div class="char-tag" style="top:48%;right:-15px;color:var(--green);animation-delay:1.2s">
+          ● ACTIVE
+        </div>
+        <div class="char-tag" style="bottom:28%;left:-10px;color:var(--cyan);animation-delay:1.8s">
+          ⊕ 吞噬星空
+        </div>
+        <div class="char-tag" style="bottom:12%;right:-5px;color:var(--gold);animation-delay:.9s">
+          SOARING SKY ⚔
+        </div>
+
+        <!-- Bottom name plate -->
+        <div
+          style="position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);z-index:5;text-align:center;white-space:nowrap">
+          <div
+            style="font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.2em;color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,.6);background:rgba(0,10,25,.9);border:1px solid rgba(255,215,0,.3);padding:4px 16px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))">
+            罗 枫 &nbsp;|&nbsp; LUO FENG
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>SCROLL DOWN</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ ABOUT ═══════════════════════════════════ -->
+  <section id="about" class="section">
+    <div class="container">
+      <p class="sec-label">◈ SUBSISTEM — BIO-SCANNER v2.4 ◈</p>
+      <h2 class="sec-title">DATA PROFIL</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line"></div>
+        <div class="sec-divider-gem"></div>
+        <div class="sec-divider-line rev"></div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Left -->
+        <div class="reveal from-left">
+          <div class="glass cut hud-box press" style="padding:28px 28px 24px">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <p class="sec-label" style="text-align:left;margin-bottom:14px">// DESKRIPSI OPERATOR</p>
+            <p style="font-size:.88rem;color:rgba(200,230,255,.83);line-height:1.75;margin-bottom:20px">
+              Siswa SMK PPLG yang menguasai dasar pemrograman web/mobile, SQL, dan UI/UX design.
+              Adaptif, komunikatif, dan terbiasa bekerja dalam tim untuk menyelesaikan proyek software secara efektif.
+            </p>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+              <div style="flex:1;height:1px;background:rgba(0,245,255,.18)"></div>
+              <div style="width:7px;height:7px;background:var(--cyan);transform:rotate(45deg)"></div>
+              <div style="flex:1;height:1px;background:rgba(0,245,255,.18)"></div>
+            </div>
+            <div class="info-grid">
+              <div class="info-card">
+                <p class="info-card-key">◈ NAMA LENGKAP</p>
+                <p class="info-card-val">Kavin Thoriq</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">◉ LAHIR</p>
+                <p class="info-card-val">Bogor, 13 Oktober 2009</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">◐ DOMISILI</p>
+                <p class="info-card-val">Bogor, Jawa Barat</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">⊕ STATUS</p>
+                <p class="info-card-val">Pelajar Aktif — PPLG</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">⊗ EMAIL</p>
+                <p class="info-card-val" style="font-size:.72rem">kavinthoriq46@gmail.com</p>
+              </div>
+              <div class="info-card">
+                <p class="info-card-key">◈ GITHUB</p>
+                <p class="info-card-val" style="font-size:.72rem">github.com/kavinthoriq</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <!-- Stat cards -->
+          <div class="stat-grid reveal">
+            <div class="stat-card press hud-box"><span class="c-bl"></span><span class="c-br"></span>
+              <span class="stat-num" data-count="6" data-suffix="+">0+</span>
+              <p class="stat-lbl">PROYEK</p>
+            </div>
+            <div class="stat-card press hud-box"><span class="c-bl"></span><span class="c-br"></span>
+              <span class="stat-num" data-count="12" data-suffix="+">0+</span>
+              <p class="stat-lbl">SKILL</p>
+            </div>
+            <div class="stat-card press hud-box"><span class="c-bl"></span><span class="c-br"></span>
+              <span class="stat-num" data-count="2009" data-suffix="">0</span>
+              <p class="stat-lbl">TAHUN LAHIR</p>
+            </div>
+          </div>
+
+          <!-- Radial stats -->
+          <div class="reveal glass cut hud-box press" style="padding:22px 18px">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <p class="sec-label" style="margin-bottom:18px">// ANALISIS KEMAMPUAN</p>
+            <div class="radial-grid">
+              <div class="radial-item"><canvas class="radial-canvas" data-val="82" data-color="#00f5ff" width="90"
+                  height="90"></canvas><span class="radial-label">WEB DEV</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="68" data-color="#0099ff" width="90"
+                  height="90"></canvas><span class="radial-label">GAME DEV</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="75" data-color="#ffd700" width="90"
+                  height="90"></canvas><span class="radial-label">UI/UX</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="72" data-color="#00ff88" width="90"
+                  height="90"></canvas><span class="radial-label">DATABASE</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="85" data-color="#00f5ff" width="90"
+                  height="90"></canvas><span class="radial-label">PROBLEM SOLVING</span></div>
+              <div class="radial-item"><canvas class="radial-canvas" data-val="90" data-color="#ffd700" width="90"
+                  height="90"></canvas><span class="radial-label">TEAMWORK</span></div>
+            </div>
+          </div>
+
+          <!-- Quote -->
+          <div class="quote-card reveal hud-gold hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <p class="quote-text">"Dalam alam semesta ini, yang lemah tidak memiliki hak untuk hidup dengan nyaman.
+              Hanya yang kuat yang bisa melindungi apa yang mereka cintai."</p>
+            <p class="quote-src">— Luo Feng, Swallowed Star</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ EDUCATION ═══════════════════════════════════ -->
+  <section id="education" class="section">
+    <div class="container">
+      <p class="sec-label">◈ DATABASE — MISSION LOGS ◈</p>
+      <h2 class="sec-title gold">LOG MISI &amp; PENDIDIKAN</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line" style="background:linear-gradient(to right,transparent,rgba(255,215,0,.4))"></div>
+        <div class="sec-divider-gem" style="background:var(--gold);box-shadow:0 0 8px var(--gold)"></div>
+        <div class="sec-divider-line rev" style="background:linear-gradient(to left,transparent,rgba(255,215,0,.4))">
+        </div>
+      </div>
+
+      <div class="timeline">
+        <!-- M-001 -->
+        <div class="mission-item reveal">
+          <div class="mission-dot" style="background:var(--green);color:var(--green)"></div>
+          <div class="mission-card hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <div class="mission-top">
+              <div>
+                <div class="mission-badges">
+                  <span class="mission-id">M-001</span>
+                  <span class="mission-status"
+                    style="color:var(--green);background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3)">●
+                    ACTIVE</span>
+                  <span class="mission-type">[PENDIDIKAN]</span>
+                </div>
+                <h3 class="mission-title">🎓 SMK TI DWIGUNA KOTA DEPOK</h3>
+                <p class="mission-sub">Pengembangan Perangkat Lunak dan Gim (PPLG)</p>
+              </div>
+              <span class="mission-period">2024 — SEKARANG</span>
+            </div>
+            <div class="mission-divider"></div>
+            <p class="mission-desc">Program keahlian berfokus pada pengembangan aplikasi web, mobile, game 2D/3D, serta
+              manajemen database. Kurikulum berbasis industri dengan project-based learning intensif.</p>
+            <div class="mission-tags">
+              <span class="mission-tag">Web Dev</span>
+              <span class="mission-tag">Mobile</span>
+              <span class="mission-tag">Game Dev</span>
+              <span class="mission-tag">SQL</span>
+              <span class="mission-tag">UI/UX</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M-002 -->
+        <div class="mission-item reveal" style="transition-delay:.1s">
+          <div class="mission-dot" style="background:var(--cyan);color:var(--cyan)"></div>
+          <div class="mission-card hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <div class="mission-top">
+              <div>
+                <div class="mission-badges">
+                  <span class="mission-id">M-002</span>
+                  <span class="mission-status"
+                    style="color:var(--cyan);background:rgba(0,245,255,.07);border:1px solid rgba(0,245,255,.25)">●
+                    COMPLETED</span>
+                  <span class="mission-type">[PROYEK UTAMA]</span>
+                </div>
+                <h3 class="mission-title">⚙️ Website &amp; Database System</h3>
+                <p class="mission-sub">Full-Stack Web Application</p>
+              </div>
+              <span class="mission-period">2024 — 2025</span>
+            </div>
+            <div class="mission-divider"></div>
+            <p class="mission-desc">Membangun aplikasi web dinamis dengan integrasi database SQL. Mencakup desain skema
+              relasional, optimasi query, autentikasi pengguna, dan antarmuka responsif berbasis HTML/CSS/JS.</p>
+            <div class="mission-tags">
+              <span class="mission-tag">HTML/CSS</span>
+              <span class="mission-tag">JavaScript</span>
+              <span class="mission-tag">PHP</span>
+              <span class="mission-tag">MySQL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M-003 -->
+        <div class="mission-item reveal" style="transition-delay:.2s">
+          <div class="mission-dot" style="background:var(--cyan);color:var(--cyan)"></div>
+          <div class="mission-card hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <div class="mission-top">
+              <div>
+                <div class="mission-badges">
+                  <span class="mission-id">M-003</span>
+                  <span class="mission-status"
+                    style="color:var(--cyan);background:rgba(0,245,255,.07);border:1px solid rgba(0,245,255,.25)">●
+                    COMPLETED</span>
+                  <span class="mission-type">[PROYEK UTAMA]</span>
+                </div>
+                <h3 class="mission-title">🎨 UI/UX Prototype Design</h3>
+                <p class="mission-sub">Human-Centered Interface Design</p>
+              </div>
+              <span class="mission-period">2024 — 2025</span>
+            </div>
+            <div class="mission-divider"></div>
+            <p class="mission-desc">Merancang prototipe antarmuka pengguna yang intuitif menggunakan pendekatan design
+              thinking, wireframing, hingga high-fidelity mockup interaktif yang siap di-handoff ke developer.</p>
+            <div class="mission-tags">
+              <span class="mission-tag">Figma</span>
+              <span class="mission-tag">Prototyping</span>
+              <span class="mission-tag">User Research</span>
+              <span class="mission-tag">Design System</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M-004 -->
+        <div class="mission-item reveal" style="transition-delay:.3s">
+          <div class="mission-dot" style="background:var(--gold);color:var(--gold)"></div>
+          <div class="mission-card hud-box">
+            <span class="c-bl"></span><span class="c-br"></span>
+            <div class="mission-top">
+              <div>
+                <div class="mission-badges">
+                  <span class="mission-id">M-004</span>
+                  <span class="mission-status"
+                    style="color:var(--gold);background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3)">● IN
+                    PROGRESS</span>
+                  <span class="mission-type">[PROYEK UTAMA]</span>
+                </div>
+                <h3 class="mission-title">🎮 Game Development 2D</h3>
+                <p class="mission-sub">Indie Game Project</p>
+              </div>
+              <span class="mission-period">2025 — SEKARANG</span>
+            </div>
+            <div class="mission-divider"></div>
+            <p class="mission-desc">Mengembangkan game 2D menggunakan game engine modern. Merancang mekanik gameplay
+              yang engaging, level design bertahap, aset visual 2D orisinal, dan sistem skor/leaderboard.</p>
+            <div class="mission-tags">
+              <span class="mission-tag">Game Engine</span>
+              <span class="mission-tag">Game Design</span>
+              <span class="mission-tag">Physics</span>
+              <span class="mission-tag">2D Art</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ SKILLS ═══════════════════════════════════ -->
+  <section id="skills" class="section">
+    <div class="container">
+      <p class="sec-label">◈ MODUL — ATRIBUT KARAKTER ◈</p>
+      <h2 class="sec-title">SKILL &amp; STATISTIK</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line"></div>
+        <div class="sec-divider-gem"></div>
+        <div class="sec-divider-line rev"></div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:24px">
+        <!-- Hard Skills -->
+        <div class="reveal from-left glass cut hud-box press" style="padding:26px 28px">
+          <span class="c-bl"></span><span class="c-br"></span>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px">
+            <div
+              style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--cyan);background:rgba(0,245,255,.08);clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));font-size:.8rem;color:var(--cyan)">
+              ⚙</div>
+            <div>
+              <p class="sec-label" style="text-align:left">HARD SKILLS</p>
+              <p style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:rgba(0,245,255,.38)">Kemampuan
+                Teknis Terukur</p>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Pemrograman Web &amp; Mobile</span><span
+                class="skill-bar-pct">82%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="82"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">UI/UX Design</span><span
+                class="skill-bar-pct">75%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="75"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Game Development 2D</span><span
+                class="skill-bar-pct">68%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="68"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Pengelolaan Database (SQL)</span><span
+                class="skill-bar-pct">72%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="72"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Git &amp; GitHub</span><span
+                class="skill-bar-pct">78%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="78"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-header"><span class="skill-bar-name">Microsoft Office</span><span
+                class="skill-bar-pct">88%</span></div>
+            <div class="skill-track">
+              <div class="skill-fill" data-pct="88"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soft Skills -->
+        <div class="reveal from-right glass cut press"
+          style="padding:26px 28px;border-color:rgba(255,215,0,.18);position:relative">
+          <div
+            style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2px solid var(--gold);border-right:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)">
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px">
+            <div
+              style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--gold);background:rgba(255,215,0,.08);clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));font-size:.8rem;color:var(--gold)">
+              ◈</div>
+            <div>
+              <p class="sec-label" style="text-align:left;color:var(--gold)">SOFT SKILLS</p>
+              <p style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:rgba(255,215,0,.38)">Kemampuan
+                Interpersonal</p>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Problem Solving</span><span
+                class="skill-bar-pct">87%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="87"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Kerja Sama Tim</span><span
+                class="skill-bar-pct">92%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="92"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Berpikir Logis &amp; Analitis</span><span
+                class="skill-bar-pct">85%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="85"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Kemampuan Beradaptasi</span><span
+                class="skill-bar-pct">88%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="88"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Ketelitian</span><span
+                class="skill-bar-pct">83%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="83"></div>
+            </div>
+          </div>
+          <div class="skill-bar-wrap skill-bar-gold">
+            <div class="skill-bar-header"><span class="skill-bar-name">Komunikasi</span><span
+                class="skill-bar-pct">80%</span></div>
+            <div class="skill-track skill-track-gold">
+              <div class="skill-fill skill-fill-gold" data-pct="80"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arsenal badges -->
+      <div class="reveal glass cut hud-box" style="padding:22px 20px">
+        <span class="c-bl"></span><span class="c-br"></span>
+        <p class="sec-label" style="margin-bottom:18px">// ARSENAL TEKNOLOGI</p>
+        <div class="tool-badges">
+          <div class="tool-badge">🌐 HTML5</div>
+          <div class="tool-badge">🎨 CSS3</div>
+          <div class="tool-badge">⚡ JavaScript</div>
+          <div class="tool-badge">🔧 PHP</div>
+          <div class="tool-badge">🗃️ MySQL</div>
+          <div class="tool-badge">✏️ Figma</div>
+          <div class="tool-badge">🌿 Git</div>
+          <div class="tool-badge">🐙 GitHub</div>
+          <div class="tool-badge">💻 VS Code</div>
+          <div class="tool-badge">🎮 Game Engine</div>
+          <div class="tool-badge">📊 MS Office</div>
+          <div class="tool-badge">🐧 Linux Basics</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ CERTIFICATES ═══════════════════════════════════ -->
+  <section id="certificates" class="section">
+    <div class="container">
+      <p class="sec-label">◈ DATABASE — CREDENTIAL ARCHIVE ◈</p>
+      <h2 class="sec-title gold">SERTIFIKASI</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line" style="background:linear-gradient(to right,transparent,rgba(255,215,0,.4))"></div>
+        <div class="sec-divider-gem" style="background:var(--gold);box-shadow:0 0 8px var(--gold)"></div>
+        <div class="sec-divider-line rev" style="background:linear-gradient(to left,transparent,rgba(255,215,0,.4))">
+        </div>
+      </div>
+
+      <!-- Certificate Grid (rendered by JS) -->
+      <div class="cert-grid" id="cert-grid" role="list" aria-label="Daftar sertifikasi"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ PROJECTS ═══════════════════════════════════ -->
+  <section id="projects" class="section">
+    <div class="container">
+      <p class="sec-label">◈ DATABASE — PROJECT ARCHIVE ◈</p>
+      <h2 class="sec-title">// PROJECT ARCHIVE</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line"></div>
+        <div class="sec-divider-gem"></div>
+        <div class="sec-divider-line rev"></div>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="proj-filter-bar reveal" role="group" aria-label="Filter proyek berdasarkan kategori">
+        <button class="proj-filter-btn active" data-filter="ALL" aria-pressed="true">◈ ALL</button>
+        <button class="proj-filter-btn" data-filter="Web" aria-pressed="false">⚡ WEB</button>
+        <button class="proj-filter-btn" data-filter="Game" aria-pressed="false">🎮 GAME</button>
+        <button class="proj-filter-btn" data-filter="Design" aria-pressed="false">✏️ DESIGN</button>
+      </div>
+
+      <!-- Project Grid (rendered by JS) -->
+      <div class="proj-grid" id="proj-grid" role="list" aria-label="Daftar proyek"></div>
+      <p class="proj-empty" id="proj-empty">[ NO PROJECTS MATCH SELECTED FILTER ]</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ CONTACT ═══════════════════════════════════ -->
+  <section id="contact" class="section">
+    <div class="container">
+      <p class="sec-label">◈ CHANNEL — TRANSMISSION HUB ◈</p>
+      <h2 class="sec-title">KIRIM TRANSMISI</h2>
+      <div class="sec-divider">
+        <div class="sec-divider-line"></div>
+        <div class="sec-divider-gem"></div>
+        <div class="sec-divider-line rev"></div>
+      </div>
+
+      <!-- Status bar -->
+      <div class="contact-status-bar reveal">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="status-dot"></div>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--green)">CHANNEL AKTIF — SIAP
+            MENERIMA TRANSMISI</span>
+        </div>
+        <span
+          style="margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:rgba(0,245,255,.35)">ENKRIPSI:
+          AES-256 &nbsp;•&nbsp; LATENSI: 0ms</span>
+      </div>
+
+      <!-- Contact cards -->
+      <div class="contact-cards">
+        <!-- GitHub -->
+        <a href="https://github.com/kavinthoriq" target="_blank" class="contact-card reveal"
+          style="border-color:rgba(0,245,255,.22)">
+          <div
+            style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)">
+          </div>
+          <div
+            style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2px solid var(--cyan);border-right:2px solid var(--cyan)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2px solid var(--cyan);border-left:2px solid var(--cyan)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)">
+          </div>
+          <div class="contact-icon-box"
+            style="border-color:rgba(0,245,255,.4);background:rgba(0,245,255,.08);color:var(--cyan)">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+          </div>
+          <p class="contact-label" style="color:rgba(0,245,255,.5)">◈ GITHUB</p>
+          <p class="contact-value">github.com/kavinthoriq</p>
+          <span class="contact-cta"
+            style="background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.25);color:var(--cyan)">KUNJUNGI
+            →</span>
+        </a>
+
+        <!-- Email -->
+        <a href="mailto:kavinthoriq46@gmail.com" class="contact-card reveal"
+          style="transition-delay:.1s;border-color:rgba(255,215,0,.2)">
+          <div
+            style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2px solid var(--gold);border-right:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)">
+          </div>
+          <div class="contact-icon-box"
+            style="border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.08);color:var(--gold)">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+            </svg>
+          </div>
+          <p class="contact-label" style="color:rgba(255,215,0,.5)">◈ EMAIL</p>
+          <p class="contact-value">kavinthoriq46@gmail.com</p>
+          <span class="contact-cta"
+            style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);color:var(--gold)">KIRIM EMAIL
+            →</span>
+        </a>
+
+        <!-- Location -->
+        <a href="https://maps.google.com/?q=Bogor,Jawa+Barat" target="_blank" class="contact-card reveal"
+          style="transition-delay:.2s;border-color:rgba(0,255,136,.18)">
+          <div
+            style="position:absolute;top:0;left:0;width:14px;height:14px;border-top:2px solid var(--green);border-left:2px solid var(--green)">
+          </div>
+          <div
+            style="position:absolute;top:0;right:0;width:14px;height:14px;border-top:2px solid var(--green);border-right:2px solid var(--green)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;left:0;width:14px;height:14px;border-bottom:2px solid var(--green);border-left:2px solid var(--green)">
+          </div>
+          <div
+            style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-bottom:2px solid var(--green);border-right:2px solid var(--green)">
+          </div>
+          <div class="contact-icon-box"
+            style="border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.08);color:var(--green)">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+          </div>
+          <p class="contact-label" style="color:rgba(0,255,136,.5)">◈ LOKASI</p>
+          <p class="contact-value">Bogor, Jawa Barat</p>
+          <span class="contact-cta"
+            style="background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);color:var(--green)">LIHAT MAP
+            →</span>
+        </a>
+      </div>
+
+      <!-- CTA Box -->
+      <div class="cta-box reveal hud-gold hud-box">
+        <span class="c-bl"></span><span class="c-br"></span>
+        <div class="cta-icon">🌟</div>
+        <h3 class="cta-title">SIAP UNTUK BERKOLABORASI?</h3>
+        <p class="cta-desc">Saya selalu terbuka untuk peluang baru, proyek kolaborasi, maupun diskusi seputar teknologi.
+          Jangan ragu untuk menghubungi!</p>
+        <a href="mailto:kavinthoriq46@gmail.com" class="btn btn-gold">⊕ &nbsp;INISIASI KONTAK</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ FOOTER ═══════════════════════════════════ -->
+  <footer>
+    <span class="footer-left">© 2025 KAVIN THORIQ — ALL SYSTEMS OPERATIONAL</span>
+    <div class="footer-right">
+      <div class="footer-dot"></div>
+      SWALLOWED STAR PORTFOLIO v2.0 • PURE HTML/CSS/JS
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════ BOTTOM TICKER BAR ═══════════════════════════════════ -->
+  <div class="index-ticker-bar">
+    <div class="index-ticker-track">
+      <!-- Salinan 1 -->
+      <div class="index-ticker-text">
+        ◈ <b>HR.ALLIANCE NODE</b> — ALL SYSTEMS OPERATIONAL ◈ &nbsp;///&nbsp;
+        OPERATOR: <b>KAVIN THORIQ</b> &nbsp;///&nbsp;
+        SKILL: <span class="itk-cyan">WEB DEV 82%</span> | <span class="itk-gold">UI/UX 75%</span> | <span
+          class="itk-green">GAME DEV 68%</span> &nbsp;///&nbsp;
+        CLEARANCE: <span class="itk-gold">COSMIC CLASS</span> &nbsp;///&nbsp;
+        GITHUB: <b>github.com/kavinthoriq</b> &nbsp;///&nbsp;
+        QUOTE: <span class="itk-gold">"Hanya yang kuat bisa melindungi apa yang mereka cintai" — Luo Feng</span>
+        &nbsp;///&nbsp;
+        STATUS: <b>SYSTEM ONLINE</b> &nbsp;///&nbsp;
+        CONTACT: <b>kavinthoriq46@gmail.com</b> &nbsp;///&nbsp;
+        SWALLOWED STAR: <span class="itk-cyan">吞噬星空</span> &nbsp;///&nbsp;
+      </div>
+      <!-- Salinan 2 (seamless loop) -->
+      <div class="index-ticker-text">
+        ◈ <b>HR.ALLIANCE NODE</b> — ALL SYSTEMS OPERATIONAL ◈ &nbsp;///&nbsp;
+        OPERATOR: <b>KAVIN THORIQ</b> &nbsp;///&nbsp;
+        SKILL: <span class="itk-cyan">WEB DEV 82%</span> | <span class="itk-gold">UI/UX 75%</span> | <span
+          class="itk-green">GAME DEV 68%</span> &nbsp;///&nbsp;
+        CLEARANCE: <span class="itk-gold">COSMIC CLASS</span> &nbsp;///&nbsp;
+        GITHUB: <b>github.com/kavinthoriq</b> &nbsp;///&nbsp;
+        QUOTE: <span class="itk-gold">"Hanya yang kuat bisa melindungi apa yang mereka cintai" — Luo Feng</span>
+        &nbsp;///&nbsp;
+        STATUS: <b>SYSTEM ONLINE</b> &nbsp;///&nbsp;
+        CONTACT: <b>kavinthoriq46@gmail.com</b> &nbsp;///&nbsp;
+        SWALLOWED STAR: <span class="itk-cyan">吞噬星空</span> &nbsp;///&nbsp;
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ AUDIO SYSTEM INDEX ═══════════════════════════════════ -->
+  <div id="sfx-mute-btn"
+    style="position:fixed;bottom:52px;right:16px;z-index:9999;cursor:pointer;background:rgba(2,8,18,0.92);border:1px solid rgba(0,245,255,0.3);padding:6px 11px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,245,255,0.75);letter-spacing:0.12em;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));user-select:none"
+    title="Toggle Sound">🔊 SFX</div>
+
+  <!-- ═══════════════════════════════════ SCRIPTS ═══════════════════════════════════ -->
+  <!-- data must load before projects.js; audio-engine before sfx.js and entry-sound.js -->
+  <script src="data/projects.js" defer></script>
+  <script src="data/certificates.js" defer></script>
+  <script src="assets/js/shared/starfield.js" defer></script>
+  <script src="assets/js/shared/hud-clock.js" defer></script>
+  <script src="assets/js/shared/audio-engine.js" defer></script>
+  <script src="assets/js/main/entry-sound.js" defer></script>
+  <script src="assets/js/main/navigation.js" defer></script>
+  <script src="assets/js/main/typewriter.js" defer></script>
+  <script src="assets/js/main/reveal.js" defer></script>
+  <script src="assets/js/main/projects.js" defer></script>
+  <script src="assets/js/main/certificates.js" defer></script>
+  <script src="assets/js/main/sfx.js" defer></script>
+  <script src="assets/js/main/cursor.js" defer></script>
+
+</body>
+
+</html>

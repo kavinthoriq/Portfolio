@@ -1,0 +1,141 @@
+/* ═══════════════════════════════════════
+   ABOUT.CSS
+   Swallowed Star Portfolio
+═══════════════════════════════════════ */
+
+/* ── Info cards ── */
+.info-card {
+  background: rgba(0, 245, 255, .04);
+  border: 1px solid rgba(0, 245, 255, .12);
+  padding: 11px 13px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  transition: all .25s;
+  cursor: default;
+}
+
+.info-card:hover {
+  background: rgba(0, 245, 255, .09);
+  border-color: rgba(0, 245, 255, .28);
+  transform: translateY(-2px);
+}
+
+.info-card-key {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .55rem;
+  letter-spacing: .18em;
+  color: rgba(0, 245, 255, .4);
+  margin-bottom: 4px;
+}
+
+.info-card-val {
+  font-size: .8rem;
+  color: rgba(200, 240, 255, .88);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+@media (max-width: 500px) {
+  .info-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Radial stats ── */
+.radial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  justify-items: center;
+}
+
+@media (max-width: 600px) {
+  .radial-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.radial-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all .25s;
+  cursor: default;
+}
+
+.radial-item:hover { transform: translateY(-3px); }
+
+.radial-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .55rem;
+  text-align: center;
+  color: rgba(0, 245, 255, .55);
+  letter-spacing: .06em;
+}
+
+/* ── Stat counter cards ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 600px)  { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px)  { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  text-align: center;
+  padding: 18px 8px;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  transition: all .25s;
+  cursor: default;
+  position: relative;
+}
+
+.stat-card:hover {
+  border-color: rgba(0, 245, 255, .4);
+  box-shadow: 0 0 20px rgba(0, 245, 255, .12);
+  transform: translateY(-3px);
+}
+
+.stat-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cyan);
+  display: block;
+}
+
+.stat-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  color: rgba(0, 245, 255, .5);
+  margin-top: 4px;
+}
+
+/* ── Quote card ── */
+.quote-card {
+  background: rgba(255, 215, 0, .04);
+  border: 1px solid rgba(255, 215, 0, .18);
+  padding: 18px 20px;
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+}
+
+.quote-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .8rem;
+  color: rgba(255, 215, 0, .8);
+  line-height: 1.7;
+}
+
+.quote-src {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  color: rgba(255, 215, 0, .35);
+  text-align: right;
+  margin-top: 8px;
+}

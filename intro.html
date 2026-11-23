@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cinematic Intro — Swallowed Star | Kavin Thoriq</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'deep-space': '#020812',
+            'terminal': '#00ff88',
+            'cyan-neon': '#00f5ff',
+            'gold': '#ffd700',
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+            courier: ['"Courier New"', 'Courier', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <!-- ═══════════════ CSS ═══════════════ -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/intro.css" />
+</head>
+
+<body class="bg-black text-white overflow-hidden">
+
+  <!-- ══════════════════════════════════════════════
+       INTRO OVERLAY (Pre-loader Menutupi Layar)
+  ══════════════════════════════════════════════ -->
+  <div id="intro-overlay"
+    class="fixed inset-0 w-full h-screen flex flex-col items-center justify-center z-50 overflow-hidden"
+    style="background: radial-gradient(ellipse 85% 85% at 50% 50%, #020812 0%, #000000 100%);">
+
+    <!-- ── Fullscreen Wallpaper Foto Karakter ── -->
+    <div id="fullscreen-bg">
+      <img src="assets/img/characters/luo-feng-full.webp" alt="Luo Feng — Swallowed Star" />
+    </div>
+
+    <!-- Starfield Partikel Canvas -->
+    <canvas id="star-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Corner Brackets HUD -->
+    <div class="corner-bracket tl"></div>
+    <div class="corner-bracket tr"></div>
+    <div class="corner-bracket bl"></div>
+    <div class="corner-bracket br"></div>
+
+    <!-- Hologram Orbit Rings (Reveal di Fase 3) -->
+    <div id="holo-rings" class="pointer-events-none z-10" style="opacity: 0; transition: opacity 1.2s ease;">
+      <div class="char-aura"></div>
+      <div class="holo-ring ring-a"></div>
+      <div class="holo-ring ring-b"></div>
+    </div>
+
+    <!-- ── Top Status Bar (HUD Header: Realtime Clock & Date) ── -->
+    <div id="top-status-bar" class="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-2.5 z-40"
+      style="border-bottom: 1px solid rgba(0, 245, 255, 0.12); background: rgba(0, 6, 16, 0.65); backdrop-filter: blur(6px);">
+      <span
+        style="font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: rgba(0, 245, 255, 0.7); letter-spacing: 0.14em;">
+        HR.ALLIANCE // DOJO-OF-LIMITS-SYS v7.4.2
+      </span>
+      <span id="hud-clock"
+        style="font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--cyan); letter-spacing: 0.14em; text-shadow: 0 0 8px rgba(0, 245, 255, 0.6);">
+        --:--:-- // -- --- ----
+      </span>
+    </div>
+
+    <!-- ─────────────────────────────────────────────
+         FASE 1: SYSTEM BOOT-UP (0 - 2 Detik)
+    ───────────────────────────────────────────────── -->
+    <div id="phase-boot"
+      class="phase active absolute inset-0 flex flex-col justify-start pt-16 px-8 pb-8 sm:pt-20 sm:px-14 sm:pb-14 z-20"
+      style="transition: opacity 0.5s ease;">
+      <!-- Terminal Teks Monospace / Courier -->
+      <div id="term-panel" class="w-full max-w-xl" style="
+          font-family: 'Courier New', Courier, monospace;
+          font-size: clamp(0.72rem, 1.4vw, 0.88rem);
+          color: var(--green);
+          line-height: 2.1;
+          letter-spacing: 0.05em;
+          text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+        ">
+        <!-- Teks diketik otomatis oleh JavaScript -->
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────
+         FASE 2: USER AUTHENTICATION & GLITCH (2 - 4 Detik)
+    ───────────────────────────────────────────────── -->
+    <div id="phase-auth" class="phase absolute inset-0 flex items-center justify-center z-30"
+      style="transition: opacity 0.4s ease;">
+      <div class="text-center px-4">
+        <div id="welcome-wrap">
+          <!-- Glitch Welcome Text -->
+          <div class="glitch-wrapper" data-text="WELCOME, KAVIN THORIQ">
+            <span class="glitch-text">WELCOME, KAVIN THORIQ</span>
+          </div>
+          <div class="flex justify-center mt-3">
+            <div id="welcome-divider" class="divider-line"></div>
+          </div>
+          <p
+            style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.25em;color:rgba(0,245,255,0.7);margin-top:12px">
+            OPERATOR IDENTIFIED — ACCESS AUTHORIZED
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────
+         FASE 3: VISUAL REVEAL & CALL TO ACTION (4 Detik dst.)
+    ───────────────────────────────────────────────── -->
+    <div id="phase-reveal" class="phase absolute inset-0 flex flex-col items-center justify-end pb-20 z-20">
+      <!-- CTA Container dengan data HUD & Tombol -->
+      <div id="cta-container" class="flex flex-col items-center gap-4 text-center">
+        <!-- Floating HUD Badges -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <div class="hud-badge text-[var(--gold)]">⚡ CLASS: COSMIC GRADE</div>
+          <div class="hud-badge text-[var(--cyan)]">◈ TARGET: LUO FENG</div>
+          <div class="hud-badge text-[var(--green)]">● STATUS: AWAKENED</div>
+        </div>
+
+        <!-- Tombol Besar Chamfered [ ENTER TERMINAL ] -->
+        <button class="enter-btn" id="enter-btn" onclick="exitIntro()">
+          [ &nbsp;ENTER TERMINAL&nbsp; ]
+        </button>
+
+        <p
+          style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.2em;color:rgba(0,245,255,0.4)">
+          PRESS ENTER &nbsp;•&nbsp; KLIK UNTUK MEMBUKA SISTEM UTAMA
+        </p>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────
+         BOTTOM TICKER: TEKS BERJALAN BEBAS FREEZE
+         100% GPU-Accelerated CSS @keyframes
+    ───────────────────────────────────────────────── -->
+    <div class="ticker-bar">
+      <div class="ticker-track">
+        <!-- Salinan 1 -->
+        <div class="ticker-text">
+          ◈ <b>HR ALLIANCE NODE</b> — DOJO OF LIMITS ACCESS GRANTED ◈ &nbsp;///&nbsp;
+          OPERATOR: <b>KAVIN THORIQ</b> &nbsp;///&nbsp;
+          CLEARANCE LEVEL: <span class="gold">COSMIC CLASS</span> &nbsp;///&nbsp;
+          STATUS: <b>ALL SYSTEMS NOMINAL</b> &nbsp;///&nbsp;
+          SECURITY OVERRIDE: <b>OK</b> &nbsp;///&nbsp;
+          TARGET: <b>LUO FENG [AWAKENED]</b> &nbsp;///&nbsp;
+          SATELLITE UPLINK: <b>ACTIVE</b> &nbsp;///&nbsp;
+          SYSTEM LATENCY: <b>0ms</b> &nbsp;///&nbsp;
+        </div>
+        <!-- Salinan 2 (seamless 360 loop tanpa jeda) -->
+        <div class="ticker-text">
+          ◈ <b>HR ALLIANCE NODE</b> — DOJO OF LIMITS ACCESS GRANTED ◈ &nbsp;///&nbsp;
+          OPERATOR: <b>KAVIN THORIQ</b> &nbsp;///&nbsp;
+          CLEARANCE LEVEL: <span class="gold">COSMIC CLASS</span> &nbsp;///&nbsp;
+          STATUS: <b>ALL SYSTEMS NOMINAL</b> &nbsp;///&nbsp;
+          SECURITY OVERRIDE: <b>OK</b> &nbsp;///&nbsp;
+          TARGET: <b>LUO FENG [AWAKENED]</b> &nbsp;///&nbsp;
+          SATELLITE UPLINK: <b>ACTIVE</b> &nbsp;///&nbsp;
+          SYSTEM LATENCY: <b>0ms</b> &nbsp;///&nbsp;
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /intro-overlay -->
+
+  <!-- ═══════════════════════════════════ AUDIO MUTE BUTTON ═══════════════════════════════════ -->
+  <div id="audio-mute-btn"
+    style="position:fixed;bottom:52px;right:16px;z-index:9999;cursor:pointer;background:rgba(0,0,0,0.85);border:1px solid rgba(0,245,255,0.3);padding:6px 11px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,245,255,0.75);letter-spacing:0.12em;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));user-select:none"
+    title="Toggle Sound">🔊 SFX</div>
+
+  <!-- ═══════════════════════════════════ SCRIPTS ═══════════════════════════════════ -->
+  <script src="assets/js/shared/starfield.js" defer></script>
+  <script src="assets/js/shared/hud-clock.js" defer></script>
+  <script src="assets/js/shared/audio-engine.js" defer></script>
+  <script src="assets/js/intro/intro.js" defer></script>
+
+</body>
+
+</html>

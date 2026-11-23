@@ -1,0 +1,117 @@
+/* ═══════════════════════════════════════
+   CONTACT.CSS
+   Swallowed Star Portfolio
+═══════════════════════════════════════ */
+
+.contact-status-bar {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 13px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 480px)                     { .contact-cards { grid-template-columns: 1fr; } }
+@media (min-width: 481px) and (max-width: 768px) { .contact-cards { grid-template-columns: repeat(2, 1fr); } }
+
+.contact-card {
+  background: var(--panel);
+  border: 1px solid rgba(0, 245, 255, .18);
+  padding: 24px 18px;
+  text-align: center;
+  transition: all .28s;
+  cursor: pointer;
+  display: block;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  position: relative;
+}
+
+.contact-card:hover  { transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 36px rgba(0, 245, 255, .18); }
+.contact-card:active { transform: translateY(1px) scale(.98); }
+
+.contact-icon-box {
+  width: 48px; height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  margin: 0 auto 14px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.contact-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .2em;
+  margin-bottom: 6px;
+}
+
+.contact-value {
+  font-size: .78rem;
+  color: rgba(200, 240, 255, .82);
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.contact-cta {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .15em;
+  margin-top: 12px;
+  padding: 5px 12px;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+  display: inline-block;
+}
+
+/* ── CTA Box ── */
+.cta-box {
+  background: rgba(255, 215, 0, .04);
+  border: 1px solid rgba(255, 215, 0, .22);
+  padding: 40px 28px;
+  text-align: center;
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+  position: relative;
+}
+
+@media (max-width: 480px) { .cta-box { padding: 28px 16px; } }
+
+.cta-icon {
+  width: 64px; height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--gold);
+  background: rgba(255, 215, 0, .08);
+  margin: 0 auto 18px;
+  font-size: 1.9rem;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  animation: float 3.5s ease-in-out infinite;
+}
+
+.cta-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(255, 215, 0, .4);
+  margin-bottom: 10px;
+}
+
+.cta-desc {
+  font-size: .84rem;
+  color: rgba(200, 230, 255, .65);
+  max-width: 420px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+}

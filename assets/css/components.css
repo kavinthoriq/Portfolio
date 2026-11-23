@@ -1,0 +1,252 @@
+/* ═══════════════════════════════════════
+   COMPONENTS.CSS — Glass, HUD-box, Chamfer, Buttons, Badges,
+                    Top Status Bar, Section Header, Ticker (index)
+   Swallowed Star Portfolio
+═══════════════════════════════════════ */
+
+/* ── GLASSMORPHISM PANEL ── */
+.glass {
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.04) 0%, transparent 50%);
+}
+
+/* ── CHAMFERED (SCI-FI) CLIP ── */
+.cut    { clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px)); }
+.cut-sm { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); }
+.cut-xs { clip-path: polygon(0 0, calc(100% - 8px)  0, 100%  8px, 100% 100%,  8px 100%, 0 calc(100% -  8px)); }
+
+/* ── HUD CORNER BRACKETS ── */
+.hud-box { position: relative; }
+
+.hud-box::before,
+.hud-box::after,
+.hud-box .c-bl,
+.hud-box .c-br {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.hud-box::before { top: 0; left: 0;  border-top:    2px solid var(--cyan); border-left:  2px solid var(--cyan); }
+.hud-box::after  { top: 0; right: 0; border-top:    2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+.hud-box .c-bl   { bottom: 0; left: 0;  border-bottom: 2px solid var(--cyan); border-left:  2px solid var(--cyan); }
+.hud-box .c-br   { bottom: 0; right: 0; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+.hud-gold::before,
+.hud-gold::after,
+.hud-gold .c-bl,
+.hud-gold .c-br { border-color: var(--gold) !important; }
+
+/* ── TOP HUD STATUS BAR ── */
+#top-status-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 28px;
+  z-index: 102;
+  background: rgba(2, 8, 18, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 245, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.hud-top-left {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .14em;
+  color: rgba(0, 245, 255, 0.65);
+}
+
+.hud-top-right {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .14em;
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(0, 245, 255, 0.55);
+}
+
+@media (max-width: 600px) {
+  #top-status-bar { padding: 0 14px; }
+  .hud-top-left,
+  .hud-top-right  { font-size: .52rem; letter-spacing: .08em; }
+}
+
+/* ── SECTION HEADER ── */
+.sec-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .25em;
+  color: var(--cyan);
+  opacity: .7;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.sec-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-align: center;
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(0, 245, 255, .35);
+  margin-bottom: 12px;
+}
+
+.sec-title.gold {
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(255, 215, 0, .35);
+}
+
+.sec-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 52px;
+}
+
+.sec-divider-line     { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(0, 245, 255, .4)); }
+.sec-divider-line.rev { background: linear-gradient(to left, transparent, rgba(0, 245, 255, .4)); }
+
+.sec-divider-gem {
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+/* ── CTA BUTTONS ── */
+.btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .65rem;
+  letter-spacing: .15em;
+  padding: 11px 26px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all .25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.btn-cyan { border-color: var(--cyan); color: var(--cyan); background: rgba(0, 245, 255, .05); }
+.btn-cyan:hover {
+  background: rgba(0, 245, 255, .14);
+  box-shadow: 0 0 20px rgba(0, 245, 255, .35);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.btn-gold { border-color: var(--gold); color: var(--gold); background: rgba(255, 215, 0, .05); }
+.btn-gold:hover {
+  background: rgba(255, 215, 0, .14);
+  box-shadow: 0 0 20px rgba(255, 215, 0, .35);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.btn:active { transform: translateY(1px) scale(.98); }
+
+/* ── TOOL BADGES ── */
+.tool-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.tool-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .7rem;
+  color: rgba(0, 245, 255, .8);
+  background: rgba(0, 245, 255, .05);
+  border: 1px solid rgba(0, 245, 255, .15);
+  padding: 7px 12px;
+  transition: all .25s;
+  cursor: default;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+.tool-badge:hover {
+  background: rgba(0, 245, 255, .12);
+  border-color: rgba(0, 245, 255, .35);
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(0, 245, 255, .2);
+}
+
+/* ── INDEX BOTTOM TICKER BAR ── */
+.index-ticker-bar {
+  width: 100%;
+  height: 30px;
+  background: rgba(0, 6, 16, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(0, 245, 255, 0.18);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.index-ticker-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: index-smooth-ticker 35s linear infinite;
+}
+
+.index-ticker-track:hover { animation-play-state: paused; }
+
+.index-ticker-text {
+  white-space: nowrap;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: rgba(0, 245, 255, 0.55);
+  padding-right: 50px;
+  display: inline-block;
+}
+
+.index-ticker-text b  { color: #00ff88; }
+.itk-cyan             { color: var(--cyan); }
+.itk-gold             { color: var(--gold); }
+.itk-green            { color: var(--green); }
+
+@keyframes index-smooth-ticker {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (max-width: 480px) {
+  .index-ticker-text { font-size: 0.52rem; }
+  .index-ticker-bar  { height: 26px; }
+}
+
+/* ── RESPONSIVE TWEAKS (btn) ── */
+@media (max-width: 480px) {
+  .btn { padding: 9px 18px; font-size: 0.58rem; }
+}

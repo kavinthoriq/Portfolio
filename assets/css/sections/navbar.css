@@ -1,0 +1,139 @@
+/* ═══════════════════════════════════════
+   NAVBAR.CSS
+   Swallowed Star Portfolio
+═══════════════════════════════════════ */
+
+#navbar {
+  position: fixed;
+  top: 28px; left: 0; right: 0;
+  z-index: 100;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all .4s ease;
+}
+
+#navbar.scrolled {
+  background: rgba(2, 8, 18, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 245, 255, 0.12);
+}
+
+/* ── Logo ── */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.nav-logo-box {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--cyan);
+  background: rgba(0, 245, 255, 0.08);
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+.nav-logo-box span {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--cyan);
+}
+
+.nav-logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .6rem;
+  letter-spacing: .12em;
+  color: rgba(0, 245, 255, .7);
+}
+
+.nav-logo-text b { color: var(--gold); }
+
+/* ── Links ── */
+.nav-links {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+@media (max-width: 700px) { .nav-links { display: none; } }
+
+.nav-links a {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .6rem;
+  letter-spacing: .1em;
+  color: rgba(0, 245, 255, .55);
+  padding: 7px 11px;
+  border: 1px solid transparent;
+  transition: all .3s;
+  cursor: pointer;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--cyan);
+  border-color: rgba(0, 245, 255, .25);
+  background: rgba(0, 245, 255, .06);
+  text-shadow: 0 0 8px rgba(0, 245, 255, .7);
+}
+
+/* ── Hamburger ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+@media (max-width: 700px) { .hamburger { display: flex; } }
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+  transition: all .3s;
+}
+
+/* ── Mobile Menu ── */
+#mobile-menu {
+  display: none;
+  position: fixed;
+  top: 86px; left: 0; right: 0;
+  z-index: 99;
+  background: rgba(2, 8, 18, .97);
+  border-bottom: 1px solid rgba(0, 245, 255, .15);
+  flex-direction: column;
+  padding: 12px 20px;
+  gap: 4px;
+}
+
+#mobile-menu.open { display: flex; }
+
+#mobile-menu a {
+  font-family: 'Orbitron', sans-serif;
+  font-size: .7rem;
+  letter-spacing: .15em;
+  color: rgba(0, 245, 255, .6);
+  padding: 10px 12px;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+#mobile-menu a.active,
+#mobile-menu a:hover {
+  color: var(--cyan);
+  border-left-color: var(--cyan);
+  background: rgba(0, 245, 255, .05);
+}

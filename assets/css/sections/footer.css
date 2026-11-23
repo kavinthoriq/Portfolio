@@ -1,0 +1,47 @@
+/* ═══════════════════════════════════════
+   FOOTER.CSS
+   Swallowed Star Portfolio
+═══════════════════════════════════════ */
+
+footer {
+  border-top: 1px solid rgba(0, 245, 255, .1);
+  padding: 24px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-left,
+.footer-right {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .12em;
+  color: rgba(0, 245, 255, .3);
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse-dot 2s infinite;
+}
+
+@media (max-width: 480px) {
+  footer {
+    padding: 18px 16px;
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}

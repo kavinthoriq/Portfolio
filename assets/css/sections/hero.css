@@ -1,0 +1,398 @@
+/* ═══════════════════════════════════════
+   HERO.CSS
+   Swallowed Star Portfolio
+═══════════════════════════════════════ */
+
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 20px 80px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* ── Rings ── */
+.ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ring-1 { width: 380px; height: 380px; border: 1px solid rgba(0, 245, 255, .07); animation: spin-cw 12s linear infinite; }
+.ring-2 { width: 560px; height: 560px; border: 1px dashed rgba(0, 153, 255, .05); animation: spin-ccw 18s linear infinite; }
+.ring-3 { width: 260px; height: 260px; border: 1px solid rgba(0, 245, 255, .06); animation: spin-cw 8s linear infinite; }
+
+@keyframes spin-cw  { from { transform: translate(-50%, -50%) rotate(0deg);   } to { transform: translate(-50%, -50%) rotate(360deg);  } }
+@keyframes spin-ccw { from { transform: translate(-50%, -50%) rotate(0deg);   } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+
+@media (max-width: 600px) {
+  .ring-1 { width: 260px; height: 260px; }
+  .ring-2 { width: 380px; height: 380px; }
+  .ring-3 { width: 180px; height: 180px; }
+}
+
+/* ── Vertical scan lines ── */
+.vline {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 245, 255, .055), transparent);
+  pointer-events: none;
+}
+
+/* ── Status badge ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 15, 40, .8);
+  border: 1px solid rgba(0, 245, 255, .22);
+  padding: 7px 16px;
+  margin-bottom: 28px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  animation: float 3s ease-in-out infinite;
+}
+
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.status-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .15em;
+  color: var(--green);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
+  50%       { opacity: .5; box-shadow: 0 0 16px var(--green); }
+}
+
+/* ── Glitch name (index) ── */
+.glitch-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-name {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 9vw, 5.5rem);
+  color: #fff;
+  letter-spacing: .15em;
+  text-shadow: 0 0 30px rgba(0, 245, 255, .4), 0 0 60px rgba(0, 153, 255, .2);
+  animation: glitch-main 5s infinite;
+  display: inline-block;
+}
+
+.glitch-wrap::before,
+.glitch-wrap::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 9vw, 5.5rem);
+  letter-spacing: .15em;
+}
+
+.glitch-wrap::before { animation: glitch-r 5s infinite; color: #ff0055; }
+.glitch-wrap::after  { animation: glitch-b 5s infinite; color: var(--cyan); }
+
+@keyframes glitch-main {
+  0%, 88%, 100% { transform: translate(0); }
+  89% { transform: translate(-3px, 1px); }
+  91% { transform: translate(3px, -1px); }
+  93% { transform: translate(-2px, 2px); }
+  95% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-r {
+  0%, 88%, 100% { opacity: 0; }
+  89% { opacity: .7; transform: translate(4px, 0); clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+  91% { transform: translate(-4px, 0); clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+  93% { opacity: 0; }
+}
+
+@keyframes glitch-b {
+  0%, 87%, 100% { opacity: 0; }
+  88% { opacity: .6; transform: translate(-4px, 0); clip-path: polygon(0 45%, 100% 45%, 100% 65%, 0 65%); }
+  90% { transform: translate(4px, 0); }
+  92% { opacity: 0; }
+}
+
+/* ── Role + Tagline ── */
+.hero-role {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(.75rem, .75rem + .5vw, 1rem);
+  color: var(--gold);
+  letter-spacing: .2em;
+  margin: 10px 0 22px;
+}
+
+.tagline-box {
+  display: inline-block;
+  background: rgba(0, 15, 40, .85);
+  border: 1px solid rgba(0, 245, 255, .2);
+  padding: 16px 24px;
+  margin-bottom: 36px;
+  max-width: 620px;
+  text-align: left;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  position: relative;
+  overflow: hidden;
+}
+
+.tagline-box::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(transparent, rgba(0, 245, 255, .12), transparent);
+  animation: scanline 2.5s linear infinite;
+}
+
+@keyframes scanline {
+  0%   { top: -10%; }
+  100% { top: 110%; }
+}
+
+.tagline-comment {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .6rem;
+  color: rgba(0, 245, 255, .35);
+  margin-bottom: 6px;
+}
+
+.tagline-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(.8rem, .8rem + .3vw, .95rem);
+  color: rgba(200, 240, 255, .88);
+  line-height: 1.65;
+}
+
+.cursor {
+  animation: blink 1s step-end infinite;
+  color: var(--cyan);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── CTA button row ── */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+/* ── Scroll hint ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.scroll-hint span {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .55rem;
+  letter-spacing: .2em;
+  color: rgba(0, 245, 255, .35);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(0, 245, 255, .6), transparent);
+  animation: pulse-line 2s ease-in-out infinite;
+}
+
+@keyframes pulse-line {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .3; }
+}
+
+/* ── Luo Feng Character ── */
+.luo-feng-wrap {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.luo-feng-img {
+  width: clamp(280px, 38vw, 240px);
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 2;
+  image-rendering: high-quality;
+  filter: drop-shadow(0 0 25px rgba(0, 245, 255, 0.6)) drop-shadow(0 0 65px rgba(0, 153, 255, 0.4)) contrast(1.08) saturate(1.15);
+  animation: char-float 4s ease-in-out infinite;
+}
+
+@keyframes char-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
+}
+
+.luo-feng-aura {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 380px; height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.12) 0%, rgba(0, 153, 255, 0.06) 40%, transparent 70%);
+  animation: aura-pulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes aura-pulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: .7; }
+  50%       { transform: translateX(-50%) scale(1.12); opacity: 1; }
+}
+
+.luo-feng-ground {
+  position: absolute;
+  bottom: -4px; left: 50%;
+  transform: translateX(-50%);
+  width: 280px; height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.6), transparent 70%);
+  animation: aura-pulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+.luo-feng-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.luo-feng-scan::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(transparent, rgba(0, 245, 255, .2), transparent);
+  animation: char-scan 2.8s linear infinite;
+}
+
+@keyframes char-scan {
+  from { top: -5%; }
+  to   { top: 105%; }
+}
+
+.luo-feng-ring {
+  position: absolute;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  z-index: 1;
+  border: 1px solid rgba(0, 245, 255, 0.12);
+  animation: spin-cw 14s linear infinite;
+}
+
+.luo-feng-ring::before {
+  content: '';
+  position: absolute;
+  top: 6px; left: 6px; right: 6px; bottom: 6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 215, 0, 0.08);
+  animation: spin-ccw 10s linear infinite;
+}
+
+/* ── HUD floating tags ── */
+.char-tag {
+  position: absolute;
+  z-index: 4;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .55rem;
+  letter-spacing: .12em;
+  background: rgba(0, 15, 40, .88);
+  border: 1px solid rgba(0, 245, 255, .28);
+  padding: 5px 9px;
+  white-space: nowrap;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  animation: tag-pulse 3s ease-in-out infinite;
+}
+
+@keyframes tag-pulse {
+  0%, 100% { opacity: .7; transform: translateY(0); }
+  50%       { opacity: 1;  transform: translateY(-3px); }
+}
+
+.char-tag-line {
+  position: absolute;
+  background: rgba(0, 245, 255, .3);
+  z-index: 3;
+}
+
+/* ── Hero layout 2-col ── */
+.hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 60px);
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.hero-content {
+  flex: 1;
+  min-width: 280px;
+  text-align: left;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hero-content { text-align: center; }
+  .hero-inner   { flex-direction: column-reverse; gap: 20px; }
+  .luo-feng-img { width: clamp(160px, 55vw, 240px); }
+  .luo-feng-ring { width: 220px; height: 220px; }
+  .char-tag { display: none; }
+}
+
+@media (max-width: 480px) {
+  .hero-name { font-size: clamp(1.8rem, 10vw, 2.8rem); }
+  .tagline-box { padding: 12px 16px; }
+  .luo-feng-aura { width: 240px; height: 240px; }
+  .luo-feng-ground { width: 180px; }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .luo-feng-img { width: clamp(180px, 50vw, 260px); }
+}

@@ -1,0 +1,391 @@
+/* ══════════════════════════════════════════════
+   INTRO.CSS — Khusus intro.html
+   Swallowed Star Portfolio
+══════════════════════════════════════════════ */
+
+/* ── Additional root vars hanya ada di intro ── */
+:root {
+  --red: #ff2244;
+  --bg1: #000000;
+}
+
+/* ── Reset & html/body override untuk intro ── */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000000;
+}
+
+/* ── Fullscreen wallpaper karakter Luo Feng ── */
+#fullscreen-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), transform 12s ease-out;
+  transform: scale(1.04);
+}
+
+#fullscreen-bg.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#fullscreen-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: contrast(1.28) saturate(1.55) brightness(1.06) drop-shadow(0 0 40px rgba(0, 245, 255, 0.25)) drop-shadow(0 0 80px rgba(0, 100, 255, 0.15));
+  transition: filter 3s ease-in-out;
+}
+
+#fullscreen-bg.revealed img {
+  filter: contrast(1.32) saturate(1.65) brightness(1.1) drop-shadow(0 0 60px rgba(0, 245, 255, 0.35)) drop-shadow(0 0 120px rgba(0, 100, 255, 0.2));
+}
+
+/* Vignette cinematic gradient di atas foto */
+#fullscreen-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 85% at 50% 45%, transparent 25%, rgba(0, 0, 0, 0.72) 75%, rgba(0, 0, 0, 0.95) 100%),
+    linear-gradient(to bottom, rgba(2, 8, 18, 0.7) 0%, transparent 25%, transparent 65%, rgba(0, 4, 10, 0.9) 100%);
+  pointer-events: none;
+}
+
+/* ── CRT Scanlines ── */
+#intro-overlay::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+}
+
+/* ── Terminal cursor blink ── */
+.term-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  background: var(--green);
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  animation: cursor-blink 0.7s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Efek glitch teks intro (WELCOME, KAVIN THORIQ) ── */
+.glitch-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.6rem, 5.5vw, 3.4rem);
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-shadow:
+    0 0 22px rgba(0, 245, 255, 0.85),
+    0 0 55px rgba(0, 153, 255, 0.45);
+  animation: glitch-anim 0.45s steps(1) infinite;
+  display: inline-block;
+  position: relative;
+}
+
+.glitch-wrapper::before,
+.glitch-wrapper::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.6rem, 5.5vw, 3.4rem);
+  letter-spacing: 0.12em;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glitch-wrapper::before {
+  color: var(--red);
+  animation: glitch-r-intro 0.45s steps(1) infinite;
+  text-shadow: 0 0 14px rgba(255, 34, 68, 0.85);
+}
+
+.glitch-wrapper::after {
+  color: var(--cyan);
+  animation: glitch-b-intro 0.45s steps(1) infinite;
+  text-shadow: 0 0 14px rgba(0, 245, 255, 0.85);
+}
+
+@keyframes glitch-anim {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, 2px); }
+  80% { transform: translate(1px, -2px); }
+}
+
+@keyframes glitch-r-intro {
+  0%, 100% { opacity: 0; }
+  15% { opacity: 0.9; transform: translate(5px, 0); clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%); }
+  35% { opacity: 0.8; transform: translate(-5px, 0); clip-path: polygon(0 55%, 100% 55%, 100% 75%, 0 75%); }
+  55% { opacity: 0.7; transform: translate(4px, 1px); clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%); }
+  75% { opacity: 0; }
+}
+
+@keyframes glitch-b-intro {
+  0%, 100% { opacity: 0; }
+  25% { opacity: 0.85; transform: translate(-5px, 0); clip-path: polygon(0 45%, 100% 45%, 100% 65%, 0 65%); }
+  45% { opacity: 0.75; transform: translate(5px, 0); clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+  65% { opacity: 0.6; transform: translate(-3px, 1px); clip-path: polygon(0 65%, 100% 65%, 100% 85%, 0 85%); }
+  85% { opacity: 0; }
+}
+
+/* ── Tombol ENTER TERMINAL ── */
+.enter-btn {
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(0.78rem, 2vw, 0.98rem);
+  letter-spacing: 0.24em;
+  color: var(--cyan);
+  background: rgba(0, 15, 35, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid var(--cyan);
+  padding: 16px 52px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-transform: uppercase;
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.35);
+}
+
+.enter-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.enter-btn::after {
+  content: '';
+  position: absolute;
+  top: -100%; left: -60%;
+  width: 40%; height: 300%;
+  background: linear-gradient(105deg, transparent, rgba(0, 245, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+}
+
+.enter-btn:hover::after { animation: btn-sweep 0.55s ease forwards; }
+
+@keyframes btn-sweep {
+  from { left: -60%; }
+  to   { left: 130%; }
+}
+
+.enter-btn:hover {
+  background: rgba(0, 245, 255, 0.22);
+  border-color: #ffffff;
+  box-shadow:
+    0 0 35px rgba(0, 245, 255, 0.8),
+    0 0 80px rgba(0, 245, 255, 0.4),
+    inset 0 0 24px rgba(0, 245, 255, 0.2);
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.02);
+}
+
+.enter-btn:active { transform: translateY(1px) scale(0.98); }
+
+/* ── Aura glow & hologram orbit rings ── */
+.char-aura {
+  position: absolute;
+  top: 45%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px; height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(0, 245, 255, 0.2) 0%,
+    rgba(0, 153, 255, 0.08) 45%,
+    transparent 70%);
+  animation: aura-pulse-intro 3.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes aura-pulse-intro {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  50%       { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+}
+
+.holo-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  top: 48%; left: 50%;
+}
+
+.ring-a {
+  width: 440px; height: 440px;
+  border: 1px solid rgba(0, 245, 255, 0.16);
+  transform: translate(-50%, -50%);
+  animation: spin-cw-intro 18s linear infinite;
+}
+
+.ring-b {
+  width: 320px; height: 320px;
+  border: 1px dashed rgba(255, 215, 0, 0.12);
+  transform: translate(-50%, -50%);
+  animation: spin-ccw-intro 12s linear infinite;
+}
+
+@keyframes spin-cw-intro  { from { transform: translate(-50%, -50%) rotate(0deg);   } to { transform: translate(-50%, -50%) rotate(360deg);  } }
+@keyframes spin-ccw-intro { from { transform: translate(-50%, -50%) rotate(0deg);   } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+
+/* ── Ticker bar (intro) ── */
+.ticker-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 32px;
+  background: rgba(0, 6, 16, 0.88);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(0, 245, 255, 0.18);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 40;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: smooth-ticker 28s linear infinite;
+}
+
+.ticker-track:hover { animation-play-state: paused; }
+
+.ticker-text {
+  white-space: nowrap;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: rgba(0, 245, 255, 0.6);
+  padding-right: 50px;
+  display: inline-block;
+}
+
+.ticker-text b        { color: var(--green); }
+.ticker-text span.gold { color: var(--gold); }
+
+@keyframes smooth-ticker {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ── Fase transisi ── */
+.phase { opacity: 0; pointer-events: none; }
+.phase.active { opacity: 1; pointer-events: auto; }
+
+#cta-container {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#cta-container.shown { opacity: 1; transform: translateY(0); }
+
+#welcome-wrap { opacity: 0; transition: opacity 0.4s ease; }
+#welcome-wrap.shown { opacity: 1; }
+
+.divider-line {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--cyan), transparent);
+  transition: width 0.9s ease 0.2s;
+}
+
+.divider-line.expand { width: 320px; }
+
+/* ── Exit animation (slide-up) ── */
+#intro-overlay.exit-slide {
+  animation: exit-slide-up 0.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes exit-slide-up {
+  0%   { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* ── Corner brackets ── */
+.corner-bracket {
+  position: absolute;
+  width: 26px; height: 26px;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.corner-bracket.tl { top: 38px;  left: 20px;  border-top:    2px solid var(--cyan); border-left:  2px solid var(--cyan); }
+.corner-bracket.tr { top: 38px;  right: 20px; border-top:    2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+.corner-bracket.bl { bottom: 44px; left: 20px;  border-bottom: 2px solid var(--cyan); border-left:  2px solid var(--cyan); }
+.corner-bracket.br { bottom: 44px; right: 20px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+/* ── HUD badges (intro) ── */
+.hud-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  padding: 4px 12px;
+  background: rgba(0, 15, 35, 0.85);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .ticker-text { font-size: 0.55rem; }
+
+  .corner-bracket       { width: 18px; height: 18px; }
+  .corner-bracket.tl    { top: 30px; left: 12px; }
+  .corner-bracket.tr    { top: 30px; right: 12px; }
+  .corner-bracket.bl    { bottom: 38px; left: 12px; }
+  .corner-bracket.br    { bottom: 38px; right: 12px; }
+
+  .hud-badge  { font-size: 0.48rem; padding: 3px 8px; }
+  .enter-btn  { padding: 14px 32px; font-size: 0.72rem; }
+  .ring-a     { width: 260px; height: 260px; }
+  .ring-b     { width: 200px; height: 200px; }
+  .char-aura  { width: 300px; height: 300px; }
+
+  #top-status-bar span { font-size: 0.52rem; letter-spacing: 0.06em; }
+}
+
+@media (max-width: 360px) {
+  .glitch-text { font-size: 1.2rem; }
+  .enter-btn   { padding: 12px 24px; font-size: 0.65rem; }
+  .ring-a      { width: 200px; height: 200px; }
+  .ring-b      { width: 150px; height: 150px; }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .ring-a    { width: 360px; height: 360px; }
+  .ring-b    { width: 260px; height: 260px; }
+  .char-aura { width: 400px; height: 400px; }
+}
