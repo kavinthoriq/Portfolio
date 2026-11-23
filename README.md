@@ -1,140 +1,152 @@
-# 🌌 Swallowed Star — Portfolio Terminal
+# 🌌 Swallowed Star Portfolio: Kavin Thoriq
 
-> Portfolio website Kavin Thoriq bertema *Swallowed Star (吞噬星空)* — Luo Feng universe.  
-> Dibangun dengan **vanilla HTML + CSS + JavaScript** murni, tanpa framework atau build tool.
+Website portfolio pribadi bertema **sci-fi HUD terminal** dengan inspirasi dari anime **Swallowed Star (Tunshi Xingkong)** dan karakter **Luo Feng**. Dibangun dengan HTML, CSS, dan JavaScript murni tanpa framework.
+
+🔗 **Demo:** _(https://kavinthoriq.github.io/Portfolio)_
+
+<!-- Tambahkan screenshot di sini, misalnya:
+![Intro](screenshots/intro.png)
+![Portfolio](screenshots/portfolio.png)
+-->
 
 ---
 
 ## ✨ Fitur
 
-- Intro sinematik 4-fase dengan animasi typewriter, glitch, & efek reveal karakter
-- Halaman utama dengan custom cursor *Singularity* (black hole + orbit bulan emas)
-- Canvas starfield animasi, HUD status bar realtime, bottom ticker
-- Filter proyek dinamis, skill bar + radial chart teranimasi
-- Entry sound (Web Audio API) saat pertama masuk dari intro
-- Hover & click SFX di seluruh halaman utama
-- Responsif mobile + aksesibel (`prefers-reduced-motion`)
+### 🎬 Cinematic Intro (`intro.html`)
+- Wallpaper karakter Luo Feng layar penuh dengan starfield partikel (canvas) dan bingkai sudut ala HUD.
+- Jam dan tanggal realtime pada status bar atas.
+- Urutan tiga fase: boot terminal dengan teks diketik otomatis, otentikasi dengan teks *glitch*, lalu tombol **[ ENTER TERMINAL ]**.
+- Cincin hologram yang muncul di fase akhir, dan tombol mute audio.
+- Tombol masuk mengarahkan ke halaman portfolio (`index.html`).
+
+### 💼 Portfolio (`index.html`)
+- **Hero:** teks ketik otomatis (*typewriter*), identitas operator, dan tombol navigasi cepat.
+- **Data Profil (Bio-Scanner):** deskripsi diri, info pribadi, statistik animasi, dan grafik kemampuan.
+- **Log Misi & Pendidikan:** riwayat sekolah dan proyek utama dalam bentuk kartu "mission".
+- **Skill & Statistik:** *hard skill* dan *soft skill* dengan bar animasi, serta daftar teknologi yang dikuasai.
+- **Project Archive:** kartu proyek dengan filter **All / Web / Game / Design**, lengkap dengan tombol demo dan source code. Datanya dikelola dari satu array JavaScript.
+- **Transmission Hub (Kontak):** GitHub, email, dan lokasi, plus ajakan kolaborasi.
+- **Marquee** informasi berjalan di bagian bawah.
+
+### 🎮 Interaksi & Efek
+- **Cursor kustom bertema singularity:** inti dengan cincin berputar, bereaksi saat hover dan klik. Hanya aktif di perangkat dengan mouse.
+- **Sound effect** (Web Audio API) untuk hover, klik, dan navigasi, dengan tombol mute.
+- Animasi muncul saat scroll (*scroll reveal*) dan efek kaca (*glassmorphism*) pada panel.
+- Layout responsif dengan menu mobile.
 
 ---
 
-## 📁 Struktur Folder
+## 🗂️ Proyek yang Ditampilkan
+
+| ID | Proyek | Kategori | Status | Demo | Repo |
+| --- | --- | --- | --- | --- | --- |
+| P-001 | Go To School: Mathemagic Adventure | Game | Completed | [Main](https://kavinthoriq.github.io/go-to-school-mathemagic-adventure/) | [Repo](https://github.com/kavinthoriq/go-to-school-mathemagic-adventure) |
+| P-002 | PlengerToSmart | Web | In Progress | [Buka](https://edukasi-vynz.page.gd/) | [Repo](https://github.com/kavinthoriq/edukasi) |
+| P-003 | Geometry Dash (Fan Game) | Game | Completed | [Main](https://kavinthoriq.github.io/geometry-dash/) | [Repo](https://github.com/kavinthoriq/geometry-dash) |
+| P-004 | Vynz News | Web | Completed | [Buka](https://kavinthoriq.github.io/vynz-news/) | [Repo](https://github.com/kavinthoriq/vynz-news) |
+| P-005 | StudyNote | Design | Completed | - | [Repo](https://github.com/kavinthoriq/note-app) |
+| P-006 | SMK TI Dwiguna (Desain Website) | Design | Completed | - | [Repo](https://github.com/kavinthoriq/smk.sch.id) |
+
+---
+
+## 🛠️ Teknologi
+
+| Teknologi | Kegunaan |
+| --- | --- |
+| HTML5 | Struktur halaman |
+| CSS3 | Tema HUD, animasi, glassmorphism, dan layout responsif |
+| JavaScript (Vanilla) | Interaksi, filter proyek, cursor kustom, dan scroll reveal |
+| Canvas API | Starfield dan partikel latar |
+| Web Audio API | Sound effect tanpa file audio eksternal |
+| IntersectionObserver | Animasi saat elemen terlihat |
+| Tailwind CSS (CDN) | Styling pada halaman intro |
+| Google Fonts | Orbitron, Share Tech Mono, dan Inter |
+
+**Palet warna:** cyan `#00f5ff`, emas `#ffd700`, biru `#0099ff`, hijau terminal `#00ff88`, ungu `#b400ff`, latar `#020812`.
+
+---
+
+## 📁 Isi Repository
 
 ```
-portfolio/
-├── index.html              ← Halaman utama
-├── intro.html              ← Intro sinematik (Tailwind CDN)
-├── README.md
-├── .gitignore
-├── assets/
-│   ├── css/
-│   │   ├── base.css              ← Variables, reset, scrollbar, layout, scroll-reveal
-│   │   ├── components.css        ← Glass, hud-box, chamfer, btn, badge, ticker
-│   │   ├── cursor.css            ← Custom cursor Singularity
-│   │   ├── intro.css             ← Semua style khusus intro.html
-│   │   └── sections/
-│   │       ├── navbar.css
-│   │       ├── hero.css
-│   │       ├── about.css
-│   │       ├── education.css
-│   │       ├── skills.css
-│   │       ├── projects.css
-│   │       ├── contact.css
-│   │       └── footer.css
-│   ├── js/
-│   │   ├── shared/
-│   │   │   ├── starfield.js      ← Canvas bintang (dipakai kedua halaman)
-│   │   │   ├── hud-clock.js      ← Jam & tanggal realtime
-│   │   │   └── audio-engine.js   ← Base AudioContext & mute toggle
-│   │   ├── intro/
-│   │   │   └── intro.js          ← Typewriter, 4-fase, exitIntro, keyboard
-│   │   └── main/
-│   │       ├── entry-sound.js    ← Epic entry sound dari intro → index
-│   │       ├── navigation.js     ← Navbar scroll, scrollToSection, hamburger
-│   │       ├── typewriter.js     ← Hero tagline typewriter
-│   │       ├── reveal.js         ← IntersectionObserver, counter, skill bar, radial chart
-│   │       ├── projects.js       ← Render kartu proyek + filter
-│   │       ├── sfx.js            ← Hover/click sound index
-│   │       └── cursor.js         ← Singularity cursor engine
-│   └── img/
-│       ├── characters/
-│       │   ├── luo-feng.webp         ← Karakter hero (index)
-│       │   └── luo-feng-full.webp    ← Karakter fullscreen (intro)
-│       └── projects/
-│           ├── go-to-school.png
-│           ├── plengertosmart.png
-│           ├── geometry-dash.png
-│           ├── vynz-news.png
-│           ├── studynote.png
-│           └── smk-ti-dwiguna.png
-└── data/
-    └── projects.js         ← Array `window.PROJECTS` — data proyek saja
+├── intro.html                 # Cinematic intro (pintu masuk)
+├── index.html                 # Halaman utama portfolio
+├── luo_feng.webp              # Gambar karakter (versi potret)
+├── luo_feng_full.webp         # Gambar karakter (versi lebar, wallpaper intro)
+├── img/
+│   └── projects/              # Screenshot proyek di Project Archive
+│       ├── Screenshot 2026-10-14 121306.png
+│       ├── Screenshot 2026-10-14 122049.png
+│       ├── Screenshot 2026-10-14 122349.png
+│       ├── Screenshot 2026-10-14 122628.png
+│       ├── Screenshot 2026-10-14 123129.png
+│       └── Screenshot 2026-10-14 123421.png
+└── README.md
 ```
+
+> Mulai dari `intro.html` untuk pengalaman lengkap. `index.html` bisa dibuka langsung tanpa intro.
 
 ---
 
 ## 🚀 Cara Menjalankan
 
-### Lokal (paling mudah)
-Gunakan **VS Code Live Server** atau ekstensi serupa:
-1. Buka folder project di VS Code
-2. Klik kanan `index.html` → **Open with Live Server**
+Tanpa instalasi apa pun:
 
-> **Jangan buka langsung via `file://`** — beberapa browser memblokir audio autoplay dan redirect `sessionStorage` di protokol `file://`. Gunakan Live Server atau server HTTP lokal.
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/kavinthoriq/NAMA-REPO.git
+   cd NAMA-REPO
+   ```
+2. **Buka `intro.html`** di browser, atau gunakan ekstensi **Live Server** di VS Code.
+3. Klik **[ ENTER TERMINAL ]** untuk masuk ke portfolio.
 
-### Server HTTP sederhana (Python)
-```bash
-cd "d:\swallowed star - Copy"
-python -m http.server 8080
-# Buka: http://localhost:8080
-```
+### Deploy ke GitHub Pages
+1. Push project ke GitHub.
+2. Buka **Settings → Pages**, pilih branch `main` dan folder `/ (root)`, lalu **Save**.
+3. GitHub Pages membuka `index.html` sebagai halaman awal. Agar pengunjung melihat intro lebih dulu, ganti nama `index.html` menjadi `portfolio.html`, lalu ganti nama `intro.html` menjadi `index.html` (dan ubah tujuan tombol masuk di dalamnya ke `portfolio.html`).
 
 ---
 
-## ➕ Cara Menambah Proyek Baru
+## 🧩 Menambah Proyek Baru
 
-1. Tambahkan screenshot ke `assets/img/projects/` dengan nama **kebab-case** (misal: `nama-proyek.png`)
-2. Buka `data/projects.js` dan tambahkan satu objek baru di array `window.PROJECTS`:
+Proyek dikelola dari array `projects` di `index.html`. Cukup tambah satu objek:
 
 ```js
 {
-  id:     'P-007',
-  title:  'Nama Proyek',
-  desc:   'Deskripsi singkat proyek.',
-  tags:   ['Web'],           // 'Web' | 'Game' | 'Design'
-  img:    'assets/img/projects/nama-proyek.png',
-  demo:   'https://link-demo.com',
-  repo:   'https://github.com/kavinthoriq/nama-repo',
-  status: 'COMPLETED',       // 'COMPLETED' | 'IN PROGRESS'
-  year:   '2025'
+  id: 'P-007',
+  title: 'Nama Proyek',
+  desc: 'Deskripsi singkat proyek.',
+  tags: ['Web', 'HTML', 'CSS'],     // tag pertama menentukan kategori filter
+  img: 'img/projects/nama-gambar.png',
+  demo: 'https://link-demo',        // kosongkan jika tidak ada
+  repo: 'https://github.com/kavinthoriq/nama-repo',
+  status: 'COMPLETED'
 }
 ```
 
-3. Simpan — proyek langsung muncul di halaman tanpa rebuild.
+---
+
+## ⚙️ Kustomisasi
+
+- **Cursor kustom:** konstanta di blok script *Custom Cursor: Singularity* (misalnya `ORBIT_MOON`). Untuk mematikannya, hapus class `has-custom-cursor` dari elemen `<html>`.
+- **Warna tema:** ubah variabel CSS di `:root` pada `index.html`.
+- **Volume dan mute:** diatur lewat tombol SFX di pojok kanan bawah.
 
 ---
 
-## 🌐 Deploy ke GitHub Pages
+## 👤 Author
 
-1. Push seluruh folder ini ke repository GitHub (branch `main` atau `gh-pages`)
-2. Di Settings repo → **Pages** → Source: branch `main`, folder `/root`
-3. GitHub Pages akan deploy otomatis. URL: `https://<username>.github.io/<repo-name>/`
-
-> **Catatan:** GitHub Pages bersifat case-sensitive. Pastikan semua path (`assets/`, `data/`) menggunakan huruf kecil.
+**Kavin Thoriq**
+Pelajar PPLG, SMK TI Dwiguna Kota Depok
+- GitHub: [@kavinthoriq](https://github.com/kavinthoriq)
 
 ---
 
-## 🛠️ Stack & Aturan Teknis
+## 📜 Kredit & Disclaimer
 
-| Aspek | Detail |
-|---|---|
-| HTML | Semantic HTML5, `lang="id"` |
-| CSS | Vanilla CSS, cascade biasa, tanpa preprocessor |
-| JavaScript | Vanilla ES5/ES6 — `<script defer>`, **bukan** `type="module"` |
-| Font | Orbitron, Share Tech Mono, Inter — via Google Fonts CDN |
-| Tailwind | CDN hanya di `intro.html` (utility classes pada overlay) |
-| Audio | Web Audio API — tanpa file audio eksternal |
-| Gambar | WebP untuk karakter, PNG untuk screenshot proyek |
+Website ini adalah karya penggemar (*fan tribute*) dan tidak berafiliasi dengan pemilik resmi **Swallowed Star**. Karakter, gambar, dan kutipan Luo Feng adalah milik pemilik hak ciptanya. Jika repository ini dipublikasikan secara luas, pastikan kamu memiliki hak pakai atas gambar tersebut atau menggantinya dengan aset buatan sendiri.
 
 ---
 
-*"Dalam alam semesta ini, yang lemah tidak memiliki hak untuk hidup dengan nyaman." — Luo Feng*
+⭐ Kalau portfolio ini bermanfaat, jangan lupa kasih **star** di repository ini!
